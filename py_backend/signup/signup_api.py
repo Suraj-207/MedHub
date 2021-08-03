@@ -6,5 +6,5 @@ from flask import request
 class Signup(Resource):
 
     def post(self):
-        record = request.get_json()
+        record = request.get_json()['formData']
         return Registration(record)
