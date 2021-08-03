@@ -1,6 +1,6 @@
 from flask import request, session
 from flask_restful import Resource
-from py_backend.login.User import Validation
+from py_backend.login.login_user import Validation
 
 
 class Login(Resource):
