@@ -33,7 +33,7 @@ const Doctor = (props) => {
         <input
           type="text"
           className="input_elements"
-          name="placeofwork"
+          name="place_of_work"
           placeholder="Place Of Work"
           onChange={handleChange}
         />

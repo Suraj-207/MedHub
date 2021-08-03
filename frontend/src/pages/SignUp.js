@@ -14,14 +14,37 @@ const SignUp = () => {
 
   const handleFieldChange = (e) => {
     updateFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
-      });
-  }
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const handleSubmit = () => {
-      console.log(formData)
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+
+    try {
+      fetchData = async () => {
+        const data = { formData };
+        console.log(formData.email);
+        const response = await fetch("http://localhost:5000/api/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        const result = await response.json();
+        console.log(result);
+        if (response.ok) {
+          console.log("done");
+        }
+      };
+    } catch (err) {
+      console.log(err);
+    }
+    fetchData();
+  };
 
   return (
     <React.Fragment>
@@ -34,7 +57,7 @@ const SignUp = () => {
             <input
               type="text"
               className="input_elements"
-              name="firstname"
+              name="fname"
               placeholder="First name"
               onChange={handleFieldChange}
             />
@@ -43,7 +66,7 @@ const SignUp = () => {
             <input
               type="text"
               className="input_elements"
-              name="lastname"
+              name="lname"
               placeholder="last name"
               onChange={handleFieldChange}
             />
@@ -72,7 +95,6 @@ const SignUp = () => {
               className="input_elements"
               name="confirmpassword"
               placeholder="Confirm password"
-              onChange={handleFieldChange}
             />
           </div>
         </div>
@@ -80,16 +102,28 @@ const SignUp = () => {
           <div className="proffession">
             <select name="doctor" onClick={handleDropdownChange}>
               <option value="">--Please choose an option--</option>
-              <option value="doctor">Doctor</option>
-              <option value="patient">Patient</option>
+              <option name="account" value="doctor">
+                Doctor
+              </option>
+              <option name="account" value="patient">
+                Patient
+              </option>
             </select>
           </div>
-          <div>{dropdown === "doctor" && <Doctor onFieldChange={handleFieldChange} />}</div>
-          <div>{dropdown === "patient" && <Patient onFieldChange={handleFieldChange} />} </div>
+          <div>
+            {dropdown === "doctor" && (
+              <Doctor onFieldChange={handleFieldChange} />
+            )}
+          </div>
+          <div>
+            {dropdown === "patient" && (
+              <Patient onFieldChange={handleFieldChange} />
+            )}{" "}
+          </div>
         </div>
       </div>
       <div className="signup-button">
-        <button onClick={handleSubmit} >Confirm SignUp</button>
+        <button onClick={handleSubmit}>Confirm SignUp</button>
       </div>
     </React.Fragment>
   );
