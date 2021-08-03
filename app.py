@@ -6,6 +6,7 @@ from flask_restful import Api
 from flask_cors import CORS
 from py_backend.cassandra_db.crud import Operations
 from py_backend.login.login_api import Login
+from py_backend.signup.signup_api import Signup
 
 
 app = Flask(__name__, static_url_path='', static_folder='/frontend/build')
@@ -21,6 +22,7 @@ def home_page(path):
 
 
 api.add_resource(Login, '/api/login')
+api.add_resource(Signup, '/api/signup')
 
 
 if __name__ == '__main__':
