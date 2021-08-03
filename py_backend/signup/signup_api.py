@@ -7,4 +7,5 @@ class Signup(Resource):
 
     def post(self):
         record = request.get_json()['formData']
+        print(record)
         return Registration(record)
