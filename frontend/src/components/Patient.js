@@ -31,7 +31,7 @@ const Patient = (props) => {
         <input
           type="text"
           className="input_elements"
-          name="pincode"
+          name="pin"
           placeholder="Pincode"
           onChange={handleChange}
         />
@@ -40,7 +40,7 @@ const Patient = (props) => {
         <input
           type="text"
           className="input_elements"
-          name="phoneno"
+          name="phone"
           placeholder="Phone no"
           onChange={handleChange}
         />
