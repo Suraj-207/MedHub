@@ -31,7 +31,7 @@ class Registration:
 
     def insert_to_db(self):
         query = "select * from medhub.user where email = '" + self.email + "' allow filtering"
-        check_existence = config.cassandra.session.execute(query)
+        check_existence = config.cassandra.session.execute(query).one()
         if check_existence is None:
             config.cassandra.insert_one('medhub.user', self.user_record)
             if self.user_record['account'] == 'doctor':
