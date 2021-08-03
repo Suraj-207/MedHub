@@ -1,0 +1,15 @@
+.doctor{
+    margin: 50px 50px 50px 0px;
+}
+
+.doctor-signup{
+    
+    display: flex;
+    flex: 1;
+    margin-top: 80px;
+}
+
+.input_elements{
+    display: flex;
+    flex: 1;
+}

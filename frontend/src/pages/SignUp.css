@@ -1,0 +1,42 @@
+.form{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.heading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: cursive;
+}
+
+.form-left{
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+}
+
+.form-left > .signup{
+    margin: 40px;
+}
+
+.signup .input_elements{
+    border-radius: 2px;
+    width: 100%;
+    height: 100%;
+}
+
+.form-right{
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+    margin-top: 40px;
+    margin-left: 100px;
+}
+
+.signup-button{
+    display: flex;
+    justify-content: center;
+}
