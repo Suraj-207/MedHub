@@ -10,7 +10,6 @@ class Validation:
 
     def check(self):
         query = "select password,account from medhub.user where email = '" + self.email + "' allow filtering"
-        print(query)
         result = config.cassandra.session.execute(query).one()
         if result is None:
             return {"status": False, "message": "Email does not exist"}
