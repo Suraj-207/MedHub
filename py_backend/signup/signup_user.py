@@ -16,7 +16,7 @@ class Registration:
             self.info_record = {
                 "email": record['email'],
                 "speciality": record['speciality'],
-                "experience": record['experience'],
+                "experience": int(record['experience']),
                 "pow": record['place_of_work'],
                 "proof": record['proof']
             }
@@ -25,8 +25,8 @@ class Registration:
                 "email": record['email'],
                 "city": record['city'],
                 "state": record['state'],
-                "pin": record['pin'],
-                "phone": record['phone']
+                "pin": int(record['pin']),
+                "phone": int(record['phone'])
             }
 
     def insert_to_db(self):
