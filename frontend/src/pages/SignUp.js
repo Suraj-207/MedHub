@@ -6,6 +6,7 @@ import Patient from "../components/Patient";
 const SignUp = () => {
   const [dropdown, setDropdown] = useState("");
   const [formData, updateFormData] = useState("");
+  let fetchData;
 
   const handleDropdownChange = (e) => {
     console.log(typeof e.target.value);
@@ -100,12 +101,12 @@ const SignUp = () => {
         </div>
         <div className="form-right">
           <div className="proffession">
-            <select name="doctor" onClick={handleDropdownChange}>
+            <select name="account" onChange={handleFieldChange} onClick={handleDropdownChange} >
               <option value="">--Please choose an option--</option>
-              <option name="account" value="doctor">
+              <option name="account" value="doctor" >
                 Doctor
               </option>
-              <option name="account" value="patient">
+              <option name="account" value="patient" >
                 Patient
               </option>
             </select>
