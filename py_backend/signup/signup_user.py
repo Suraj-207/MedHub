@@ -30,9 +30,14 @@ class Registration:
             }
 
     def insert_to_db(self):
-        config.cassandra.insert_one('medhub.user', self.user_record)
-        if self.user_record['account'] == 'doctor':
-            config.cassandra.insert_one("medhub.doctor", self.info_record)
+        query = "select * from medhub.user where email = '" + self.email + "' allow filtering"
+        check_existence = config.cassandra.session.execute(query)
+        if check_existence is None:
+            config.cassandra.insert_one('medhub.user', self.user_record)
+            if self.user_record['account'] == 'doctor':
+                config.cassandra.insert_one("medhub.doctor", self.info_record)
+            else:
+                config.cassandra.insert_one("medhub.patient", self.info_record)
+            return "Registration successful"
         else:
-            config.cassandra.insert_one("medhub.patient", self.info_record)
-        return "Registration successful"
+            return "Email already exits"
