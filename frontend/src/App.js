@@ -7,7 +7,7 @@ import SignUp from "./pages/SignUp";
 import { AuthContext } from "./shared/context/AuthContext";
 import DoctorHome from "./pages/DoctorDashboard/DoctorHome";
 // import PatientHome from "./pages/PatientDashboard/PatientHome";
-import MainNavigation from './shared/Navigation/MainNavigation'
+import MainNavigation from "./shared/Navigation/MainNavigation";
 
 function App() {
   const [token, setToken] = useState(false);
@@ -30,35 +30,41 @@ function App() {
 
   useEffect(() => {
     let fetchData;
-    const storedData = JSON.parse(localStorage.getItem("userData"));
     try {
       fetchData = async () => {
-        const data = storedData.token;
-        const response = await fetch("http://localhost:5000/api/check-token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        const result = await response.json();
-        if(result === null){
-          console.log("unidentified token");
-        }else if (result.user && result.token) {
-          login(result.user, result.token);
-        }
-        // auth.login(result.user, result.token);
-        console.log(result);
-        if (response.ok) {
-          console.log("done");
+        const storedData = JSON.parse(localStorage.getItem("userData"));
+        if (storedData === null) {
+          console.log("no token");
+        } else {
+          const data = storedData.token;
+          const response = await fetch(
+            "http://localhost:5000/api/check-token",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            }
+          );
+          const result = await response.json();
+          if (result === null) {
+            console.log("unidentified token");
+          } else if (result.user && result.token) {
+            login(result.user, result.token);
+          }
+          // auth.login(result.user, result.token);
+          console.log(result);
+          if (response.ok) {
+            console.log("done");
+          }
         }
       };
     } catch (err) {
       console.log(err);
     }
     fetchData();
-    
-  },[login]);
+  }, [login]);
 
   let routes;
 
@@ -86,18 +92,18 @@ function App() {
           <MainNavigation />
         </Route>
       </Switch>
-    )
-  }else{
+    );
+  } else {
     routes = (
       <Switch>
         <Route path="/">
           <Login />
         </Route>
         <Route path="/signup" exact>
-            <SignUp />
-          </Route>
+          <SignUp />
+        </Route>
       </Switch>
-    )
+    );
   }
 
   return (
@@ -112,17 +118,8 @@ function App() {
     >
       <Router>
         <Switch>
-<<<<<<< HEAD
           <Route path="/">
             <main>{routes}</main>
-=======
-          <Route path="/" exact>
-            <Login />
-            <main>{routes}</main>
-          </Route>
-          <Route path="/signup" exact>
-            <SignUp />
->>>>>>> cfb917b9d8d56e4bf35b92b51f159c7a31777c06
           </Route>
         </Switch>
       </Router>
