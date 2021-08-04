@@ -63,7 +63,7 @@ class Registration:
                         config.cassandra.insert_one("medhub.doctor", self.info_record)
                     else:
                         config.cassandra.insert_one("medhub.patient", self.info_record)
-                    token = Token().generate_token(self.user_record['email'], self.password)
+                    token = Token().generate_token(self.user_record['email'], self.password, self.user_record['account'])
                     return {"user": self.user_record['account'], "message": "Registration Successful", "token": token}
                 else:
                     config.logger.log("ERROR", "Email does not exist...")
