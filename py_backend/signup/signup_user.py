@@ -17,7 +17,6 @@ class Registration:
             from_ = "From: MedHub <{}>\n".format(self.sender_email)
             to = "To: {} <{}>\n".format(record['fname'] + " " + record['lname'], self.receiver_email)
             subject = "Subject: Registration in MedHub successful\n\n"
-            self.password = record['password']
             self.user_record = {
                 "email": record['email'],
                 "password": generate_password_hash(record['password']),
@@ -63,7 +62,7 @@ class Registration:
                         config.cassandra.insert_one("medhub.doctor", self.info_record)
                     else:
                         config.cassandra.insert_one("medhub.patient", self.info_record)
-                    token = Token().generate_token(self.user_record['email'], self.password, self.user_record['account'])
+                    token = Token().generate_token(self.user_record['email'], self.user_record['account'])
                     return {"user": self.user_record['account'], "message": "Registration Successful", "token": token}
                 else:
                     config.logger.log("ERROR", "Email does not exist...")

@@ -16,10 +16,8 @@ class IsValidToken(Resource):
                 config.logger.log("INFO", "Token is valid...")
                 return {
                     "email": decoded_token['decoded_token']['email'],
-                    "password": decoded_token['decoded_token']['password'],
                     "user": decoded_token['decoded_token']['user'],
                     "token": token.generate_token(decoded_token['decoded_token']['email'],
-                                                  decoded_token['decoded_token']['password'],
                                                   decoded_token['decoded_token']['user']),
                 }
             else:
