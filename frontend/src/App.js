@@ -44,7 +44,7 @@ function App() {
         </Route>
       </Switch>
     );
-  } else if (userId === "patient") {
+  } else if (token && userId === "patient") {
     routes = (
       <Switch>
         <Router path="/" exact>
@@ -80,11 +80,11 @@ function App() {
         <Switch>
           <Route path="/" exact>
             <Login />
+            <main>{routes}</main>
           </Route>
           <Route path="/signup" exact>
             <SignUp />
           </Route>
-          <main>{routes}</main>
         </Switch>
       </Router>
     </AuthContext.Provider>
