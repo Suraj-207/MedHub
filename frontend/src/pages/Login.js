@@ -3,8 +3,10 @@ import logincover from "../shared/UIComponent/logincover.png";
 import "./Login.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../shared/context/AuthContext";
+import LoadingSpinner from "../shared/UIComponent/LoadingSpinner";
 const Login = () => {
   const [formData, setFormData] = useState("");
+  const [load, setLoad] = useState(false);
   const auth = useContext(AuthContext);
   let fetchData;
   const handleChange = (e) => {
@@ -20,6 +22,7 @@ const Login = () => {
 
     try {
         fetchData = async () => {
+          setLoad(true)
           const data = { formData };
           console.log(formData.email);
           const response = await fetch("http://localhost:5000/api/login", {
@@ -33,6 +36,7 @@ const Login = () => {
           auth.login(result.user, result.token);
           console.log(result);
           if (response.ok) {
+            setLoad(false);
             console.log("done");
           }
         };
@@ -43,6 +47,7 @@ const Login = () => {
   };
   return (
     <div className="login">
+      <div>{load && <LoadingSpinner asOverlay />} </div>
       <div className="login_cover">
         <img className="logo" src={logincover} alt="theme" />
       </div>
