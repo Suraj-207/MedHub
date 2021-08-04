@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import logincover from "../shared/UIComponent/logincover.png";
 import "./Login.css";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../shared/context/AuthContext";
 const Login = () => {
   const [formData, setFormData] = useState("");
+  const auth = useContext(AuthContext);
   let fetchData;
   const handleChange = (e) => {
     setFormData({
@@ -28,6 +30,7 @@ const Login = () => {
             body: JSON.stringify(data),
           });
           const result = await response.json();
+          auth.login(result.user, result.token);
           console.log(result);
           if (response.ok) {
             console.log("done");

@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./SignUp.css";
 import Doctor from "../components/Doctor";
 import Patient from "../components/Patient";
+import { AuthContext } from "../shared/context/AuthContext";
 
 const SignUp = () => {
   const [dropdown, setDropdown] = useState("");
   const [formData, updateFormData] = useState("");
+  const auth = useContext(AuthContext);
   let fetchData;
 
   const handleDropdownChange = (e) => {
@@ -36,6 +38,7 @@ const SignUp = () => {
           body: JSON.stringify(data),
         });
         const result = await response.json();
+        auth.login(result.user, result.token);
         console.log(result);
         if (response.ok) {
           console.log("done");
