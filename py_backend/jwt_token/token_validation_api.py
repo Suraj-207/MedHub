@@ -9,7 +9,7 @@ class IsValidToken(Resource):
     def post(self):
         try:
             config.logger.log("INFO", "Checking for validity of token...")
-            encoded_token = request.get_json()['formData']['token']
+            encoded_token = request.get_json()['token']
             token = Token()
             decoded_token = token.validate_token(encoded_token)
             if decoded_token['valid']:
