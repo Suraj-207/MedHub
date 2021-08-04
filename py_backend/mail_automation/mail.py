@@ -7,7 +7,7 @@ class SendMail:
 
     def __init__(self, sender_email, sender_password, receiver_email, message):
         try:
-            self.port = 464
+            self.port = 465
             self.smtp_server = "smtp.gmail.com"
             self.sender_email = sender_email
             self.sender_password = sender_password
