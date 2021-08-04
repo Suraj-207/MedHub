@@ -15,11 +15,10 @@ class Token:
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
-    def generate_token(self, email, password, user):
+    def generate_token(self, email, user):
         try:
             encoded_token = encode({
                 "email": email,
-                "password": password,
                 "user": user,
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=10)
             }, self.secret_key, self.algorithm)
