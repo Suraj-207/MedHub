@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash
 from py_backend.mail_automation.mail import SendMail
 import os
 from dotenv import load_dotenv
+from py_backend.jwt_token.token import Token
 
 
 class Registration:
@@ -16,6 +17,7 @@ class Registration:
             from_ = "From: MedHub <{}>\n".format(self.sender_email)
             to = "To: {} <{}>\n".format(record['fname'] + " " + record['lname'], self.receiver_email)
             subject = "Subject: Registration in MedHub successful\n\n"
+            self.password = record['password']
             self.user_record = {
                 "email": record['email'],
                 "password": generate_password_hash(record['password']),
@@ -61,12 +63,13 @@ class Registration:
                         config.cassandra.insert_one("medhub.doctor", self.info_record)
                     else:
                         config.cassandra.insert_one("medhub.patient", self.info_record)
-                    return "Registration successful"
+                    token = Token().generate_token(self.user_record['email'], self.password)
+                    return {"user": self.user_record['account'], "message": "Registration Successful", "token": token}
                 else:
                     config.logger.log("ERROR", "Email does not exist...")
-                    return "Email doesn't exist"
+                    return {"user": False, "message": "Email doesn't exist", "token": None}
             else:
                 config.logger.log("WARNING", "Email already exists in database...")
-                return "Email already exists"
+                return {"user": False, "message": "Email already exists", "token": None}
         except Exception as e:
             config.logger.log("ERROR", str(e))
