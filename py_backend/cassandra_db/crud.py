@@ -73,7 +73,7 @@ class Operations:
         """
         try:
             col_name = ','.join(record.keys())
-            values = ','.join(list(map(lambda x: "'" + x + "'" if type(x) == str else str(x), record.values())))
+            values = ','.join(list(map(lambda x: "'" + x + "'" if (type(x) == str) else str(x), record.values())))
             query = "insert into " + table_name + " (" + col_name + ")" + " values (" + values + ")"
             self.session.execute(query)
             self.result = "inserted a record"

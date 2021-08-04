@@ -19,7 +19,8 @@ class Registration:
                     "speciality": record['speciality'],
                     "experience": int(record['experience']),
                     "pow": record['place_of_work'],
-                    "proof": record['proof']
+                    "proof": record['proof'],
+                    "active": False
                 }
             else:
                 self.info_record = {
@@ -38,7 +39,7 @@ class Registration:
             query = "select * from medhub.user where email = '" + self.user_record['email'] + "' allow filtering"
             check_existence = config.cassandra.session.execute(query).one()
             if check_existence is None:
-                config.logger("INFO", "Registering user...")
+                config.logger.log("INFO", "Registering user...")
                 config.cassandra.insert_one('medhub.user', self.user_record)
                 if self.user_record['account'] == 'doctor':
                     config.cassandra.insert_one("medhub.doctor", self.info_record)
