@@ -15,10 +15,12 @@ class Token:
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
-    def generate_token(self, email, password):
+    def generate_token(self, email, password, user):
         try:
             encoded_token = encode({
-                email: password,
+                "email": email,
+                "password": password,
+                "user": user,
                 "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=10)
             }, self.secret_key, self.algorithm)
             config.logger.log("INFO", "Token generated...")
@@ -30,9 +32,10 @@ class Token:
         try:
             decoded_jwt = decode(token, self.secret_key, self.algorithm)
             config.logger.log("INFO", "Decoded token...")
-            return decoded_jwt
+            return {'decoded_token': decoded_jwt, "valid": True}
         except ExpiredSignatureError:
             config.logger.log("CRITICAL", "Token past expiration date...")
-            return None
+            return {'decoded_token': None, "valid": False}
         except Exception as e:
             config.logger.log("ERROR", str(e))
+            return {'decoded_token': None, "valid": False}

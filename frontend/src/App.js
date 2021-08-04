@@ -112,8 +112,17 @@ function App() {
     >
       <Router>
         <Switch>
+<<<<<<< HEAD
           <Route path="/">
             <main>{routes}</main>
+=======
+          <Route path="/" exact>
+            <Login />
+            <main>{routes}</main>
+          </Route>
+          <Route path="/signup" exact>
+            <SignUp />
+>>>>>>> cfb917b9d8d56e4bf35b92b51f159c7a31777c06
           </Route>
         </Switch>
       </Router>

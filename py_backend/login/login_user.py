@@ -22,7 +22,7 @@ class Validation:
                 return {"user": False, "message": "Email does not exist", "token": None}
             else:
                 if check_password_hash(result[0], self.password):
-                    token = Token().generate_token(self.email, self.password)
+                    token = Token().generate_token(self.email, self.password, result[1])
                     config.logger.log("INFO", "Login successful...")
                     return {"user": result[1], "message": "Login successful", "token": token}
                 else:
