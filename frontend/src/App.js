@@ -130,12 +130,8 @@ function App() {
       }}
     >
       <Router>
-        <Switch>
-          <Route path="/">
             <div>{load && <LoadingSpinner asOverlay />} </div>
-            <main>{routes}</main>
-          </Route>
-        </Switch>
+            <div>{routes}</div>
       </Router>
     </AuthContext.Provider>
   );
