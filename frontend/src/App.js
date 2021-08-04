@@ -96,7 +96,7 @@ function App() {
   } else {
     routes = (
       <Switch>
-        <Route path="/">
+        <Route path="/" exact>
           <Login />
         </Route>
         <Route path="/signup" exact>
@@ -125,31 +125,6 @@ function App() {
       </Router>
     </AuthContext.Provider>
   );
-
-  // return (
-  //   <Router>
-  //     <Switch>
-  //       <Route path="/" exact>
-  //         <Login />
-  //       </Route>
-  //       <Route path="/signup" exact>
-  //         <SignUp />
-  //       </Route>
-  //       <Route path="/patient/home" exact>
-  //         <MainNavigation />
-  //       </Route>
-  //       <Route path="/patient/appointment" exact>
-  //         <MainNavigation />
-  //       </Route>
-  //       <Route path="/patient/notification" exact>
-  //         <MainNavigation />
-  //       </Route>
-  //       <Route path="/patient/profile" exact>
-  //         <MainNavigation />
-  //       </Route>
-  //     </Switch>
-  //   </Router>
-  // );
 }
 
 export default App;
