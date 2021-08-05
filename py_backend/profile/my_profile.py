@@ -12,7 +12,7 @@ class Profile:
             if self.token['valid']:
                 email = self.token['decoded_token']['email']
                 user = self.token['decoded_token']['user']
-                user_query = "select * from medhub.user where email = '" + email + "'"
+                user_query = "select * from medhub.user where email = '" + email + "' allow filtering"
                 print(user_query)
                 user_row = config.cassandra.session.execute(user_query).one()
                 user_dict = {
@@ -23,7 +23,7 @@ class Profile:
                 }
                 if user == 'doctor':
                     config.logger.log("INFO", "Fetching the doctor's profile from database...")
-                    query = "select * from medhub.doctor where email = '" + email + "'"
+                    query = "select * from medhub.doctor where email = '" + email + "' allow filtering"
                     print(query)
                     row = config.cassandra.session.execute(query).one()
                     doctor_dict = {
@@ -41,7 +41,7 @@ class Profile:
                     return user_dict.update(doctor_dict)
                 elif user == 'patient':
                     config.logger.log("INFO", "Fetching the patient's profile from database...")
-                    query = "select * from medhub.patient where email = '" + email + "'"
+                    query = "select * from medhub.patient where email = '" + email + "' allow filtering"
                     row = config.cassandra.session.execute(query).one()
                     patient_dict = {
                         "city": row.city,
