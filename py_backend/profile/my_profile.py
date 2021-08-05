@@ -12,16 +12,37 @@ class Profile:
             if self.token['valid']:
                 email = self.token['decoded_token']['email']
                 user = self.token['decoded_token']['user']
+                user_query = "select * from medhub.user"
+                user_row = config.cassandra.session.execute(user_query).one()
+                user_dict = {"email":user_row.email, "fname": user_row.fname, "lname": user_row.lname}
                 if user == 'doctor':
                     config.logger.log("INFO", "Fetching the doctor's profile from database...")
                     query = "select * from medhub.doctor where email = '" + email + "'"
-                    result = config.cassandra.session.execute(query).one()
-                    return result
+                    row = config.cassandra.session.execute(query).one()
+                    doctor_dict = {
+                        "active": row.active,
+                        "experience": row.experience,
+                        "pow": row.pow,
+                        "proof": row.proof,
+                        "session": row.session,
+                        "speciality": row.speciality,
+                        "break_end": row.break_end,
+                        "break_start": row.break_start,
+                        "end_time": row.end_time,
+                        "start_time": row.start_time
+                    }
+                    return user_dict.update(doctor_dict)
                 elif user == 'patient':
                     config.logger.log("INFO", "Fetching the patient's profile from database...")
                     query = "select * from medhub.patient where email = '" + email + "'"
-                    result = config.cassandra.session.execute(query).one()
-                    return result
+                    row = config.cassandra.session.execute(query).one()
+                    patient_dict = {
+                        "city": row.city,
+                        "phone": row.phone,
+                        "pin": row.pin,
+                        "state": row.state
+                    }
+                    return user_dict.update(patient_dict)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
