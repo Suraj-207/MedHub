@@ -46,7 +46,6 @@ const DoctorProfile = () => {
             auth.login(result.user, result.token);
             console.log(result);
           }
-          console.log(result);
           if (response.ok) {
             console.log("done");
           }
