@@ -56,8 +56,8 @@ class Profile:
             config.logger.log("ERROR", str(e))
 
     def change_profile(self, changes):
-        if self.token['valid']:
-            try:
+        try:
+            if self.token['valid']:
                 email = self.token['decoded_token']['email']
                 user = self.token['decoded_token']['user']
                 condition = "email = '" + email + "'"
@@ -75,5 +75,5 @@ class Profile:
                     config.logger.log("INFO", "Updating patients profile")
                     config.cassandra.update("medhub.patient", changes, condition)
                     return "changed"
-            except Exception as e:
-                config.logger.log("ERROR", str(e))
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
