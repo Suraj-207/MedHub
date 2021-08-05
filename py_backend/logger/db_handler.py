@@ -29,11 +29,15 @@ class DB_Handler(Handler):
 
     def emit(self, record: LogRecord) -> None:
         try:
-            create_table_query = "create table if not exists medhub.log(id int PRIMARY KEY, levelname text, message " \
+            create_table_query = "create table if not exists medhub.log(id bigint PRIMARY KEY, levelname text, message " \
                                  "text, name text, log_datetime text); "
             self.session.execute(create_table_query)
             get_max_id_query = "select max(id) from medhub.log"
-            count = self.session.execute(get_max_id_query).one()[0] + 1
+            res = self.session.execute(get_max_id_query).one()[0]
+            if res is not None:
+                count = res + 1
+            else:
+                count = 1
             record = {
                 "id": count,
                 "levelname": record.levelname,

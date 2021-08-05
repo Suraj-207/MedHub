@@ -9,6 +9,7 @@ class FetchProfile(Resource):
     def post(self):
         try:
             token = request.get_json()['token']
+            print(token)
             config.logger.log("INFO", "Sending token to fetch profile...")
             return Profile(token).show_profile()
         except Exception as e:

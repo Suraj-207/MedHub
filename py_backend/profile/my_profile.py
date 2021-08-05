@@ -15,6 +15,7 @@ class Profile:
                 user_query = "select * from medhub.user where email = '" + email + "' allow filtering"
                 print(user_query)
                 user_row = config.cassandra.session.execute(user_query).one()
+                print("query completed")
                 user_dict = {
                     "email": user_row.email,
                     "fname": user_row.fname,
@@ -22,9 +23,8 @@ class Profile:
                     "user": user_row.account
                 }
                 if user == 'doctor':
-                    config.logger.log("INFO", "Fetching the doctor's profile from database...")
+                    config.logger.log("INFO", "Fetching the doctors profile from database...")
                     query = "select * from medhub.doctor where email = '" + email + "' allow filtering"
-                    print(query)
                     row = config.cassandra.session.execute(query).one()
                     doctor_dict = {
                         "active": row.active,
@@ -38,9 +38,10 @@ class Profile:
                         "end_time": row.end_time,
                         "start_time": row.start_time
                     }
-                    return user_dict.update(doctor_dict)
+                    user_dict.update(doctor_dict)
+                    return user_dict
                 elif user == 'patient':
-                    config.logger.log("INFO", "Fetching the patient's profile from database...")
+                    config.logger.log("INFO", "Fetching the patients profile from database...")
                     query = "select * from medhub.patient where email = '" + email + "' allow filtering"
                     row = config.cassandra.session.execute(query).one()
                     patient_dict = {
@@ -49,7 +50,8 @@ class Profile:
                         "pin": row.pin,
                         "state": row.state
                     }
-                    return user_dict.update(patient_dict)
+                    user_dict.update(patient_dict)
+                    return user_dict
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
@@ -62,7 +64,7 @@ class Profile:
                 if user == "doctor":
                     if 'experience' in changes.keys():
                         changes['experience'] = int(changes['experience'])
-                    config.logger.log("INFO", "Updating doctor's profile")
+                    config.logger.log("INFO", "Updating doctors profile")
                     config.cassandra.update("medhub.doctor", changes, condition)
                     return "changed"
                 elif user == "patient":
@@ -70,7 +72,7 @@ class Profile:
                         changes['pin'] = int(changes['pin'])
                     if 'phone' in changes.keys():
                         changes['phone'] = int(changes['phone'])
-                    config.logger.log("INFO", "Updating patient's profile")
+                    config.logger.log("INFO", "Updating patients profile")
                     config.cassandra.update("medhub.patient", changes, condition)
                     return "changed"
             except Exception as e:
