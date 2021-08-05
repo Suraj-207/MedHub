@@ -20,7 +20,7 @@ class Token:
             encoded_token = encode({
                 "email": email,
                 "user": user,
-                "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=10)
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(weeks=1)
             }, self.secret_key, self.algorithm)
             config.logger.log("INFO", "Token generated...")
             return encoded_token
