@@ -8,6 +8,7 @@ from py_backend.cassandra_db.crud import Operations
 from py_backend.login.login_api import Login
 from py_backend.signup.signup_api import Signup
 from py_backend.jwt_token.token_validation_api import IsValidToken
+from py_backend.profile.my_profile_api import FetchProfile, ChangeProfile
 
 
 app = Flask(__name__, static_url_path='', static_folder='/frontend/build')
@@ -25,6 +26,8 @@ def home_page(path):
 api.add_resource(Login, '/api/login')
 api.add_resource(Signup, '/api/signup')
 api.add_resource(IsValidToken, '/api/check-token')
+api.add_resource(FetchProfile, '/api/fetch-profile')
+api.add_resource(ChangeProfile, '/api/change-profile')
 
 
 if __name__ == '__main__':
