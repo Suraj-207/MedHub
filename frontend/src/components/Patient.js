@@ -29,7 +29,7 @@ const Patient = (props) => {
       </div>
       <div className="patient-signup">
         <input
-          type="text"
+          type="number"
           className="input_elements"
           name="pin"
           placeholder="Pincode"
@@ -38,7 +38,7 @@ const Patient = (props) => {
       </div>
       <div className="patient-signup">
         <input
-          type="text"
+          type="number"
           className="input_elements"
           name="phone"
           placeholder="Phone no"

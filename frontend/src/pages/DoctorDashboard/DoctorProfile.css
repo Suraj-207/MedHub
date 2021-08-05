@@ -29,3 +29,25 @@
     display: flex;
     justify-content: center;
 }
+
+.details_time{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-right: 450px;
+}
+label{
+  margin-bottom: 10px;
+}
+.details_time{
+  margin-bottom: 30px;
+}
+
+.doctor_profile{
+  display: flex;
+  justify-content: flex-start;
+}
+
+h4{
+  width:20%;
+}

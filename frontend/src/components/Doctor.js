@@ -8,7 +8,6 @@ const Doctor = (props) => {
   }
 
 
-
   return (
     <div className="doctor">
       <div className="doctor-signup">
@@ -22,7 +21,7 @@ const Doctor = (props) => {
       </div>
       <div className="doctor-signup">
         <input
-          type="text"
+          type="number"
           className="input_elements"
           name="experience"
           placeholder="experience"
