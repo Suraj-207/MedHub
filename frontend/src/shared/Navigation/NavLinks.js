@@ -1,39 +1,94 @@
-import React,{useContext} from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useContext } from "react";
+import { NavLink, useHistory } from "react-router-dom";
 
-import { AuthContext } from '../context/AuthContext';
-import './NavLinks.css';
+import { AuthContext } from "../context/AuthContext";
+import "./NavLinks.css";
 
-const NavLinks = props => {
-
+const NavLinks = (props) => {
   const auth = useContext(AuthContext);
-  return <ul className="nav-links">
-    <li>
+  const history = useHistory();
+  const handleClick = async () => {
+    await auth.logout();
+    history.push("/")
+  }
+
+  let mainNavigation;
+  if (auth.user === "doctor") {
+    mainNavigation = (
+      <ul className="nav-links">
+        {/* <li>
       <NavLink to="/" exact>Home</NavLink>
-    </li>
-    {/* {auth.isLoggedIn && ( */}
-    <li>
-      {/* <NavLink to={`/${auth.userId}/places`}>MY PLACES</NavLink> */}
-      <NavLink to="/patient/appointment" exact>Appointment</NavLink>
-    </li>
-    {/* )} */}
-    {/* {auth.isLoggedIn && ( */}
-    <li>
-      <NavLink to="/patient/notification">Notification</NavLink>
-    </li>
-    {/* )} */}
-    {/* {( !auth.isLoggedIn && */}
-    <li>
-      <NavLink to="/patient/profile">USER PROFILE</NavLink>
-    </li>
-    {/* )} */}
-    {/* {auth.isLoggedIn && ( */}
-      <li>
-        <button onClick={auth.logout} >SIGNOUT</button>
-        {/* <button >SIGNOUT</button> */}
-      </li>
-    {/* )} */}
-  </ul>
+    </li> */}
+        {/* {auth.isLoggedIn && ( */}
+        <li>
+          {/* <NavLink to={`/${auth.userId}/places`}>MY PLACES</NavLink> */}
+          <NavLink to="/" exact>
+            Appointments
+          </NavLink>
+        </li>
+        {/* )} */}
+        {/* {auth.isLoggedIn && ( */}
+        <li>
+          <NavLink to="/doctor/patient">Patients</NavLink>
+        </li>
+        {/* )} */}
+        {/* {( !auth.isLoggedIn && */}
+        <li>
+          <NavLink to="/doctor/leave">Take a leave</NavLink>
+        </li>
+        {/* )} */}
+        {/* {auth.isLoggedIn && ( */}
+        <li>
+          <NavLink to="/doctor/profile">Profile</NavLink>
+        </li>
+        <li>
+          {/* <NavLink to="/doctor/signout"> */}
+          <button onClick={handleClick}>SIGNOUT</button>
+          {/* </NavLink> */}
+          {/* <button >SIGNOUT</button> */}
+        </li>
+        {/* )} */}
+      </ul>
+    );
+  } else {
+    mainNavigation = (
+      <ul className="nav-links">
+        {/* <li>
+      <NavLink to="/" exact>Home</NavLink>
+    </li> */}
+        {/* {auth.isLoggedIn && ( */}
+        <li>
+          {/* <NavLink to={`/${auth.userId}/places`}>MY PLACES</NavLink> */}
+          <NavLink to="/" exact>
+            Home
+          </NavLink>
+        </li>
+        {/* )} */}
+        {/* {auth.isLoggedIn && ( */}
+        <li>
+          <NavLink to="/patient/appointment">Appointments</NavLink>
+        </li>
+        {/* )} */}
+        {/* {( !auth.isLoggedIn && */}
+        <li>
+          <NavLink to="/patient/notification">notification</NavLink>
+        </li>
+        {/* )} */}
+        {/* {auth.isLoggedIn && ( */}
+        <li>
+          <NavLink to="/patient/profile">Profile</NavLink>
+        </li>
+        <li>
+          {/* <NavLink to="/patient/signout"> */}
+            <button onClick={handleClick}>SIGNOUT</button>
+          {/* </NavLink> */}
+          {/* <button >SIGNOUT</button> */}
+        </li>
+        {/* )} */}
+      </ul>
+    );
+  }
+  return <div>{mainNavigation}</div>;
 };
 
 export default NavLinks;

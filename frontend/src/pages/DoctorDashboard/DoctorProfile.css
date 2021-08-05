@@ -1,0 +1,31 @@
+.profile {
+  margin-top: 60px;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.form-left {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+
+.form-left > .doctor_profile{
+    margin: 40px;
+}
+
+.doctor_profile .input_elements{
+    border-radius: 2px;
+    width: 100%;
+    height: 100%;
+}
+
+.doctor_profile_button{
+    display: flex;
+    justify-content: center;
+}

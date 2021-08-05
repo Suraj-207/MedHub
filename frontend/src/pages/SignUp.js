@@ -3,10 +3,12 @@ import "./SignUp.css";
 import Doctor from "../components/Doctor";
 import Patient from "../components/Patient";
 import { AuthContext } from "../shared/context/AuthContext";
+import { useHistory } from "react-router-dom";
 
 const SignUp = () => {
   const [dropdown, setDropdown] = useState("");
   const [formData, updateFormData] = useState("");
+  const history = useHistory();
   const auth = useContext(AuthContext);
   let fetchData;
 
@@ -42,6 +44,7 @@ const SignUp = () => {
         console.log(result);
         if (response.ok) {
           console.log("done");
+          history.push("/");
         }
       };
     } catch (err) {

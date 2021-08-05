@@ -4,9 +4,10 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import { AuthContext } from "./shared/context/AuthContext";
-import DoctorHome from "./pages/DoctorDashboard/DoctorHome";
+// import DoctorHome from "./pages/DoctorDashboard/DoctorHome";
 import MainNavigation from "./shared/Navigation/MainNavigation";
 import LoadingSpinner from "./shared/UIComponent/LoadingSpinner";
+import DoctorProfile from "./pages/DoctorDashboard/DoctorProfile";
 
 function App() {
   const [token, setToken] = useState(false);
@@ -26,7 +27,9 @@ function App() {
   const logout = useCallback(() => {
     setToken(null);
     setUserId(null);
+    setIsToken(false);
     localStorage.removeItem("userData");
+    // history.push("/");
   }, []);
 
   useEffect(() => {
@@ -53,6 +56,7 @@ function App() {
           const result = await response.json();
           if (result === null) {
             setIsToken(false);
+            setLoad(false);
             console.log("unidentified token");
           } else if (result.user && result.token) {
             login(result.user, result.token);
@@ -77,7 +81,23 @@ function App() {
     routes = (
       <Switch>
         <Route path="/" exact>
-          <DoctorHome />
+          <MainNavigation />
+        </Route>
+        {/* <Route path="/doctor/appointment" exact>
+          <MainNavigation />
+        </Route> */}
+        <Route path="/doctor/patient" exact>
+          <MainNavigation />
+        </Route>
+        <Route path="/doctor/leave" exact>
+          <MainNavigation />
+        </Route>
+        <Route path="/doctor/profile" exact>
+          <MainNavigation />
+          <DoctorProfile />
+        </Route>
+        <Route path="/doctor/signout" exact>
+          <MainNavigation />
         </Route>
       </Switch>
     );
@@ -94,6 +114,9 @@ function App() {
           <MainNavigation />
         </Route>
         <Route path="/patient/profile" exact>
+          <MainNavigation />
+        </Route>
+        <Route path="/patient/signout" exact>
           <MainNavigation />
         </Route>
       </Switch>
