@@ -31,6 +31,8 @@ class Registration:
                     "experience": int(record['experience']),
                     "pow": record['place_of_work'],
                     "proof": record['proof'],
+                    "city": record['city'],
+                    "state": record['state'],
                     "active": False,
                     "time_set": False,
                     "break_end": "NA",
