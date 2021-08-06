@@ -11,6 +11,7 @@ from py_backend.jwt_token.token_validation_api import IsValidToken
 from py_backend.profile.my_profile_api import FetchProfile, ChangeProfile
 from apscheduler.schedulers.background import BackgroundScheduler
 from py_backend.appointment.slots import SlotMaker
+from py_backend.appointment.fetch_and_filter_api import DoctorFetchPast, DoctorFetchUpcoming, DoctorFilterPast, DoctorFilterUpcoming, PatientFetch, PatientFilter
 import multiexit
 import datetime
 
@@ -35,7 +36,7 @@ multiexit.register(scheduler.shutdown, shared=True)
 
 @app.route('/', defaults={'path': ''})
 def home_page(path):
-    return send_from_directory(app.static_folder,'index.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 api.add_resource(Login, '/api/login')
@@ -43,6 +44,12 @@ api.add_resource(Signup, '/api/signup')
 api.add_resource(IsValidToken, '/api/check-token')
 api.add_resource(FetchProfile, '/api/fetch-profile')
 api.add_resource(ChangeProfile, '/api/change-profile')
+api.add_resource(DoctorFetchUpcoming, '/api/doctor-fetch-upcoming')
+api.add_resource(DoctorFilterUpcoming, '/api/doctor-filter-upcoming')
+api.add_resource(DoctorFetchPast, '/api/doctor-fetch-past')
+api.add_resource(DoctorFilterPast, '/api/doctor-filter-past')
+api.add_resource(PatientFetch, '/api/patient-fetch')
+api.add_resource(PatientFilter, '/api/patient-filter')
 
 
 if __name__ == '__main__':
