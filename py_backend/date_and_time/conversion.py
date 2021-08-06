@@ -1,11 +1,17 @@
 import datetime
 import config
+import numpy as np
 
 
 class Convert:
 
     @staticmethod
     def convert_str_to_time(time_string):
+        """
+
+        :param time_string: str , e.g. - "10:00:00"
+        :return: datetime.time() object
+        """
         try:
             return datetime.time.fromisoformat(time_string)
         except Exception as e:
@@ -21,7 +27,7 @@ class Convert:
     @staticmethod
     def convert_str_to_timestamp(timestamp_string):
         try:
-            timestamp_format = "%Y-%m-%dT%I:%M%p"
+            timestamp_format = "%Y-%m-%dT%H:%M"
             return datetime.datetime.strptime(timestamp_string, timestamp_format)
         except Exception as e:
             config.logger.log("ERROR", str(e))
@@ -38,5 +44,26 @@ class Convert:
         try:
             difference = first_timestamp - second_timestamp
             return abs(difference.days)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+
+    @staticmethod
+    def sessions_in_a_day(date, start_time, end_time, break_start, break_end, session):
+        try:
+            if start_time != "NA" and end_time != "NA" and session != "NA":
+                start_time = datetime.datetime.combine(date, Convert().convert_str_to_time(start_time))
+                end_time = datetime.datetime.combine(date, Convert().convert_str_to_time(end_time))
+                hours, minutes = [int(i) for i in session.split(':')]
+                if break_start != "NA" and break_end != "NA":
+                    break_start = datetime.datetime.combine(date, Convert().convert_str_to_time(break_start))
+                    break_end = datetime.datetime.combine(date, Convert().convert_str_to_time(break_end))
+                    appointments_before_break = list(iter(map(lambda x: x.astype(datetime.datetime).isoformat(), np.arange(start_time, break_start + datetime.timedelta(seconds=1), datetime.timedelta(hours=hours, minutes=minutes)))))
+                    appointments_after_break = list(iter(map(lambda x: x.astype(datetime.datetime).isoformat(), np.arange(break_end, end_time + datetime.timedelta(seconds=1), datetime.timedelta(hours=hours, minutes=minutes)))))
+                    return appointments_before_break[:-1] + appointments_after_break[:-1]
+                else:
+                    appointments = list(iter(map(lambda x: x.astype(datetime.datetime).isoformat(), np.arange(start_time, end_time + datetime.timedelta(seconds=1), datetime.timedelta(hours=hours, minutes=minutes)))))
+                    return appointments[:-1]
+            else:
+                config.logger.log("CRITICAL", "Please set your appointment timings...")
         except Exception as e:
             config.logger.log("ERROR", str(e))
