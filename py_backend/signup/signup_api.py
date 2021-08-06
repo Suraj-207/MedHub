@@ -9,7 +9,8 @@ class Signup(Resource):
     def post(self):
         try:
             config.logger.log("INFO", "Starting registration process...")
-            record = request.get_json()['formData']
+            record = request.get_json()
+            print(record)
             return Registration(record).insert_to_db()
         except Exception as e:
             config.logger.log("ERROR", str(e))

@@ -2,6 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../shared/context/AuthContext";
 import "./DoctorProfile.css";
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
+import Input from "../../shared/FormElements/Input"
+import {useForm} from "../../shared/hooks/form-hook"
 
 const DoctorProfile = () => {
   // const [dropdown, setDropdown] = useState();
@@ -9,6 +11,19 @@ const DoctorProfile = () => {
   const [details, setDetails] = useState({});
   const [load, setLoad] = useState(true);
   const auth = useContext(AuthContext);
+  const [formState, inputHandler, setFormData] = useForm(
+    // {
+    //   email: {
+    //     value: "",
+    //     isValid: false,
+    //   },
+    //   password: {
+    //     value: "",
+    //     isValid: false,
+    //   },
+    // },
+    // false
+  )
   let data, fetchData;
 
   const handleFieldChange = (e) => {
@@ -147,6 +162,7 @@ const DoctorProfile = () => {
               name="pow"
               placeholder={Object.keys(details).length > 0 ? details.pow : ""}
               onChange={handleFieldChange}
+              onInput={inputHandler}
             />
           </div>
             

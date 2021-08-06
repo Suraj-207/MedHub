@@ -1,7 +1,23 @@
 import React from "react";
 import'./Doctor.css'
+import Input from "../shared/FormElements/Input";
+import { VALIDATOR_REQUIRE } from "../shared/util/validators";
+import { useForm } from "../shared/hooks/form-hook";
+ 
 const Doctor = (props) => {
-  // const [fields, setFields] = useState("");
+  const [formState, inputHandler, setFormData] = useForm(
+    // {
+    //   email: {
+    //     value: "",
+    //     isValid: false,
+    //   },
+    //   password: {
+    //     value: "",
+    //     isValid: false,
+    //   },
+    // },
+    // false
+  );
 
   const handleChange = (e) => {
     props.onFieldChange(e);
@@ -11,43 +27,59 @@ const Doctor = (props) => {
   return (
     <div className="doctor">
       <div className="doctor-signup">
-        <input
+        <Input
+          element="input"
+          id="speciality"
           type="text"
           className="input_elements"
-          name="speciality"
+          label="Speciality"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter your speciality"
           placeholder="speciality"
-          onChange={handleChange}
+          onInput={inputHandler}
         />
       </div>
       <div className="doctor-signup">
-        <input
+        <Input
+          element="input"
+          id="experience"
           type="number"
           className="input_elements"
           name="experience"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter your experience"
           placeholder="experience"
-          onChange={handleChange}
+          onInput={inputHandler}
         />
       </div>
       <div className="doctor-signup">
-        <input
+        <Input
           type="text"
+          label="Place of work"
+          id="place_of_work"
           className="input_elements"
-          name="place_of_work"
           placeholder="Place Of Work"
-          onChange={handleChange}
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter your place of work"
+          onInput={inputHandler}
         />
       </div>
       <div className="doctor-signup">
-        <input
-          type="text"
+        <Input
+          // element="input"
+          label="Acting professional proof"
+          id="proof"
+          type="link"
           className="input_elements"
           name="proof"
           placeholder="Acting medical professional proof"
-          onChange={handleChange}
+          errorText="Please enter link of your professional proof"
+          validators={[VALIDATOR_REQUIRE()]}
+          onInput={inputHandler}
         />
       </div>
     </div>
   );
 };
 
-export default Doctor;
+export default Doctor
