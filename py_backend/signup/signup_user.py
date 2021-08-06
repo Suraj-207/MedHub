@@ -31,7 +31,13 @@ class Registration:
                     "experience": int(record['experience']),
                     "pow": record['place_of_work'],
                     "proof": record['proof'],
-                    "active": False
+                    "active": False,
+                    "time_set": False,
+                    "break_end": "NA",
+                    "break_start": "NA",
+                    "end_time": "NA",
+                    "start_time": "NA",
+                    "session": "NA"
                 }
                 msg = "Welcome to Medhub, {} {}. We are glad to welcome you to our community.\n".format("Dr.", record['fname'] + " " + record['lname'])
                 self.message = from_ + to + subject + msg

@@ -1,5 +1,6 @@
 import config
 from py_backend.jwt_token.token import Token
+from py_backend.appointment.slots import SlotMaker
 
 
 class Profile:
@@ -64,16 +65,27 @@ class Profile:
                 if user == "doctor":
                     if 'experience' in changes.keys():
                         changes['experience'] = int(changes['experience'])
+                    if changes['session'] != 'NA' and changes['start_time'] != "NA" and changes['end_time'] != "NA":
+                        check_first_query = "select time_set from medhub.doctor where email = '" + email + "' allow filtering"
+                        res = config.cassandra.session.execute(check_first_query).one()[0]
+                        changes['time_set'] = True
                     config.logger.log("INFO", "Updating doctors profile")
-                    config.cassandra.update("medhub.doctor", changes, condition)
-                    return "changed"
+                    response = config.cassandra.update("medhub.doctor", changes, condition)
+                    if response:
+                        if not res:
+                            config.logger.log("INFO", "Making slots for first time")
+                            SlotMaker().make_slots_first_time(email, changes['start_time'], changes['end_time'],
+                                                              changes['break_start'], changes['break_end'],
+                                                              changes['session'])
+                        return "changed"
                 elif user == "patient":
                     if 'pin' in changes.keys():
                         changes['pin'] = int(changes['pin'])
                     if 'phone' in changes.keys():
                         changes['phone'] = int(changes['phone'])
                     config.logger.log("INFO", "Updating patients profile")
-                    config.cassandra.update("medhub.patient", changes, condition)
-                    return "changed"
+                    response = config.cassandra.update("medhub.patient", changes, condition)
+                    if response:
+                        return "changed"
         except Exception as e:
             config.logger.log("ERROR", str(e))

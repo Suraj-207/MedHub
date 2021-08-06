@@ -154,9 +154,11 @@ class Operations:
             self.session.execute(query)
             self.result = "updated records successfully"
             self.lg.log("info", self.result)
+            return True
         except Exception as e:
             self.result = str(e)
             self.lg.log("error", self.result)
+            return False
 
     def delete(self, table_name, condition, col_names=[]):
 
@@ -200,3 +202,10 @@ class Operations:
     def return_query_result(self, query):
         row = self.session.execute(query).all()
         return row
+
+    def shutdown(self):
+        try:
+            self.lg.log("INFO", "Shutting down cassandra...")
+            self.session.shutdown()
+        except Exception as e:
+            self.lg.log("ERROR", str(e))
