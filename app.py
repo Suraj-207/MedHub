@@ -9,6 +9,10 @@ from py_backend.login.login_api import Login
 from py_backend.signup.signup_api import Signup
 from py_backend.jwt_token.token_validation_api import IsValidToken
 from py_backend.profile.my_profile_api import FetchProfile, ChangeProfile
+from apscheduler.schedulers.background import BackgroundScheduler
+from py_backend.appointment.slots import SlotMaker
+import multiexit
+import datetime
 
 
 app = Flask(__name__, static_url_path='', static_folder='/frontend/build')
@@ -16,6 +20,17 @@ CORS(app)
 config.logger = Logger()
 config.cassandra = Operations(config.logger)
 api = Api(app)
+scheduler = BackgroundScheduler()
+scheduler.add_job(
+    func=SlotMaker().assign_slots_scheduling,
+    trigger="interval",
+    seconds=86400,
+    next_run_time=datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=0),
+                                            datetime.time(hour=15, minute=56)))
+scheduler.start()
+multiexit.install()
+multiexit.register(config.cassandra.shutdown, shared=True)
+multiexit.register(scheduler.shutdown, shared=True)
 
 
 @app.route('/', defaults={'path': ''})
