@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../shared/context/AuthContext";
 import "./DoctorProfile.css";
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
-import Input from "../../shared/FormElements/Input"
 import {useForm} from "../../shared/hooks/form-hook"
 
 const DoctorProfile = () => {
