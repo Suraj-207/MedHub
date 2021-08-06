@@ -26,7 +26,8 @@ class SlotMaker:
                         "prescription": "NA",
                         "session": i.session,
                         "start": appointment,
-                        "status": "NA"
+                        "status": "NA",
+                        "issue": "NA"
                     }
                     config.cassandra.insert_one("medhub.appointment", record)
         except Exception as e:
@@ -47,7 +48,8 @@ class SlotMaker:
                         "prescription": "NA",
                         "session": session,
                         "start": appointment,
-                        "status": "NA"
+                        "status": "NA",
+                        "issue": "NA"
                     }
                     config.cassandra.insert_one("medhub.appointment", record)
         except Exception as e:
