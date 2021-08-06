@@ -8,45 +8,27 @@ import Input from "../shared/FormElements/Input";
 import { useForm } from "../shared/hooks/form-hook";
 import {
   VALIDATOR_EMAIL,
+  VALIDATOR_MAXLENGTH,
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from "../shared/util/validators";
+import Button from "../shared/FormElements/Button";
 
 const SignUp = () => {
-  const [dropdown, setDropdown] = useState("");
-  const [formData, updateFormData] = useState("");
+  const [accountMode, setaccountMode] = useState(true);
+  const [valid, isValid] = useState(false);
   const history = useHistory();
   const auth = useContext(AuthContext);
-  const [formState, inputHandler, setFormData] = useForm();
-  // {
-  //   email: {
-  //     value: "",
-  //     isValid: false,
-  //   },
-  //   password: {
-  //     value: "",
-  //     isValid: false,
-  //   },
-  // },
-  // false
+  const [formState, inputHandler] = useForm();
   let fetchData;
 
-  const handleDropdownChange = (e) => {
-    console.log(typeof e.target.value);
-    setDropdown(e.target.value);
-  };
-
-  const handleFieldChange = (e) => {
-    updateFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const switchModeHandler = () => {
+    setaccountMode((prevMode) => !prevMode);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    if (dropdown === "doctor") {
+    if (accountMode) {
       try {
         fetchData = async () => {
           const response = await fetch("http://localhost:5000/api/signup", {
@@ -59,25 +41,28 @@ const SignUp = () => {
               lname: formState.inputs.lastname.value,
               email: formState.inputs.email.value,
               password: formState.inputs.password.value,
-              account:formData.account,
-              speciality:formState.inputs.speciality.value,
+              account: "doctor",
+              speciality: formState.inputs.speciality.value,
               experience: formState.inputs.experience.value,
+              city: formState.inputs.city.value,
+              state: formState.inputs.state.value,
               place_of_work: formState.inputs.place_of_work.value,
-              proof: formState.inputs.proof.value
+              proof: formState.inputs.proof.value,
             }),
           });
           const result = await response.json();
-          auth.login(result.user, result.token);
+
           console.log(result);
           if (response.ok) {
             console.log("done");
+            auth.login(result.user, result.token);
             history.push("/");
           }
         };
       } catch (err) {
         console.log(err);
       }
-    }else{
+    } else {
       try {
         fetchData = async () => {
           const response = await fetch("http://localhost:5000/api/signup", {
@@ -90,18 +75,19 @@ const SignUp = () => {
               lname: formState.inputs.lastname.value,
               email: formState.inputs.email.value,
               password: formState.inputs.password.value,
-              account:formData.account,
-              city:formState.inputs.city.value,
+              account: "patient",
+              city: formState.inputs.city.value,
               state: formState.inputs.state.value,
               phone: formState.inputs.phone.value,
-              pin: formState.inputs.pin.value
+              pin: formState.inputs.pin.value,
             }),
           });
           const result = await response.json();
-          auth.login(result.user, result.token);
+
           console.log(result);
           if (response.ok) {
             console.log("done");
+            auth.login(result.user, result.token);
             history.push("/");
           }
         };
@@ -115,25 +101,13 @@ const SignUp = () => {
 
   return (
     <React.Fragment>
-      <div className="heading">
-        <h1>SignUp</h1>
+      <div className="center">
+        <Button inverse onClick={switchModeHandler}>
+          {" "}
+          I am a {accountMode ? "Doctor" : "Patient"}{" "}
+        </Button>
       </div>
-      <div className="proffession">
-        <select
-          name="account"
-          onChange={handleFieldChange}
-          onClick={handleDropdownChange}
-        >
-          <option value="">--Please choose an option--</option>
-          <option name="account" value="doctor">
-            Doctor
-          </option>
-          <option name="account" value="patient">
-            Patient
-          </option>
-        </select>
-      </div>
-      {dropdown === "doctor" && (
+      {accountMode && (
         <div className="form">
           <div className="form-left">
             <div className="signup">
@@ -236,11 +210,38 @@ const SignUp = () => {
                 validators={[VALIDATOR_REQUIRE()]}
                 onInput={inputHandler}
               />
+              <div className="doctor-signup">
+                <Input
+                  element="input"
+                  id="city"
+                  type="text"
+                  className="input_elements"
+                  label="City"
+                  validators={[VALIDATOR_REQUIRE()]}
+                  errorText="Please enter your city"
+                  placeholder="city"
+                  onInput={inputHandler}
+                />
+              </div>
+              <div className="doctor-signup">
+                <Input
+                  element="input"
+                  id="state"
+                  label="State"
+                  type="text"
+                  className="input_elements"
+                  name="State"
+                  validators={[VALIDATOR_REQUIRE()]}
+                  errorText="Please enter your state"
+                  placeholder="state"
+                  onInput={inputHandler}
+                />
+              </div>
             </div>
           </div>
         </div>
       )}
-      {dropdown === "patient" && (
+      {!accountMode && (
         <div className="form">
           <div className="form-left">
             <div className="signup">
@@ -328,7 +329,7 @@ const SignUp = () => {
                 id="phone"
                 className="input_elements"
                 placeholder="Phone no"
-                validators={[VALIDATOR_REQUIRE()]}
+                validators={[VALIDATOR_MAXLENGTH(10)]}
                 errorText="Please enter your phone no"
                 onInput={inputHandler}
               />
@@ -350,7 +351,9 @@ const SignUp = () => {
         </div>
       )}
       <div className="signup-button">
-        <button onClick={handleSubmit}>Confirm SignUp</button>
+          <Button onClick={handleSubmit} type="submit" disabled={!formState.isValid}>
+            {"Confirm"}
+          </Button>
       </div>
     </React.Fragment>
   );
