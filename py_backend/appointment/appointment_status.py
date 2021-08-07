@@ -3,10 +3,26 @@ import datetime
 import config
 from py_backend.appointment.notify import Notification
 from py_backend.date_and_time.conversion import Convert
-from py_backend.appointment.fetch_and_filter import FetchFilter
 
 
 class BookCancelReschedule:
+
+    @staticmethod
+    def patient_book(patient_email, date, doctor_email, issue):
+        try:
+            new_val = {
+                "session": "pending",
+                "issue": issue
+            }
+            condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
+                                                                                               patient_email, date)
+            res = config.cassandra.update("medhub.doctor", new_val, condition)
+            Notification().notify_book_slot(doctor_email, patient_email, date)
+            return True
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+            return False
+
 
     @staticmethod
     def patient_cancel(patient_email, date, doctor_email):
@@ -32,34 +48,41 @@ class BookCancelReschedule:
 
     @staticmethod
     def doctor_leave(doctor_email, start, end, status):
-        query = "select patient_email, start, issue from medhub.appointment where doctor_email = '{}' and start >= '{}' and " \
-                "start <= '{}'".format(doctor_email, start, end)
-        patients = [{
-            "email": row.patient_email,
-            "date": row.start,
-            "issue": row.issue
-        } for row in config.cassandra.session.execute(query).all()]
-        if status == 'cancel':
-            for patient in patients:
-                new_val = {
-                    "session": "cancelled"
-                }
-                condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
-                                                                                                   patient['email'],
-                                                                                                   patient['date'])
-                res = config.cassandra.update("medhub.doctor", new_val, condition)
-                if res:
-                    Notification().notify_cancelled_slots(doctor_email, patient)
-                    return True
+        try:
+            query = "select patient_email, start, issue from medhub.appointment where doctor_email = '{}' and start >= '{}' and " \
+                    "start <= '{}'".format(doctor_email, start, end)
+            patients = [{
+                "email": row.patient_email,
+                "date": row.start.isoformat()[:-7],
+                "issue": row.issue
+            } for row in config.cassandra.session.execute(query).all()]
+            if status == 'cancel':
+                for patient in patients:
+                    new_val = {
+                        "session": "cancelled"
+                    }
+                    condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
+                                                                                                       patient['email'],
+                                                                                                       patient['date'])
+                    res = config.cassandra.update("medhub.doctor", new_val, condition)
+                    if res:
+                        Notification().notify_cancelled_slots(doctor_email, patient)
+                        return True
+                    else:
+                        return False
+            else:
+                res, res_1, res_2 = False, False, False
+                na_appointments = "select start from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' " \
+                                                                                                                 "start > '" + datetime.datetime.now().isoformat()[:-7] + "' allow filtering "
+                res = [row.start.isoformat() for row in config.cassandra.session.execute(na_appointments).all()]
+                res = sorted(res)
+                if len(res) >= len(patients):
+                    count = len(patients)
+                    cancellation = False
                 else:
-                    return False
-        else:
-            na_appointments = "select start from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' " \
-                                                                                                             "start > '" + datetime.datetime.now().isoformat() + "' allow filtering "
-            res = [row.start for row in config.cassandra.session.execute(na_appointments).all()]
-            res = sorted(res)
-            if len(res) >= len(patients):
-                for i in range(len(patients)):
+                    count = len(res)
+                    cancellation = True
+                for i in range(count):
                     new_val = {
                         "session": "rescheduled"
                     }
@@ -79,6 +102,26 @@ class BookCancelReschedule:
                     res_1 = config.cassandra.update("medhub.doctor", new_val_1, condition_1)
                     if res and res_1:
                         Notification().notify_rescheduled_slots(doctor_email, patients[i])
-                        return True
-                    else:
-                        return False
+                if cancellation:
+                    for patient in patients[count:]:
+                        new_val = {
+                            "session": "cancelled"
+                        }
+                        condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
+                                                                                                           patient['email'],
+                                                                                                           patient['date'])
+                        res_2 = config.cassandra.update("medhub.doctor", new_val, condition)
+                        if res_2:
+                            Notification().notify_cancelled_slots(doctor_email, patient)
+                if res and res_1 and res_2:
+                    return True
+                else:
+                    return False
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+
+
+
+
+
+

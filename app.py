@@ -13,6 +13,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from py_backend.appointment.slots import SlotMaker
 from py_backend.appointment.fetch_and_filter_api import DoctorFetchPast, DoctorFetchUpcoming, DoctorFilterPast, DoctorFilterUpcoming, PatientFetch, PatientFilter, FetchNAAppointments, FetchDoctors, FilterDoctors
 from py_backend.appointment.notify_patient_api import NotifyPatient
+from py_backend.appointment.appointment_status_api import BookSlot, CancelSlot, TakeALeave
 import multiexit
 import datetime
 
@@ -55,6 +56,9 @@ api.add_resource(FetchNAAppointments, '/api/fetch-na-appointments')
 api.add_resource(FetchDoctors, '/api/fetch-doctors')
 api.add_resource(FilterDoctors, '/api/filter-doctors')
 api.add_resource(NotifyPatient, '/api/notifications')
+api.add_resource(BookSlot, '/api/book-slot')
+api.add_resource(CancelSlot, '/api/cancel-slot')
+api.add_resource(TakeALeave, '/api/take-a-leave')
 
 
 if __name__ == '__main__':

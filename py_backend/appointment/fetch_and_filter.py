@@ -18,7 +18,7 @@ class FetchFilter:
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
                     "patient_email": row.patient_email,
-                    "start": row.start,
+                    "start": row.start.isoformat(),
                     "session": row.session,
                     "appt_id": row.appt_id,
                     "diagnosis": row.diagnosis,
@@ -55,7 +55,7 @@ class FetchFilter:
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
                     "patient_email": row.patient_email,
-                    "start": row.start,
+                    "start": row.start.isoformat(),
                     "session": row.session,
                     "appt_id": row.appt_id,
                     "diagnosis": row.diagnosis,
@@ -82,7 +82,7 @@ class FetchFilter:
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
                     "patient_email": row.patient_email,
-                    "start": row.start,
+                    "start": row.start.isoformat(),
                     "session": row.session,
                     "appt_id": row.appt_id,
                     "diagnosis": row.diagnosis,
@@ -119,7 +119,7 @@ class FetchFilter:
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
                     "patient_email": row.patient_email,
-                    "start": row.start,
+                    "start": row.start.isoformat(),
                     "session": row.session,
                     "appt_id": row.appt_id,
                     "diagnosis": row.diagnosis,
@@ -150,7 +150,7 @@ class FetchFilter:
                         "speciality": fetch_info.speciality,
                         "experience": fetch_info.experience,
                         "patient_email": appt.patient_email,
-                        "start": appt.start,
+                        "start": appt.start.isoformat(),
                         "session": appt.session,
                         "appt_id": appt.appt_id,
                         "diagnosis": appt.diagnosis,
@@ -176,7 +176,7 @@ class FetchFilter:
                     "speciality": fetch_info.speciality,
                     "experience": fetch_info.experience,
                     "patient_email": appt.patient_email,
-                    "start": appt.start,
+                    "start": appt.start.isoformat(),
                     "session": appt.session,
                     "appt_id": appt.appt_id,
                     "diagnosis": appt.diagnosis,
@@ -192,15 +192,15 @@ class FetchFilter:
     @staticmethod
     def fetch_na_appointments(doctor_email, patient_email):
         try:
-            query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' " \
-                                            "start > '" + datetime.datetime.now().isoformat() + "' allow filtering "
+            query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' and " \
+                                        "start > '" + datetime.datetime.now().isoformat()[:-7] + "' allow filtering "
             res = []
             fetch_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "'"
             fetch_name = config.cassandra.session.execute(fetch_name_query).one()
             history_record = {
                 "doctor_email": doctor_email,
                 "patient_email": patient_email,
-                "date": datetime.datetime.now().isoformat()
+                "date": datetime.datetime.now().isoformat()[:-7]
             }
             config.logger.log("INFO", "Saving patient search history")
             config.cassandra.insert_one("medhub.history", history_record)
@@ -209,7 +209,7 @@ class FetchFilter:
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
                     "email": doctor_email,
-                    "start": row.start,
+                    "start": row.start.isoformat(),
                     "session": row.session,
                     "appt_id": row.appt_id,
                     "status": row.status,
