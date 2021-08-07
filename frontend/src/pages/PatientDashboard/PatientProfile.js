@@ -35,10 +35,10 @@ const PatientProfile = () => {
         const data = {
           token: auth.token,
           changes: {
-            phone: result.phone,
-            state: result.state,
-            city: result.city,
-            state: result.city,
+            phone: formState.inputs.phone.value,
+            state: formState.inputs.state.value,
+            city: formState.inputs.city.value,
+            pin: formState.inputs.pin.value,
           },
         };
         console.log(data);
