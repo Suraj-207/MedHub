@@ -220,6 +220,8 @@ class FetchFilter:
                 if changes['state'] is not None:
                     state_condition = " and state = '" + changes['state'] + "'"
             fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + state_condition + city_condition + speciality_condition + " allow filtering"
+            res = config.cassandra.session.execute(fetch_doctor_query).all()
+            print(res)
             fetch_doctor = [{
                 "email": row.email,
                 "fname": row.fname,
@@ -229,7 +231,7 @@ class FetchFilter:
                 "place_of_work": row.pow,
                 "city": row.city,
                 "state": row.state
-            } for row in config.cassandra.session.execute(fetch_doctor_query).all()]
+            } for row in res]
             fetch_doctor = sorted(fetch_doctor, key=lambda x: x['experience'], reverse=True)
             return fetch_doctor
         except Exception as e:
