@@ -97,8 +97,12 @@ class FetchNAAppointments(Resource):
     def post(self):
         try:
             config.logger.log("INFO", "Fetching open appointments...")
-            email = request.get_json()['email']
-            return FetchFilter().fetch_na_appointments(email)
+            doctor_email = request.get_json()['email']
+            token = request.get_json()['token']
+            decoded = Token().validate_token(token)
+            if decoded['valid']:
+                patient_email = decoded['decoded_token']['email']
+                return FetchFilter().fetch_na_appointments(doctor_email, patient_email)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
