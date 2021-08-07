@@ -16,6 +16,12 @@ class Token:
             config.logger.log("ERROR", str(e))
 
     def generate_token(self, email, user):
+        """
+
+        :param email: email of the user
+        :param user: doctor/patient
+        :return: jwt with an expiry of 1 week
+        """
         try:
             encoded_token = encode({
                 "email": email,
@@ -28,6 +34,11 @@ class Token:
             config.logger.log("ERROR", str(e))
 
     def validate_token(self, token):
+        """
+
+        :param token: jwt
+        :return: is valid or not . if valid also returns the decoded token
+        """
         try:
             decoded_jwt = decode(token, self.secret_key, self.algorithm)
             config.logger.log("INFO", "Decoded token...")

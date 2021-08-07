@@ -6,6 +6,11 @@ class FetchFilter:
 
     @staticmethod
     def fetch_upcoming_appointment_by_doctor_email(email):
+        """
+
+        :param email: email address of doctor
+        :return: upcoming appointments in ascending order
+        """
         try:
             query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'pending' and " \
                                                                                         "start >= '" + \
@@ -18,7 +23,7 @@ class FetchFilter:
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
                     "patient_email": row.patient_email,
-                    "start": row.start,
+                    "start": row.start.isoformat(),
                     "session": row.session,
                     "appt_id": row.appt_id,
                     "diagnosis": row.diagnosis,
@@ -33,6 +38,12 @@ class FetchFilter:
 
     @staticmethod
     def filter_upcoming_appointment_by_doctor_email(email, changes):
+        """
+
+        :param email: email address of doctor
+        :param changes: filters applied
+        :return: upcoming appointments in ascending order after filter is applied
+        """
         try:
             patient_condition = ''
             appt_condition = ''
@@ -55,7 +66,7 @@ class FetchFilter:
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
                     "patient_email": row.patient_email,
-                    "start": row.start,
+                    "start": row.start.isoformat(),
                     "session": row.session,
                     "appt_id": row.appt_id,
                     "diagnosis": row.diagnosis,
@@ -70,6 +81,11 @@ class FetchFilter:
 
     @staticmethod
     def fetch_past_appointment_by_doctor_email(email):
+        """
+
+        :param email: email address of doctor
+        :return: past appointments in descending order
+        """
         try:
             query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'completed' and " \
                                                                                         "start < '" + \
@@ -82,7 +98,7 @@ class FetchFilter:
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
                     "patient_email": row.patient_email,
-                    "start": row.start,
+                    "start": row.start.isoformat(),
                     "session": row.session,
                     "appt_id": row.appt_id,
                     "diagnosis": row.diagnosis,
@@ -97,6 +113,12 @@ class FetchFilter:
 
     @staticmethod
     def filter_past_appointment_by_doctor_email(email, changes):
+        """
+
+        :param email: email address of doctor
+        :param changes: filters applied
+        :return: past appointments of doctors in descending order after applying filters
+        """
         try:
             patient_condition = ''
             appt_condition = ''
@@ -119,7 +141,7 @@ class FetchFilter:
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
                     "patient_email": row.patient_email,
-                    "start": row.start,
+                    "start": row.start.isoformat(),
                     "session": row.session,
                     "appt_id": row.appt_id,
                     "diagnosis": row.diagnosis,
@@ -134,6 +156,12 @@ class FetchFilter:
 
     @staticmethod
     def fetch_filter_doctor_info_from_patient_email(patient_email, changes=None):
+        """
+
+        :param patient_email: email address of patient
+        :param changes: filters applied (None by default)
+        :return: patient appointments in descending order
+        """
         try:
             date_condition = ''
             if changes is not None:
@@ -150,7 +178,7 @@ class FetchFilter:
                         "speciality": fetch_info.speciality,
                         "experience": fetch_info.experience,
                         "patient_email": appt.patient_email,
-                        "start": appt.start,
+                        "start": appt.start.isoformat(),
                         "session": appt.session,
                         "appt_id": appt.appt_id,
                         "diagnosis": appt.diagnosis,
@@ -176,7 +204,7 @@ class FetchFilter:
                     "speciality": fetch_info.speciality,
                     "experience": fetch_info.experience,
                     "patient_email": appt.patient_email,
-                    "start": appt.start,
+                    "start": appt.start.isoformat(),
                     "session": appt.session,
                     "appt_id": appt.appt_id,
                     "diagnosis": appt.diagnosis,
@@ -191,16 +219,22 @@ class FetchFilter:
 
     @staticmethod
     def fetch_na_appointments(doctor_email, patient_email):
+        """
+
+        :param doctor_email: email address of doctor
+        :param patient_email: patient email address
+        :return: available appointments of the doctor in ascending order
+        """
         try:
-            query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' " \
-                                            "start > '" + datetime.datetime.now().isoformat() + "' allow filtering "
+            query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' and " \
+                                        "start > '" + datetime.datetime.now().isoformat()[:-7] + "' allow filtering "
             res = []
             fetch_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "'"
             fetch_name = config.cassandra.session.execute(fetch_name_query).one()
             history_record = {
                 "doctor_email": doctor_email,
                 "patient_email": patient_email,
-                "date": datetime.datetime.now().isoformat()
+                "date": datetime.datetime.now().isoformat()[:-7]
             }
             config.logger.log("INFO", "Saving patient search history")
             config.cassandra.insert_one("medhub.history", history_record)
@@ -209,7 +243,7 @@ class FetchFilter:
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
                     "email": doctor_email,
-                    "start": row.start,
+                    "start": row.start.isoformat(),
                     "session": row.session,
                     "appt_id": row.appt_id,
                     "status": row.status,
@@ -222,6 +256,12 @@ class FetchFilter:
 
     @staticmethod
     def fetch_filter_doctors(patient_email, changes=None):
+        """
+
+        :param patient_email: email address of patient
+        :param changes: filters applied (None by default)
+        :return: doctors in descending order of experience that are nearest to the place patient lives in
+        """
         try:
             fetch_patient_info_query = "select city, state from medhub.patient where email = '" + patient_email + "'"
             fetch_patient_info = config.cassandra.session.execute(fetch_patient_info_query).one()
