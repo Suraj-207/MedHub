@@ -7,9 +7,17 @@ import threading
 class Profile:
 
     def __init__(self, token):
+        """
+
+        :param token: jwt
+        """
         self.token = Token().validate_token(token)
 
     def show_profile(self):
+        """
+
+        :return: returns the profile details of the user
+        """
         try:
             if self.token['valid']:
                 email = self.token['decoded_token']['email']
@@ -58,6 +66,11 @@ class Profile:
             config.logger.log("ERROR", str(e))
 
     def change_profile(self, changes):
+        """
+
+        :param changes: changes to the account
+        :return: "changed" if successfully changed else None
+        """
         try:
             if self.token['valid']:
                 email = self.token['decoded_token']['email']

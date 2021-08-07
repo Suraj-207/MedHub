@@ -9,6 +9,10 @@ from py_backend.jwt_token.token import Token
 class Registration:
 
     def __init__(self, record):
+        """
+
+        :param record: information on the new user
+        """
         try:
             load_dotenv("py_backend/env/email_credentials.env")
             self.sender_email = os.getenv("SENDER_EMAIL")
@@ -57,6 +61,10 @@ class Registration:
             config.logger.log("ERROR", str(e))
 
     def insert_to_db(self):
+        """
+        It checks whether the user email is valid or not and also whether it already exists in database or not.
+        :return: Returns whether the user is successfully added to database
+        """
         try:
             config.logger.log("INFO", "checking if user is already present in database...")
             query = "select * from medhub.user where email = '" + self.user_record['email'] + "' allow filtering"

@@ -19,6 +19,11 @@ class Convert:
 
     @staticmethod
     def convert_time_to_str(time):
+        """
+
+        :param time: datetime.time() object
+        :return: str
+        """
         try:
             return datetime.time.isoformat(time)
         except Exception as e:
@@ -26,6 +31,11 @@ class Convert:
 
     @staticmethod
     def convert_str_to_timestamp(timestamp_string):
+        """
+
+        :param timestamp_string: str
+        :return: datetime.datetime() object
+        """
         try:
             timestamp_format = "%Y-%m-%dT%H:%M"
             return datetime.datetime.strptime(timestamp_string, timestamp_format)
@@ -34,6 +44,11 @@ class Convert:
 
     @staticmethod
     def convert_timestamp_to_str(timestamp):
+        """
+
+        :param timestamp: datetime.datetime() object
+        :return: str
+        """
         try:
             return timestamp.isoformat()
         except Exception as e:
@@ -41,6 +56,12 @@ class Convert:
 
     @staticmethod
     def difference_between_timestamps_in_days(first_timestamp, second_timestamp):
+        """
+
+        :param first_timestamp: datetime.datetime() object
+        :param second_timestamp: datetime.datetime() object
+        :return: datetiem.timedelta().days
+        """
         try:
             difference = first_timestamp - second_timestamp
             return abs(difference.days)
@@ -49,6 +70,16 @@ class Convert:
 
     @staticmethod
     def sessions_in_a_day(date, start_time, end_time, break_start, break_end, session):
+        """
+
+        :param date: datetime.date() object
+        :param start_time: start time string
+        :param end_time: end time string
+        :param break_start: break start time string
+        :param break_end: break end time string
+        :param session: session per patient time string
+        :return: list of appointments possible
+        """
         try:
             if start_time != "NA" and end_time != "NA" and session != "NA":
                 start_time = datetime.datetime.combine(date, Convert().convert_str_to_time(start_time))

@@ -6,6 +6,11 @@ from py_backend.jwt_token.token import Token
 class Validation:
 
     def __init__(self, email, password):
+        """
+
+        :param email: email of the user
+        :param password: password of the user
+        """
         try:
             self.email = email
             self.password = password
@@ -13,6 +18,10 @@ class Validation:
             config.logger.log("ERROR", str(e))
 
     def check(self):
+        """
+
+        :return: whether valid or not along with a new jwt.
+        """
         try:
             config.logger.log("INFO", "Searching for email in database...")
             query = "select password,account from medhub.user where email = '" + self.email + "' allow filtering"
