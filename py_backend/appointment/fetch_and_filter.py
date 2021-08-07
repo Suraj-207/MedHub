@@ -186,13 +186,20 @@ class FetchFilter:
             config.logger.log("ERROR", str(e))
 
     @staticmethod
-    def fetch_na_appointments(doctor_email):
+    def fetch_na_appointments(doctor_email, patient_email):
         try:
-            query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' order " \
-                                                                                               "by start asc "
+            query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' " \
+                                                                                               "order by start asc "
             res = []
             fetch_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "'"
             fetch_name = config.cassandra.session.execute(fetch_name_query).one()
+            history_record = {
+                "doctor_email": doctor_email,
+                "patient_email": patient_email,
+                "date": datetime.datetime.now().isoformat()
+            }
+            config.logger.log("INFO", "Saving patient search history")
+            config.cassandra.insert_one("medhub.history", history_record)
             for row in config.cassandra.session.execute(query).all():
                 res.append({
                     "fname": fetch_name.fname,
