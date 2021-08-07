@@ -1,6 +1,7 @@
 import config
 from py_backend.jwt_token.token import Token
 from py_backend.appointment.slots import SlotMaker
+import threading
 
 
 class Profile:
@@ -74,9 +75,11 @@ class Profile:
                     if response:
                         if not res:
                             config.logger.log("INFO", "Making slots for first time")
-                            SlotMaker().make_slots_first_time(email, changes['start_time'], changes['end_time'],
+                            slot_thread = threading.Thread(target=SlotMaker().make_slots_first_time,
+                                                           args=(email, changes['start_time'], changes['end_time'],
                                                               changes['break_start'], changes['break_end'],
-                                                              changes['session'])
+                                                              changes['session']))
+                            slot_thread.start()
                         return "changed"
                 elif user == "patient":
                     if 'pin' in changes.keys():

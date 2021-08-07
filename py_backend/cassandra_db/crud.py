@@ -150,7 +150,6 @@ class Operations:
                 val_str.append(k + "=" + new_v)
             val_str = ",".join(val_str)
             query = "update " + table_name + " set " + val_str + " where " + condition
-            print(query)
             self.session.execute(query)
             self.result = "updated records successfully"
             self.lg.log("info", self.result)
