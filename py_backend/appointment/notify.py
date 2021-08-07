@@ -20,12 +20,27 @@ class Notification:
         try:
             notify_record = {
                 "patient_email": patient_email,
-                "date": datetime.datetime.now().isoformat(),
+                "date": datetime.datetime.now().isoformat()[:-7],
                 "message": msg,
                 "doctor_email": doctor_email
             }
             config.cassandra.insert_one("medhub.notification", notify_record)
             SendMail(self.sender_email, self.sender_password, patient_email, message).send()
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+
+    def notify_book_slot(self, doctor_email, patient_email, date):
+        try:
+            patient_name_query = "select fname,lname from medhub.user where email = '" + patient_email + "' allow filtering"
+            patient_name = config.cassandra.session.execute(patient_name_query).execute().one()
+            doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
+            doctor_name = config.cassandra.session.execute(doctor_name_query).execute().one()
+            from_ = "From: MedHub <{}>\n".format(self.sender_email)
+            to = "To: {} <{}>\n".format(patient_name.fname + " " + patient_name.lname, patient_email)
+            subject = "Subject: Free slot available\n\n"
+            msg = "Your slot has been booked with Dr. " + doctor_name.fname + " " + doctor_name.lname + " on " + date
+            message = from_ + to + subject + msg
+            self.notify_automate(doctor_email, patient_email, message, msg)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
@@ -50,7 +65,7 @@ class Notification:
                 if current_appointment_execute is None:
                     self.notify_automate(doctor_email, patient, message, msg)
                 else:
-                    current_appointment = [datetime.datetime.fromisoformat(i.start) for i in current_appointment_execute]
+                    current_appointment = [i.start for i in current_appointment_execute]
                     if max(current_appointment) > Convert().convert_str_to_timestamp(free_slot):
                         self.notify_automate(doctor_email, patient, message, msg)
         except Exception as e:
@@ -94,7 +109,7 @@ class Notification:
             notifications = [{
                 "patient_email": row.patient_email,
                 "doctor_email": row.doctor_email,
-                "date": row.date,
+                "date": row.date.isoformat(),
                 "message": row.message
             } for row in config.cassandra.session.execute(query).all()]
             notifications = sorted(notifications, key=lambda x: x['date'], reverse=True)
