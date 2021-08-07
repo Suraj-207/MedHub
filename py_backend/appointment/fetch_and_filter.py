@@ -205,21 +205,20 @@ class FetchFilter:
             config.logger.log("ERROR", str(e))
 
     @staticmethod
-    def fetch_filter_doctors(patient_email, changes):
+    def fetch_filter_doctors(patient_email, changes = None):
         try:
             fetch_patient_info_query = "select city, state from medhub.patient where email = '" + patient_email + "'"
             fetch_patient_info = config.cassandra.session.execute(fetch_patient_info_query).one()
             speciality_condition = ''
-            if changes['speciality'] is not None:
-                speciality_condition = " and speciality = '" + changes['speciality'] + "'"
-            if changes['city'] is not None:
-                city_condition = " and city = '" + changes['city'] + "'"
-            else:
-                city_condition = " and city = '" + fetch_patient_info.city + "'"
-            if changes['state'] is not None:
-                state_condition = " and state = '" + changes['state'] + "'"
-            else:
-                state_condition = " and state = '" + fetch_patient_info.state + "'"
+            city_condition = " and city = '" + fetch_patient_info.city + "'"
+            state_condition = " and state = '" + fetch_patient_info.state + "'"
+            if changes is not None:
+                if changes['speciality'] is not None:
+                    speciality_condition = " and speciality = '" + changes['speciality'] + "'"
+                if changes['city'] is not None:
+                    city_condition = " and city = '" + changes['city'] + "'"
+                if changes['state'] is not None:
+                    state_condition = " and state = '" + changes['state'] + "'"
             fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + state_condition + city_condition + speciality_condition + " allow filtering"
             fetch_doctor = [{
                 "email": row.email,
