@@ -205,7 +205,7 @@ class FetchFilter:
             config.logger.log("ERROR", str(e))
 
     @staticmethod
-    def fetch_filter_doctors(patient_email, changes = None):
+    def fetch_filter_doctors(patient_email, changes=None):
         try:
             fetch_patient_info_query = "select city, state from medhub.patient where email = '" + patient_email + "'"
             fetch_patient_info = config.cassandra.session.execute(fetch_patient_info_query).one()
@@ -220,24 +220,21 @@ class FetchFilter:
                 if changes['state'] is not None:
                     state_condition = " and state = '" + changes['state'] + "'"
             fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + state_condition + city_condition + speciality_condition + " allow filtering"
-            res = config.cassandra.session.execute(fetch_doctor_query).all()
-            print(res)
-            fetch_doctor = [{
-                "email": row.email,
-                "fname": row.fname,
-                "lname": row.lname,
-                "speciality": row.speciality,
-                "experience": row.experience,
-                "place_of_work": row.pow,
-                "city": row.city,
-                "state": row.state
-            } for row in res]
+            fetch_doctor = []
+            for row in config.cassandra.session.execute(fetch_doctor_query).all():
+                doctor_name_query = "select * from medhub.doctor where email = '" + row.email + "'"
+                doctor_name = config.cassandra.session.execute(doctor_name_query).one()
+                fetch_doctor.append({
+                    "email": row.email,
+                    "fname": doctor_name.fname,
+                    "lname": doctor_name.lname,
+                    "speciality": row.speciality,
+                    "experience": row.experience,
+                    "place_of_work": row.pow,
+                    "city": row.city,
+                    "state": row.state
+                })
             fetch_doctor = sorted(fetch_doctor, key=lambda x: x['experience'], reverse=True)
             return fetch_doctor
         except Exception as e:
             config.logger.log("ERROR", str(e))
-
-
-
-
-
