@@ -8,6 +8,7 @@ import LoadingSpinner from "./shared/UIComponent/LoadingSpinner";
 import DoctorProfile from "./pages/DoctorDashboard/DoctorProfile";
 import { useAuth } from "./shared/hooks/auth-hook";
 import PatientProfile from "./pages/PatientDashboard/PatientProfile";
+import PatientHome from "./pages/PatientDashboard/PatientHome";
 
 function App() {
   const {token, login, logout, load, isToken, userId} = useAuth();
@@ -39,6 +40,7 @@ function App() {
       <Switch>
         <Route path="/" exact>
           <MainNavigation />
+          <PatientHome />
         </Route>
         <Route path="/patient/appointment" exact>
           <MainNavigation />

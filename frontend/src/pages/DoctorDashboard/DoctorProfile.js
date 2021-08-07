@@ -13,19 +13,18 @@ const DoctorProfile = () => {
   const [details, setDetails] = useState({});
   const [load, setLoad] = useState(true);
   const auth = useContext(AuthContext);
-  const [formState, inputHandler, setFormData] =
-    useForm();
-    // {
-    //   email: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   password: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    // },
-    // false
+  const [formState, inputHandler, setFormData] = useForm();
+  // {
+  //   email: {
+  //     value: "",
+  //     isValid: false,
+  //   },
+  //   password: {
+  //     value: "",
+  //     isValid: false,
+  //   },
+  // },
+  // false
   let data, fetchData;
 
   const handleFieldChange = (e) => {
@@ -40,7 +39,16 @@ const DoctorProfile = () => {
     try {
       fetchData = async () => {
         setLoad(true);
-        const data = { token: auth.token, changes: formData };
+        const data = { token: auth.token, changes: {
+          start_time:formData.start_time,
+          end_time: formData.end_time,
+          break_start: formData.break_start,
+          break_end: formData.break_end,
+          session: formData.session,
+          speciality: formState.inputs.speciality.value,
+          experience: formState.inputs.experience.value,
+          pow: formState.inputs.pow.value
+        } };
         console.log(data);
         const response = await fetch(
           "http://localhost:5000/api/change-profile",
@@ -175,7 +183,7 @@ const DoctorProfile = () => {
                   element="input"
                   type="text"
                   className="input_elements"
-                  name="pow"
+                  id="pow"
                   validators={[VALIDATOR_REQUIRE()]}
                   errorText="Please enter your place of work"
                   initialValue={details.pow}
@@ -295,9 +303,13 @@ const DoctorProfile = () => {
       )}
       <div className="doctor_profile_button">
         {/* <button onClick={handleSubmit}>Confirm Changes</button> */}
-        <Button onClick={handleSubmit} type="submit" disabled={!formState.isValid}>
-            {"Confirm"}
-          </Button>
+        <Button
+          onClick={handleSubmit}
+          type="submit"
+          disabled={!formState.isValid}
+        >
+          {"Confirm"}
+        </Button>
       </div>
     </React.Fragment>
   );
