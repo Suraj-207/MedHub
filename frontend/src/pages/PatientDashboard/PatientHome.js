@@ -1,11 +1,14 @@
 import React,{useState, useEffect, useContext} from "react";
 import { AuthContext } from "../../shared/context/AuthContext";
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
+import Item from "../../components/Item";
+import "./PatientHome.css"
 
 const PatientHome = () => {
   const [load, setLoad] = useState(false);
   const [err, setErr] = useState(false);
   const auth = useContext(AuthContext)
+  const [details, setDetails] = useState([]);
 
   useEffect(() => {
     setLoad(true);
@@ -31,6 +34,7 @@ const PatientHome = () => {
         } else {
           //auth.login(result.user, result.token);
           console.log(result);
+          setDetails(result);
           console.log("done");
         //   setDetailsHandler(result);
           setLoad(false);
@@ -50,19 +54,21 @@ const PatientHome = () => {
       <div>{err && <div>No doctor found</div> } </div>
       <div className="row">
         <div className="row_data">
-          {/* {product &&
-                product.map((item, index) => {
+          {details &&
+                details.map((item, index) => {
                   return (
                     <Item
-                      key={item.id}
-                      id={item.id}
-                      name={item.name}
-                      src={item.img_link}
-                      price={item.price}
-                      href={item.href}
+                      key={item.email}
+                      id={item.email}
+                      email={item.email}
+                      fname={item.fname}
+                      lname={item.lname}
+                      lname={item.price}
+                      city={item.city}
+                      speciality={item.speciality}
                     />
                   );
-                })} */}
+                })}
         </div>
       </div>
     </React.Fragment>

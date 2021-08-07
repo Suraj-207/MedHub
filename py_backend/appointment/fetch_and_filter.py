@@ -222,7 +222,7 @@ class FetchFilter:
             fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + state_condition + city_condition + speciality_condition + " allow filtering"
             fetch_doctor = []
             for row in config.cassandra.session.execute(fetch_doctor_query).all():
-                doctor_name_query = "select * from medhub.doctor where email = '" + row.email + "'"
+                doctor_name_query = "select * from medhub.user where email = '" + row.email + "'"
                 doctor_name = config.cassandra.session.execute(doctor_name_query).one()
                 fetch_doctor.append({
                     "email": row.email,
