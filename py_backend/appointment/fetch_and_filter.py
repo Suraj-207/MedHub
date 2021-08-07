@@ -9,7 +9,7 @@ class FetchFilter:
         try:
             query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'pending' and " \
                                                                                         "start >= '" + \
-                    datetime.date.today().isoformat() + "' order by start asc allow filtering "
+                    datetime.date.today().isoformat() + "' allow filtering"
             res = []
             for row in config.cassandra.session.execute(query).all():
                 fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
@@ -26,6 +26,7 @@ class FetchFilter:
                     "status": row.status,
                     "issue": row.issue
                 })
+            res = sorted(res, key=lambda x: x['start'])
             return res
         except Exception as e:
             config.logger.log("ERROR", str(e))
@@ -45,7 +46,7 @@ class FetchFilter:
                 patient_condition = " and patient_email = '" + changes['patient_email'] + "'"
             if changes['appt_id'] is not None:
                 appt_condition = " and appt_id = '" + changes['appt_id'] + "'"
-            query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'pending'" + date_condition + patient_condition + appt_condition + " order by start asc allow filtering"
+            query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'pending'" + date_condition + patient_condition + appt_condition + " allow filtering"
             res = []
             for row in config.cassandra.session.execute(query).all():
                 fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
@@ -62,6 +63,7 @@ class FetchFilter:
                     "status": row.status,
                     "issue": row.issue
                 })
+            res = sorted(res, key=lambda x: x['start'])
             return res
         except Exception as e:
             config.logger.log("ERROR", str(e))
@@ -71,7 +73,7 @@ class FetchFilter:
         try:
             query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'completed' and " \
                                                                                         "start < '" + \
-                    datetime.date.today().isoformat() + "' order by start desc allow filtering "
+                    datetime.date.today().isoformat() + "' allow filtering "
             res = []
             for row in config.cassandra.session.execute(query).all():
                 fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
@@ -88,6 +90,7 @@ class FetchFilter:
                     "status": row.status,
                     "issue": row.issue
                 })
+            res = sorted(res, key=lambda x:x['start'], reverse=True)
             return res
         except Exception as e:
             config.logger.log("ERROR", str(e))
@@ -107,7 +110,7 @@ class FetchFilter:
                 patient_condition = " and patient_email = '" + changes['patient_email'] + "'"
             if changes['appt_id'] is not None:
                 appt_condition = " and appt_id = '" + changes['appt_id'] + "'"
-            query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'completed'" + date_condition + patient_condition + appt_condition + " order by start desc allow filtering"
+            query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'completed'" + date_condition + patient_condition + appt_condition + " allow filtering"
             res = []
             for row in config.cassandra.session.execute(query).all():
                 fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
@@ -124,6 +127,7 @@ class FetchFilter:
                     "status": row.status,
                     "issue": row.issue
                 })
+            res = sorted(res, key=lambda x: x['start'], reverse=True)
             return res
         except Exception as e:
             config.logger.log("ERROR", str(e))
@@ -189,7 +193,7 @@ class FetchFilter:
     def fetch_na_appointments(doctor_email, patient_email):
         try:
             query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' " \
-                                                                                               "order by start asc "
+                                            "start > '" + datetime.datetime.now().isoformat() + "' allow filtering "
             res = []
             fetch_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "'"
             fetch_name = config.cassandra.session.execute(fetch_name_query).one()
@@ -211,6 +215,7 @@ class FetchFilter:
                     "status": row.status,
                     "issue": row.issue
                 })
+            res = sorted(res, key=lambda x: x['start'])
             return res
         except Exception as e:
             config.logger.log("ERROR", str(e))
