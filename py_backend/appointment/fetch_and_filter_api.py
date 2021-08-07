@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 import config
-from py_backend.appointment.fetch_and_filter import FetchFilterAppointment
+from py_backend.appointment.fetch_and_filter import FetchFilter
 from py_backend.jwt_token.token_validation_api import Token
 
 
@@ -14,7 +14,7 @@ class DoctorFetchUpcoming(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
-                return FetchFilterAppointment().fetch_upcoming_appointment_by_doctor_email(email)
+                return FetchFilter().fetch_upcoming_appointment_by_doctor_email(email)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
@@ -29,7 +29,7 @@ class DoctorFilterUpcoming(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
-                return FetchFilterAppointment().filter_upcoming_appointment_by_doctor_email(email, changes)
+                return FetchFilter().filter_upcoming_appointment_by_doctor_email(email, changes)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
@@ -43,7 +43,7 @@ class DoctorFetchPast(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
-                return FetchFilterAppointment().fetch_past_appointment_by_doctor_email(email)
+                return FetchFilter().fetch_past_appointment_by_doctor_email(email)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
@@ -58,7 +58,7 @@ class DoctorFilterPast(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
-                return FetchFilterAppointment().filter_past_appointment_by_doctor_email(email, changes)
+                return FetchFilter().filter_past_appointment_by_doctor_email(email, changes)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
@@ -72,7 +72,7 @@ class PatientFetch(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
-                return FetchFilterAppointment().fetch_filter_doctor_info_from_patient_email(email)
+                return FetchFilter().fetch_filter_doctor_info_from_patient_email(email)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
@@ -87,6 +87,6 @@ class PatientFilter(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
-                return FetchFilterAppointment().fetch_filter_doctor_info_from_patient_email(email, changes)
+                return FetchFilter().fetch_filter_doctor_info_from_patient_email(email, changes)
         except Exception as e:
             config.logger.log("ERROR", str(e))
