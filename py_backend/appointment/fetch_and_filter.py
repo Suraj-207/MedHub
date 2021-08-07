@@ -12,7 +12,7 @@ class FetchFilter:
                     datetime.date.today().isoformat() + "' order by start asc allow filtering "
             res = []
             for row in config.cassandra.session.execute(query).all():
-                fetch_name_query = "select fname,lname from medhub.patient where email = '" + row.patient_email + "'"
+                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
                 fetch_name = config.cassandra.session.execute(fetch_name_query).one()
                 res.append({
                     "fname": fetch_name.fname,
@@ -48,7 +48,7 @@ class FetchFilter:
             query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'pending'" + date_condition + patient_condition + appt_condition + " order by start asc allow filtering"
             res = []
             for row in config.cassandra.session.execute(query).all():
-                fetch_name_query = "select fname,lname from medhub.patient where email = '" + row.patient_email + "'"
+                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
                 fetch_name = config.cassandra.session.execute(fetch_name_query).one()
                 res.append({
                     "fname": fetch_name.fname,
@@ -74,7 +74,7 @@ class FetchFilter:
                     datetime.date.today().isoformat() + "' order by start desc allow filtering "
             res = []
             for row in config.cassandra.session.execute(query).all():
-                fetch_name_query = "select fname,lname from medhub.patient where email = '" + row.patient_email + "'"
+                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
                 fetch_name = config.cassandra.session.execute(fetch_name_query).one()
                 res.append({
                     "fname": fetch_name.fname,
@@ -110,7 +110,7 @@ class FetchFilter:
             query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'completed'" + date_condition + patient_condition + appt_condition + " order by start desc allow filtering"
             res = []
             for row in config.cassandra.session.execute(query).all():
-                fetch_name_query = "select fname,lname from medhub.patient where email = '" + row.patient_email + "'"
+                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
                 fetch_name = config.cassandra.session.execute(fetch_name_query).one()
                 res.append({
                     "fname": fetch_name.fname,
@@ -136,13 +136,15 @@ class FetchFilter:
                 if changes['appt_id'] is not None:
                     appt_query = "select * from medhub.appointment where appt_id = '" + changes['appt_id'] + "'"
                     appt = config.cassandra.session.execute(appt_query).one()
-                    fetch_name_query = "select fname,lname,speciality,experience from medhub.doctor where email = '" + appt.doctor_email + "'"
+                    fetch_info_query = "select speciality,experience from medhub.doctor where email = '" + appt.doctor_email + "'"
+                    fetch_info = config.cassandra.session.execute(fetch_info_query).one()
+                    fetch_name_query = "select fname,lname from medhub.user where email = '" + appt.doctor_email + "'"
                     fetch_name = config.cassandra.session.execute(fetch_name_query).one()
                     return [{
                         "fname": fetch_name.fname,
                         "lname": fetch_name.lname,
-                        "speciality": fetch_name.speciality,
-                        "experience": fetch_name.experience,
+                        "speciality": fetch_info.speciality,
+                        "experience": fetch_info.experience,
                         "patient_email": appt.patient_email,
                         "start": appt.start,
                         "session": appt.session,
@@ -160,13 +162,15 @@ class FetchFilter:
             fetch_appt_info = config.cassandra.session.execute(fetch_appt_info_query).all()
             res = []
             for appt in fetch_appt_info:
-                fetch_name_query = "select fname,lname,speciality,experience from medhub.doctor where email = '" + appt.doctor_email + "'"
+                fetch_info_query = "select speciality,experience from medhub.doctor where email = '" + appt.doctor_email + "'"
+                fetch_info = config.cassandra.session.execute(fetch_info_query).one()
+                fetch_name_query = "select fname,lname from medhub.user where email = '" + appt.doctor_email + "'"
                 fetch_name = config.cassandra.session.execute(fetch_name_query).one()
                 res.append({
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
-                    "speciality": fetch_name.speciality,
-                    "experience": fetch_name.experience,
+                    "speciality": fetch_info.speciality,
+                    "experience": fetch_info.experience,
                     "patient_email": appt.patient_email,
                     "start": appt.start,
                     "session": appt.session,
@@ -187,7 +191,7 @@ class FetchFilter:
             query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' order " \
                                                                                                "by start asc "
             res = []
-            fetch_name_query = "select fname,lname from medhub.doctor where email = '" + doctor_email + "'"
+            fetch_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "'"
             fetch_name = config.cassandra.session.execute(fetch_name_query).one()
             for row in config.cassandra.session.execute(query).all():
                 res.append({
@@ -222,7 +226,7 @@ class FetchFilter:
             fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + state_condition + city_condition + speciality_condition + " allow filtering"
             fetch_doctor = []
             for row in config.cassandra.session.execute(fetch_doctor_query).all():
-                doctor_name_query = "select * from medhub.doctor where email = '" + row.email + "'"
+                doctor_name_query = "select * from medhub.user where email = '" + row.email + "'"
                 doctor_name = config.cassandra.session.execute(doctor_name_query).one()
                 fetch_doctor.append({
                     "email": row.email,
