@@ -12,6 +12,7 @@ from py_backend.profile.my_profile_api import FetchProfile, ChangeProfile
 from apscheduler.schedulers.background import BackgroundScheduler
 from py_backend.appointment.slots import SlotMaker
 from py_backend.appointment.fetch_and_filter_api import DoctorFetchPast, DoctorFetchUpcoming, DoctorFilterPast, DoctorFilterUpcoming, PatientFetch, PatientFilter, FetchNAAppointments, FetchDoctors, FilterDoctors
+from py_backend.appointment.notify_patient_api import NotifyPatient
 import multiexit
 import datetime
 
@@ -53,6 +54,7 @@ api.add_resource(PatientFilter, '/api/patient-filter')
 api.add_resource(FetchNAAppointments, '/api/fetch-na-appointments')
 api.add_resource(FetchDoctors, '/api/fetch-doctors')
 api.add_resource(FilterDoctors, '/api/filter-doctors')
+api.add_resource(NotifyPatient, '/api/notifications')
 
 
 if __name__ == '__main__':
