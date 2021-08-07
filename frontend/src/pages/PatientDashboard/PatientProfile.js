@@ -1,27 +1,46 @@
-import React,{useState, useEffect,useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../shared/context/AuthContext";
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
+import Input from "../../shared/FormElements/Input";
+import { useForm } from "../../shared/hooks/form-hook";
+import {
+  VALIDATOR_MAXLENGTH,
+  VALIDATOR_MINLENGTH,
+  VALIDATOR_REQUIRE,
+} from "../../shared/util/validators";
+import Button from "../../shared/FormElements/Button";
+import "./PatientProfile.css"
 
 const PatientProfile = () => {
-  const [formData, updateFormData] = useState();
+  // const [formData, updateFormData] = useState();
   const [details, setDetails] = useState({});
   const [load, setLoad] = useState(true);
+  const [formState, inputHandler] = useForm();
   const auth = useContext(AuthContext);
+
   let data, fetchData;
 
-  const handleFieldChange = (e) => {
-    updateFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleFieldChange = (e) => {
+  //   updateFormData({
+  //     ...formData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
       fetchData = async () => {
         setLoad(true);
-        const data = { token: auth.token, changes: formData };
+        const data = {
+          token: auth.token,
+          changes: {
+            phone: result.phone,
+            state: result.state,
+            city: result.city,
+            state: result.city,
+          },
+        };
         console.log(data);
         const response = await fetch(
           "http://localhost:5000/api/change-profile",
@@ -50,7 +69,6 @@ const PatientProfile = () => {
   };
 
   const setDetailsHandler = (result) => {
-    console.log(Object.keys(result).length);
     setDetails(result);
     setLoad(false);
   };
@@ -75,7 +93,6 @@ const PatientProfile = () => {
           console.log("unidentified token");
         } else {
           //auth.login(result.user, result.token);
-          console.log(result);
           setDetailsHandler(result);
         }
         if (response.ok) {
@@ -95,82 +112,104 @@ const PatientProfile = () => {
         <h1>doctor_profile</h1>
       </div>
       <div>{load && <LoadingSpinner asOverlay />} </div>
-      <div className="form">
-        <div className="form-left">
-          <div className="doctor_profile">
-            <h4>Firstname:</h4>
-            <label>
-              {Object.keys(details).length > 0 ? details.fname : ""}
-            </label>
-          </div>
-          <div className="doctor_profile">
-            <h4>Lastname:</h4>
-            <label>
-              {Object.keys(details).length > 0 ? details.lname : ""}
-            </label>
-          </div>
-          <div className="doctor_profile">
-            <h4>Email:</h4>
-            <label>
-              {Object.keys(details).length > 0 ? details.email : ""}
-            </label>
-          </div>
-          <div className="doctor_profile">
-            <h4>Phone:</h4>
-            <div>
-              <input
-                type="number"
-                className="input_elements"
-                name="phone"
-                placeholder={Object.keys(details).length > 0 ? details.phone : ""}
-                onChange={handleFieldChange}
-              />
+      {!load && details && (
+        <div className="form">
+          <div className="form-left">
+            <div className="doctor_profile">
+              <h4>Firstname:</h4>
+              <label>
+                {Object.keys(details).length > 0 ? details.fname : ""}
+              </label>
             </div>
-          </div>
-          <div className="doctor_profile">
-            <h4>City:</h4>
-            <div>
-              <input
-                type="text"
-                className="input_elements"
-                name="city"
-                placeholder={
-                  Object.keys(details).length > 0 ? details.city: ""
-                }
-                onChange={handleFieldChange}
-              />
+            <div className="doctor_profile">
+              <h4>Lastname:</h4>
+              <label>
+                {Object.keys(details).length > 0 ? details.lname : ""}
+              </label>
             </div>
-          </div>
-          <div className="doctor_profile">
-            <h4>State:</h4>
-            <div>
-              <input
-                type="text"
-                className="input_elements"
-                name="state"
-                placeholder={
-                  Object.keys(details).length > 0 ? details.state : ""
-                }
-                onChange={handleFieldChange}
-              />
+            <div className="doctor_profile">
+              <h4>Email:</h4>
+              <label>
+                {Object.keys(details).length > 0 ? details.email : ""}
+              </label>
             </div>
-          </div>
-          <div className="doctor_profile">
-            <h4>Pin:</h4>
-            <div>
-              <input
-                type="number"
-                className="input_elements"
-                name="pin"
-                placeholder={Object.keys(details).length > 0 ? details.pin : ""}
-                onChange={handleFieldChange}
-              />
+            <div className="doctor_profile">
+              <h4>Phone:</h4>
+              <div>
+                <Input
+                  element="input"
+                  type="text"
+                  className="input_elements"
+                  id="phone"
+                  validators={[
+                    VALIDATOR_MAXLENGTH(10),
+                    VALIDATOR_MINLENGTH(10),
+                  ]}
+                  errorText="Please enter correct phone no"
+                  onInput={inputHandler}
+                  initialValue={details.phone}
+                  initialValid={true}
+                />
+              </div>
+            </div>
+            <div className="doctor_profile">
+              <h4>City:</h4>
+              <div>
+                <Input
+                  element="input"
+                  type="text"
+                  className="input_elements"
+                  id="city"
+                  validators={[VALIDATOR_REQUIRE()]}
+                  errorText="Please enter your city"
+                  name="city"
+                  initialValue={details.city}
+                  initialValid={true}
+                  onInput={inputHandler}
+                />
+              </div>
+            </div>
+            <div className="doctor_profile">
+              <h4>State:</h4>
+              <div>
+                <Input
+                  element="input"
+                  type="text"
+                  className="input_elements"
+                  id="state"
+                  validators={[VALIDATOR_REQUIRE()]}
+                  errorText="Please enter your state"
+                  onInput={inputHandler}
+                  initialValue={details.state}
+                  initialValid={true}
+                />
+              </div>
+            </div>
+            <div className="doctor_profile">
+              <h4>Pin:</h4>
+              <div>
+                <Input
+                  element="input"
+                  type="text"
+                  className="input_elements"
+                  name="pin"
+                  id="pin"
+                  validators={[VALIDATOR_MAXLENGTH(6), VALIDATOR_MINLENGTH(6)]}
+                  errorText="Please enter correct pin"
+                  initialValue={details.pin}
+                  initialValid={true}
+                  onInput={inputHandler}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <div className="doctor_profile_button">
-        <button onClick={handleSubmit}>Confirm Changes</button>
+        {/* <button onClick={handleSubmit}>Confirm Changes</button> */}
+        <Button onClick={handleSubmit} type="submit" disabled={!formState.isValid}>
+            {"Confirm changes"}
+          </Button>
       </div>
     </React.Fragment>
   );
