@@ -8,6 +8,10 @@ class SlotMaker:
 
     @staticmethod
     def assign_slots_scheduling():
+        """
+        This function is used in the job scheduler that opens new slots at 00:00 midnight for booking.
+        :return: None
+        """
         try:
             config.logger.log("INFO", "Trying to fetch doctors details for making new slots")
             doctors_fetch_query = "select email, start_time, end_time, session, break_start, break_end from " \
@@ -35,6 +39,16 @@ class SlotMaker:
 
     @staticmethod
     def make_slots_first_time(email, start_time, end_time, break_start, break_end, session):
+        """
+        Makes slots for 15 days the first time a doctor sets up his time settings in his/her profile
+        :param email: email address of doctor
+        :param start_time: start time of work of doctor
+        :param end_time: end time of work of doctor
+        :param break_start: break start time in between work of doctor
+        :param break_end: break end time in between work of doctor
+        :param session: session length for each patient as assigned by doctor
+        :return: None
+        """
         try:
             for i in range(0, 15):
                 date = datetime.date.today() + datetime.timedelta(days=i)

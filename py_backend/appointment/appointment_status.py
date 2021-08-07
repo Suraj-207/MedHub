@@ -9,6 +9,14 @@ class BookCancelReschedule:
 
     @staticmethod
     def patient_book(patient_email, date, doctor_email, issue):
+        """
+
+        :param patient_email: email address of the patient
+        :param date: date of booking in string format
+        :param doctor_email: email address of doctor whose appointment is being booked
+        :param issue: the reason of appointment
+        :return: True, if appointment registration is successful else False
+        """
         try:
             new_val = {
                 "session": "pending",
@@ -30,6 +38,13 @@ class BookCancelReschedule:
 
     @staticmethod
     def patient_cancel(patient_email, date, doctor_email):
+        """
+
+        :param patient_email: email address of patient
+        :param date: date of cancellation
+        :param doctor_email: email address of doctor whose appointment is to be cancelled
+        :return: True , if cancellation is successful else False
+        """
         try:
             difference = Convert().convert_str_to_timestamp(date) - datetime.datetime.now()
             if difference.days >= 3:
@@ -53,6 +68,14 @@ class BookCancelReschedule:
 
     @staticmethod
     def doctor_leave(doctor_email, start, end, status):
+        """
+
+        :param doctor_email: email address of the doctor
+        :param start: start datetime of leave in string format
+        :param end: end datetime of leave in string format
+        :param status: whether cancellation/rescheduling is to be done in case of leave
+        :return: True if leave is successful else False
+        """
         try:
             query = "select patient_email, start, issue from medhub.appointment where doctor_email = '{}' and start >= '{}' and " \
                     "start <= '{}'".format(doctor_email, start, end)

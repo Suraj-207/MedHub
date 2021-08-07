@@ -17,6 +17,14 @@ class Notification:
             config.logger.log("ERROR", str(e))
 
     def notify_automate(self, doctor_email, patient_email, message, msg):
+        """
+
+        :param doctor_email: email address of doctor
+        :param patient_email: email address of patient
+        :param message: message to be sent in mail to patient
+        :param msg: message to be saved in database
+        :return: None
+        """
         try:
             notify_record = {
                 "patient_email": patient_email,
@@ -30,6 +38,13 @@ class Notification:
             config.logger.log("ERROR", str(e))
 
     def notify_book_slot(self, doctor_email, patient_email, date):
+        """
+        Sends a confirmation mail to patient about the booking and also adds the same to database.
+        :param doctor_email: email address of doctor
+        :param patient_email: email address of patient
+        :param date: date of booking slot in string format
+        :return: None
+        """
         try:
             patient_name_query = "select fname,lname from medhub.user where email = '" + patient_email + "' allow filtering"
             patient_name = config.cassandra.session.execute(patient_name_query).execute().one()
@@ -45,6 +60,14 @@ class Notification:
             config.logger.log("ERROR", str(e))
 
     def notify_open_slots(self, doctor_email, free_slot):
+        """
+        Sends a mail to all the patients that has searched about this doctor but couldn't book because
+        there was no seat availability and also to patients whose slots are later than this free slot and
+        also adds the same to database.
+        :param doctor_email: email address of doctor
+        :param free_slot: slot that is free
+        :return: None
+        """
         try:
             time_limit = datetime.date.today() - datetime.timedelta(days=15)
             time_limit_string = time_limit.isoformat()
@@ -72,6 +95,12 @@ class Notification:
             config.logger.log("ERROR", str(e))
 
     def notify_cancelled_slots(self, doctor_email, patient):
+        """
+        Sends a mail to patient conveying the cancellation in appointment and also adds the same to database
+        :param doctor_email: email address of doctor
+        :param patient: information on patient whose slots has been cancelled
+        :return: None
+        """
         try:
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
             doctor_name = config.cassandra.session.execute(doctor_name_query).execute().one()
@@ -87,6 +116,13 @@ class Notification:
             config.logger.log("ERROR", str(e))
             
     def notify_rescheduled_slots(self, doctor_email, patient):
+        """
+
+        Sends a mail to patient conveying the rescheduling in appointment and also adds the same to database
+        :param doctor_email: email address of doctor
+        :param patient: information on patient whose slots has been cancelled
+        :return: None
+        """
         try:
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
             doctor_name = config.cassandra.session.execute(doctor_name_query).execute().one()
@@ -103,6 +139,11 @@ class Notification:
 
     @staticmethod
     def fetch_notification(patient_email):
+        """
+
+        :param patient_email: email address of patient
+        :return: notifications in descending order on that patient
+        """
         try:
             config.logger.log("INFO", "Fetching notifications...")
             query = "select * from medhub.notification where patient_email = '" + patient_email + "' allow filtering"
