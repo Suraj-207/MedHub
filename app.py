@@ -11,7 +11,7 @@ from py_backend.jwt_token.token_validation_api import IsValidToken
 from py_backend.profile.my_profile_api import FetchProfile, ChangeProfile
 from apscheduler.schedulers.background import BackgroundScheduler
 from py_backend.appointment.slots import SlotMaker
-from py_backend.appointment.fetch_and_filter_api import DoctorFetchPast, DoctorFetchUpcoming, DoctorFilterPast, DoctorFilterUpcoming, PatientFetch, PatientFilter
+from py_backend.appointment.fetch_and_filter_api import DoctorFetchPast, DoctorFetchUpcoming, DoctorFilterPast, DoctorFilterUpcoming, PatientFetch, PatientFilter, FetchNAAppointments, FetchDoctors, FilterDoctors
 import multiexit
 import datetime
 
@@ -50,6 +50,9 @@ api.add_resource(DoctorFetchPast, '/api/doctor-fetch-past')
 api.add_resource(DoctorFilterPast, '/api/doctor-filter-past')
 api.add_resource(PatientFetch, '/api/patient-fetch')
 api.add_resource(PatientFilter, '/api/patient-filter')
+api.add_resource(FetchNAAppointments, '/api/fetch-na-appointments')
+api.add_resource(FetchDoctors, '/api/fetch-doctors')
+api.add_resource(FilterDoctors, '/api/filter-doctors')
 
 
 if __name__ == '__main__':

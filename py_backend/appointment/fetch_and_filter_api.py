@@ -90,3 +90,43 @@ class PatientFilter(Resource):
                 return FetchFilter().fetch_filter_doctor_info_from_patient_email(email, changes)
         except Exception as e:
             config.logger.log("ERROR", str(e))
+
+
+class FetchNAAppointments(Resource):
+
+    def post(self):
+        try:
+            config.logger.log("INFO", "Fetching open appointments...")
+            email = request.get_json()['email']
+            return FetchFilter().fetch_na_appointments(email)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+
+
+class FetchDoctors(Resource):
+
+    def post(self):
+        try:
+            config.logger.log("INFO", "Fetching doctors as per patient requirements")
+            token = request.get_json()['token']
+            decoded = Token().validate_token(token)
+            if decoded['valid']:
+                email = decoded['decoded_token']['email']
+                return FetchFilter().fetch_filter_doctors(email)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+
+
+class FilterDoctors(Resource):
+
+    def post(self):
+        try:
+            config.logger.log("INFO", "Fetching doctors as per patient requirements")
+            token = request.get_json()['token']
+            changes = request.get_json()['changes']
+            decoded = Token().validate_token(token)
+            if decoded['valid']:
+                email = decoded['decoded_token']['email']
+                return FetchFilter().fetch_filter_doctors(email, changes)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
