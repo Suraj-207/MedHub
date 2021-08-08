@@ -5,6 +5,10 @@ import "./SignUp.css";
 import { AuthContext } from "../shared/context/AuthContext";
 import { useHistory } from "react-router-dom";
 import Input from "../shared/FormElements/Input";
+import {
+  CountryDropdown,
+  RegionDropdown,
+} from "react-indian-state-region-selector";
 import { useForm } from "../shared/hooks/form-hook";
 import {
   VALIDATOR_EMAIL,
@@ -19,6 +23,8 @@ const SignUp = () => {
   const history = useHistory();
   const auth = useContext(AuthContext);
   const [formState, inputHandler] = useForm();
+  const [country, setCountry] = useState();
+  const [region, setRegion] = useState();
   let fetchData;
 
   const switchModeHandler = () => {
@@ -210,7 +216,8 @@ const SignUp = () => {
                 onInput={inputHandler}
               />
               <div className="doctor-signup">
-                <Input
+                <CountryDropdown value={country} onChange={setCountry} />
+                {/* <Input
                   element="input"
                   id="city"
                   type="text"
@@ -220,10 +227,16 @@ const SignUp = () => {
                   errorText="Please enter your city"
                   placeholder="city"
                   onInput={inputHandler}
-                />
+                /> */}
               </div>
               <div className="doctor-signup">
-                <Input
+                <RegionDropdown
+                blankOptionLabel="Please select a state first"
+                  country={country}
+                  value={region}
+                  onChange={setRegion}
+                />
+                {/* <Input
                   element="input"
                   id="state"
                   label="State"
@@ -234,7 +247,7 @@ const SignUp = () => {
                   errorText="Please enter your state"
                   placeholder="state"
                   onInput={inputHandler}
-                />
+                /> */}
               </div>
             </div>
           </div>
@@ -294,7 +307,8 @@ const SignUp = () => {
           </div>
           <div className="form-right">
             <div className="doctor-signup">
-              <Input
+              <CountryDropdown value={country} onChange={setCountry} />
+              {/* <Input
                 element="input"
                 id="city"
                 type="text"
@@ -304,10 +318,15 @@ const SignUp = () => {
                 errorText="Please enter your city"
                 placeholder="city"
                 onInput={inputHandler}
-              />
+              /> */}
             </div>
             <div className="doctor-signup">
-              <Input
+              <RegionDropdown
+                country={country}
+                value={region}
+                onChange={setRegion}
+              />
+              {/* <Input
                 element="input"
                 id="state"
                 label="State"
@@ -318,7 +337,7 @@ const SignUp = () => {
                 errorText="Please enter your state"
                 placeholder="state"
                 onInput={inputHandler}
-              />
+              /> */}
             </div>
             <div className="doctor-signup">
               <Input
@@ -350,9 +369,13 @@ const SignUp = () => {
         </div>
       )}
       <div className="signup-button">
-          <Button onClick={handleSubmit} type="submit" disabled={!formState.isValid}>
-            {"Confirm"}
-          </Button>
+        <Button
+          onClick={handleSubmit}
+          type="submit"
+          disabled={!formState.isValid}
+        >
+          {"Confirm"}
+        </Button>
       </div>
     </React.Fragment>
   );
