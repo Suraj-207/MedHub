@@ -54,7 +54,7 @@ class Notification:
             doctor_name = config.cassandra.session.execute(doctor_name_query).one()
             from_ = "From: MedHub <{}>\n".format(self.sender_email)
             to = "To: {} <{}>\n".format(patient_name.fname + " " + patient_name.lname, patient_email)
-            subject = "Subject: Free slot available\n\n"
+            subject = "Subject: Slot booking confirmation\n\n"
             msg = "Your slot has been booked with Dr. " + doctor_name.fname + " " + doctor_name.lname + " on " + date
             message = from_ + to + subject + msg
             config.logger.log("INFO", "Notifying patients")
@@ -77,7 +77,7 @@ class Notification:
             fetch_search_history_query = "select patient_email from medhub.history where doctor_email = '" + doctor_email + "' date > '" + time_limit_string + "' allow filtering"
             fetch_search_history = {i.patient_email for i in config.cassandra.session.execute(fetch_search_history_query).all()}
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
-            doctor_name = config.cassandra.session.execute(doctor_name_query).execute().one()
+            doctor_name = config.cassandra.session.execute(doctor_name_query).one()
             for patient in fetch_search_history:
                 patient_name_query = "select fname,lname from medhub.user where email = '" + patient + "' allow filtering"
                 patient_name = config.cassandra.session.execute(patient_name_query).one()
