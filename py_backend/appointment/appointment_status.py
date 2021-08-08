@@ -45,7 +45,7 @@ class BookCancelReschedule:
         :return: True , if cancellation is successful else False
         """
         try:
-            difference = Convert().convert_str_to_timestamp(date) - datetime.datetime.now()
+            difference = datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%S") - datetime.datetime.now()
             if difference.days >= 3:
                 new_val = {
                     "patient_email": "NA",
