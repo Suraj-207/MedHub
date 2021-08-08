@@ -19,7 +19,7 @@ class BookCancelReschedule:
         """
         try:
             new_val = {
-                "session": "pending",
+                "status": "pending",
                 "issue": issue
             }
             condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
@@ -47,7 +47,7 @@ class BookCancelReschedule:
             difference = Convert().convert_str_to_timestamp(date) - datetime.datetime.now()
             if difference.days >= 3:
                 new_val = {
-                    "session": "cancelled"
+                    "status": "NA"
                 }
                 condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
                 res = config.cassandra.update("medhub.appointment", new_val, condition)
@@ -84,7 +84,7 @@ class BookCancelReschedule:
             if status == 'cancel':
                 for patient in patients:
                     new_val = {
-                        "session": "cancelled"
+                        "status": "cancelled"
                     }
                     condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
                                                                                                        patient['email'],
@@ -110,7 +110,7 @@ class BookCancelReschedule:
                     cancellation = True
                 for i in range(count):
                     new_val = {
-                        "session": "rescheduled"
+                        "status": "rescheduled"
                     }
                     condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
                                                                                                        patients[i][
@@ -119,7 +119,7 @@ class BookCancelReschedule:
                                                                                                            'date'])
                     res = config.cassandra.update("medhub.appointment", new_val, condition)
                     new_val_1 = {
-                        "session": "pending",
+                        "status": "pending",
                         "patient_email": patients[i]['email'],
                         "issue": patients[i]['issue']
                     }
@@ -132,7 +132,7 @@ class BookCancelReschedule:
                 if cancellation:
                     for patient in patients[count:]:
                         new_val = {
-                            "session": "cancelled"
+                            "status": "cancelled"
                         }
                         condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
                                                                                                            patient['email'],
