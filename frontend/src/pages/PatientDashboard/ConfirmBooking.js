@@ -13,10 +13,67 @@ const ConfirmBooking = () => {
   const { props } = useLocation();
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState();
+  const [fullDate, setFullDate] = useState();
+  const [slot, setSlot] = useState("");
+  const [status, setStatus] = useState(false);
   const [value, onChange] = useState(new Date());
   const [formState, inputHandler, setFormData] = useForm();
   const auth = useContext(AuthContext);
   let maxDate, year, month, date;
+
+  const fieldHandler = (e) => {
+    setStatus(true);
+    console.log(e.target.value);
+    setSlot(e.target.value);
+  };
+
+  const inputChangeHandler = (e) => {
+    console.log(e.target.value);
+  };
+
+  const confirmBookingHandler = () => {
+    let fetchData;
+    try {
+      fetchData = async () => {
+        const data = {
+          token: auth.token,
+          doctor_email: props.email,
+          date: fullDate,
+          issue: formState.inputs.issue.value,
+          time: slot,
+        };
+        const response = await fetch(
+          "http://localhost:5000/api/book-slot",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const result = await response.json();
+        if (result === null) {
+          // setErr(true);
+          setLoad(false);
+          console.log("unidentified token");
+        } else {
+          //auth.login(result.user, result.token);
+          console.log(result);
+          if (result) {
+            console.log("1");
+          }
+          console.log("done");
+        }
+        if (response.ok) {
+          console.log("done");
+        }
+      };
+    } catch (err) {
+      console.log(err);
+    }
+    fetchData();
+  };
 
   const manageDate = (result) => {
     console.log(result.length - 1);
@@ -31,14 +88,15 @@ const ConfirmBooking = () => {
     const month = parseInt(value.toLocaleDateString().split("/")[0]);
     const date = parseInt(value.toLocaleDateString().split("/")[1]);
     const year = parseInt(value.toLocaleDateString().split("/")[2]);
-    const fullDate = `${year}-${month < 10 ? 0 : ""}${month}-${
+    const newDate = `${year}-${month < 10 ? 0 : ""}${month}-${
       date < 10 ? 0 : ""
     }${date}`;
+    setFullDate(newDate);
     console.log(formState.inputs.issue.value);
     let fetchData;
     try {
       fetchData = async () => {
-        const data = { token: auth.token, email: props.email, date: fullDate };
+        const data = { token: auth.token, email: props.email, date: newDate };
         const response = await fetch(
           "http://localhost:5000/api/fetch-na-appointments",
           {
@@ -72,45 +130,7 @@ const ConfirmBooking = () => {
     }
     fetchData();
   };
-  // useEffect(() => {
-  //   setLoad(true);
-  //   let fetchData;
-  //   try {
-  //     fetchData = async () => {
-  //       const data = { token: auth.token, email: props.referrer };
-  //       const response = await fetch(
-  //         "http://localhost:5000/api/fetch-na-appointments",
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify(data),
-  //         }
-  //       );
-  //       const result = await response.json();
-  //       if (result === null) {
-  //         // setErr(true);
-  //         setLoad(false);
-  //         console.log("unidentified token");
-  //       } else {
-  //         //auth.login(result.user, result.token);
-  //         console.log(result);
-  //         setDetails(result);
-  //         manageDate(result);
-  //         console.log("done");
-  //         //   setDetailsHandler(result);
-  //         setLoad(false);
-  //       }
-  //       if (response.ok) {
-  //         console.log("done");
-  //       }
-  //     };
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  //   fetchData();
-  // }, [auth.token]);
+
   return (
     <div className="confirm">
       <div>{load && <LoadingSpinner asOverlay />} </div>
@@ -119,12 +139,6 @@ const ConfirmBooking = () => {
           <div className="confirm_form">
             <h3>Confirm your booking with Dr. {props.fname}</h3>
           </div>
-          {/* <div className="confirm_form">
-              <p>
-                Dr {props.fname} conducts one session of{" "}
-                {details[0].session} hour.
-              </p>
-            </div> */}
           <div className="confirm_form">
             <Input
               placeholder="Please mention your issue here"
@@ -143,7 +157,6 @@ const ConfirmBooking = () => {
               minDate={new Date()}
               format="y-MM-dd"
               // maxDate={new Date(details[details.length - 1].start)}
-              // disableClock={true}
             />
           </div>
           <div>
@@ -152,23 +165,29 @@ const ConfirmBooking = () => {
             </Button>
           </div>
           {details && <h1>Each appointment is of {details[0].session}</h1>}
-          <div className="slot_time">
-            {details &&
+          <div className="slot_time" onClick={fieldHandler}>
+            {details ?
               details.map((item, index) => {
                 return (
-                  <Button disabled={!formState.isValid}>{item.start}</Button>
+                  <button
+                    className="slot_time_button"
+                    key={index}
+                    onChange={inputChangeHandler}
+                    value={item.start}
+                  >
+                    {item.start}
+                  </button>
                 );
-              })}
+              }): <p>No slots available for specified date.</p>}
           </div>
-          {details && (
+          <div>{status && <h1>You selected {slot} slot. </h1>}</div>
+          {status && slot && (
             <div>
-              <Button> Cofirm booking</Button>
+              <Button onClick={confirmBookingHandler}> Cofirm booking</Button>
             </div>
           )}
         </div>
       </React.Fragment>
-
-      {/* <h1>{props}</h1> */}
     </div>
   );
 };

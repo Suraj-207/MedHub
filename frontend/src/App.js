@@ -10,6 +10,7 @@ import { useAuth } from "./shared/hooks/auth-hook";
 import PatientProfile from "./pages/PatientDashboard/PatientProfile";
 import PatientHome from "./pages/PatientDashboard/PatientHome";
 import ConfirmBooking from "./pages/PatientDashboard/ConfirmBooking";
+import Notification from "./pages/PatientDashboard/Notification";
 
 function App() {
   const {token, login, logout, load, isToken, userId} = useAuth();
@@ -52,6 +53,7 @@ function App() {
         </Route>
         <Route path="/patient/notification" exact>
           <MainNavigation />
+          <Notification />
         </Route>
         <Route path="/patient/profile" exact>
           <MainNavigation />

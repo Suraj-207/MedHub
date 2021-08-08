@@ -47,10 +47,11 @@ class Notification:
         :return: None
         """
         try:
+            print(1)
             patient_name_query = "select fname,lname from medhub.user where email = '" + patient_email + "' allow filtering"
-            patient_name = config.cassandra.session.execute(patient_name_query).execute().one()
+            patient_name = config.cassandra.session.execute(patient_name_query).one()
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
-            doctor_name = config.cassandra.session.execute(doctor_name_query).execute().one()
+            doctor_name = config.cassandra.session.execute(doctor_name_query).one()
             from_ = "From: MedHub <{}>\n".format(self.sender_email)
             to = "To: {} <{}>\n".format(patient_name.fname + " " + patient_name.lname, patient_email)
             subject = "Subject: Free slot available\n\n"
@@ -79,7 +80,7 @@ class Notification:
             doctor_name = config.cassandra.session.execute(doctor_name_query).execute().one()
             for patient in fetch_search_history:
                 patient_name_query = "select fname,lname from medhub.user where email = '" + patient + "' allow filtering"
-                patient_name = config.cassandra.session.execute(patient_name_query).execute().one()
+                patient_name = config.cassandra.session.execute(patient_name_query).one()
                 current_appointment_search = "select start from medhub.appointment where patient_email = '" + patient + "' allow filtering"
                 current_appointment_execute = config.cassandra.session.execute(current_appointment_search).all()
                 from_ = "From: MedHub <{}>\n".format(self.sender_email)
@@ -105,9 +106,9 @@ class Notification:
         """
         try:
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
-            doctor_name = config.cassandra.session.execute(doctor_name_query).execute().one()
+            doctor_name = config.cassandra.session.execute(doctor_name_query).one()
             patient_name_query = "select fname,lname from medhub.user where email = '" + patient + "' allow filtering"
-            patient_name = config.cassandra.session.execute(patient_name_query).execute().one()
+            patient_name = config.cassandra.session.execute(patient_name_query).one()
             from_ = "From: MedHub <{}>\n".format(self.sender_email)
             to = "To: {} <{}>\n".format(patient_name.fname + " " + patient_name.lname, patient['email'])
             subject = "Subject: Cancellation of appointment\n\n"
@@ -127,9 +128,9 @@ class Notification:
         """
         try:
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
-            doctor_name = config.cassandra.session.execute(doctor_name_query).execute().one()
+            doctor_name = config.cassandra.session.execute(doctor_name_query).one()
             patient_name_query = "select fname,lname from medhub.user where email = '" + patient + "' allow filtering"
-            patient_name = config.cassandra.session.execute(patient_name_query).execute().one()
+            patient_name = config.cassandra.session.execute(patient_name_query).one()
             from_ = "From: MedHub <{}>\n".format(self.sender_email)
             to = "To: {} <{}>\n".format(patient_name.fname + " " + patient_name.lname, patient['email'])
             subject = "Subject: Rescheduling of appointment\n\n"

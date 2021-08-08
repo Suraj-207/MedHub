@@ -1,28 +1,59 @@
-.datetimepicker{
-    margin-right: 500px;
+.datetimepicker {
+  margin-right: 500px;
 }
 
-.confirm{
-    border: 2px solid black;
-    display: flex;
-    margin-left: 450px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 50vw;
-    margin-top: 100px;
+.confirm {
+  border: 2px solid black;
+  display: flex;
+  margin-left: 450px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  margin-top: 100px;
 }
 
-.confirm_form{
-    margin: 20px;
+.confirm_form {
+  margin: 20px;
 }
 
-.card{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;  
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.slot_time{
-    margin-bottom: 30px;
+.slot_time {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.slot_time_button {
+  margin: 1rem;
+  display: flex;
+  border-radius: 6px;
+  flex-wrap: wrap;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  font-family: Arial;
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  color: #ffffff;
+}
+
+.slot_time_button:hover{
+    background: #3cb0fd;
+    cursor: pointer;
+}
+
+.slot_time_active{
+    margin: 1rem;
+  display: flex;
+  border-radius: 6px;
+  flex-wrap: wrap;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  font-family: Arial;
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  color: darkblue;
 }
