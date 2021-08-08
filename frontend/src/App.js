@@ -13,6 +13,7 @@ import ConfirmBooking from "./pages/PatientDashboard/ConfirmBooking";
 import Notification from "./pages/PatientDashboard/Notification";
 import Appointment from "./pages/PatientDashboard/Appointment";
 import DoctorAppointment from "./pages/DoctorDashboard/DoctorAppointment";
+import TakeLeave from "./pages/DoctorDashboard/TakeLeave";
 
 function App() {
   const {token, login, logout, load, isToken, userId} = useAuth();
@@ -30,6 +31,7 @@ function App() {
         </Route>
         <Route path="/doctor/leave" exact>
           <MainNavigation />
+          <TakeLeave />
         </Route>
         <Route path="/doctor/profile" exact>
           <MainNavigation />

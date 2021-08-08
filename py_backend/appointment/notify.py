@@ -74,7 +74,7 @@ class Notification:
         try:
             time_limit = datetime.date.today() - datetime.timedelta(days=15)
             time_limit_string = time_limit.isoformat()
-            fetch_search_history_query = "select patient_email from medhub.history where doctor_email = '" + doctor_email + "' date > '" + time_limit_string + "' allow filtering"
+            fetch_search_history_query = "select patient_email from medhub.history where doctor_email = '" + doctor_email + "' and date > '" + time_limit_string + "' allow filtering"
             fetch_search_history = {i.patient_email for i in config.cassandra.session.execute(fetch_search_history_query).all()}
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
             doctor_name = config.cassandra.session.execute(doctor_name_query).one()
@@ -92,7 +92,7 @@ class Notification:
                     self.notify_automate(doctor_email, patient, message, msg)
                 else:
                     current_appointment = [i.start for i in current_appointment_execute]
-                    if max(current_appointment) > Convert().convert_str_to_timestamp(free_slot):
+                    if max(current_appointment) > datetime.datetime.strptime(free_slot, "%Y-%m-%dT%H:%M:%S"):
                         self.notify_automate(doctor_email, patient, message, msg)
         except Exception as e:
             config.logger.log("ERROR", str(e))
