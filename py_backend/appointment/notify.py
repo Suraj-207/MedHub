@@ -74,7 +74,7 @@ class Notification:
         try:
             time_limit = datetime.date.today() - datetime.timedelta(days=15)
             time_limit_string = time_limit.isoformat()
-            fetch_search_history_query = "select patient_email from medhub.history where doctor_email = '" + doctor_email + "' date > '" + time_limit_string + "' allow filtering"
+            fetch_search_history_query = "select patient_email from medhub.history where doctor_email = '" + doctor_email + "' and date > '" + time_limit_string + "' allow filtering"
             fetch_search_history = {i.patient_email for i in config.cassandra.session.execute(fetch_search_history_query).all()}
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
             doctor_name = config.cassandra.session.execute(doctor_name_query).one()
