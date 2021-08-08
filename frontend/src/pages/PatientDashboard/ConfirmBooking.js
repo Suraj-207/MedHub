@@ -28,11 +28,13 @@ const ConfirmBooking = () => {
     console.log(month);
   };
   const handleSubmit = () => {
-    const month = parseInt(value.toLocaleDateString().split("/")[0])
-    const date = parseInt(value.toLocaleDateString().split("/")[1])
-    const year = parseInt(value.toLocaleDateString().split("/")[2])
-    const fullDate = `${year}-${month<10? 0:""}${month}-${date<10? 0:""}${date}`
-    console.log(formState.inputs.issue.value)
+    const month = parseInt(value.toLocaleDateString().split("/")[0]);
+    const date = parseInt(value.toLocaleDateString().split("/")[1]);
+    const year = parseInt(value.toLocaleDateString().split("/")[2]);
+    const fullDate = `${year}-${month < 10 ? 0 : ""}${month}-${
+      date < 10 ? 0 : ""
+    }${date}`;
+    console.log(formState.inputs.issue.value);
     let fetchData;
     try {
       fetchData = async () => {
@@ -57,10 +59,9 @@ const ConfirmBooking = () => {
           console.log(result);
           if (result) {
             console.log("1");
-
           }
           setDetails(result);
-          console.log("done"); 
+          console.log("done");
         }
         if (response.ok) {
           console.log("done");
@@ -70,7 +71,6 @@ const ConfirmBooking = () => {
       console.log(err);
     }
     fetchData();
-
   };
   // useEffect(() => {
   //   setLoad(true);
@@ -114,47 +114,59 @@ const ConfirmBooking = () => {
   return (
     <div className="confirm">
       <div>{load && <LoadingSpinner asOverlay />} </div>
-        <React.Fragment>
-          <div className="card">
-            <div className="confirm_form">
-              <h3>
-                Confirm your booking with Dr. {props.fname}
-              </h3>
-            </div>
-            {/* <div className="confirm_form">
+      <React.Fragment>
+        <div className="card">
+          <div className="confirm_form">
+            <h3>Confirm your booking with Dr. {props.fname}</h3>
+          </div>
+          {/* <div className="confirm_form">
               <p>
                 Dr {props.fname} conducts one session of{" "}
                 {details[0].session} hour.
               </p>
             </div> */}
-            <div className="confirm_form">
-              <Input
-                placeholder="Please mention your issue here"
-                label="Medical issue"
-                onInput={inputHandler}
-                id="issue"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please fill the above field"
-              />
-            </div>
-            <div className="confirm_form">
-              <p>Please confirm your slot.</p>
-              <DatePicker
-                onChange={onChange}
-                value={value}
-                minDate={new Date()}
-                format="y-MM-dd"
-                // maxDate={new Date(details[details.length - 1].start)}
-                // disableClock={true}
-              />
-            </div>
-            <div>
-              <Button onClick={handleSubmit} disabled={!formState.isValid}  >
-                Confirm
-              </Button>
-            </div>
+          <div className="confirm_form">
+            <Input
+              placeholder="Please mention your issue here"
+              label="Medical issue"
+              onInput={inputHandler}
+              id="issue"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please fill the above field"
+            />
           </div>
-        </React.Fragment>
+          <div className="confirm_form">
+            <p>Please confirm your slot.</p>
+            <DatePicker
+              onChange={onChange}
+              value={value}
+              minDate={new Date()}
+              format="y-MM-dd"
+              // maxDate={new Date(details[details.length - 1].start)}
+              // disableClock={true}
+            />
+          </div>
+          <div>
+            <Button onClick={handleSubmit} disabled={!formState.isValid}>
+              Check for slot
+            </Button>
+          </div>
+          {details && <h1>Each appointment is of {details[0].session}</h1>}
+          <div className="slot_time">
+            {details &&
+              details.map((item, index) => {
+                return (
+                  <Button disabled={!formState.isValid}>{item.start}</Button>
+                );
+              })}
+          </div>
+          {details && (
+            <div>
+              <Button> Cofirm booking</Button>
+            </div>
+          )}
+        </div>
+      </React.Fragment>
 
       {/* <h1>{props}</h1> */}
     </div>
