@@ -24,7 +24,7 @@ class BookCancelReschedule:
             }
             condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
                                                                                                patient_email, date)
-            res = config.cassandra.update("medhub.doctor", new_val, condition)
+            res = config.cassandra.update("medhub.appointment", new_val, condition)
             if res:
                 # Notification().notify_book_slot(doctor_email, patient_email, date)
                 threading.Thread(target=Notification().notify_book_slot, args=(doctor_email, patient_email, date)).start()
@@ -53,7 +53,7 @@ class BookCancelReschedule:
                 }
                 condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
                                                                                                    patient_email, date)
-                res = config.cassandra.update("medhub.doctor", new_val, condition)
+                res = config.cassandra.update("medhub.appointment", new_val, condition)
                 if res:
                     # Notification().notify_open_slots(doctor_email, date)
                     threading.Thread(target=Notification().notify_open_slots, args=(doctor_email, date)).start()
@@ -92,7 +92,7 @@ class BookCancelReschedule:
                     condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
                                                                                                        patient['email'],
                                                                                                        patient['date'])
-                    res = config.cassandra.update("medhub.doctor", new_val, condition)
+                    res = config.cassandra.update("medhub.appointment", new_val, condition)
                     if res:
                         # Notification().notify_cancelled_slots(doctor_email, patient)
                         threading.Thread(target=Notification().notify_cancelled_slots, args=(doctor_email, patient)).start()
@@ -120,7 +120,7 @@ class BookCancelReschedule:
                                                                                                            'email'],
                                                                                                        patients[i][
                                                                                                            'date'])
-                    res = config.cassandra.update("medhub.doctor", new_val, condition)
+                    res = config.cassandra.update("medhub.appointment", new_val, condition)
                     new_val_1 = {
                         "session": "pending",
                         "patient_email": patients[i]['email'],
@@ -128,7 +128,7 @@ class BookCancelReschedule:
                     }
                     patients[i]['new_date'] = res[0]
                     condition_1 = "doctor_email = '{}' and start = '{}'".format(doctor_email, patients[i]['email'], patients[i]['date'])
-                    res_1 = config.cassandra.update("medhub.doctor", new_val_1, condition_1)
+                    res_1 = config.cassandra.update("medhub.appointment", new_val_1, condition_1)
                     if res and res_1:
                         # Notification().notify_rescheduled_slots(doctor_email, patients[i])
                         threading.Thread(target=Notification().notify_rescheduled_slots, args=(doctor_email, patients[i])).start()
@@ -140,7 +140,7 @@ class BookCancelReschedule:
                         condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
                                                                                                            patient['email'],
                                                                                                            patient['date'])
-                        res_2 = config.cassandra.update("medhub.doctor", new_val, condition)
+                        res_2 = config.cassandra.update("medhub.appointment", new_val, condition)
                         if res_2:
                             # Notification().notify_cancelled_slots(doctor_email, patient)
                             threading.Thread(target=Notification().notify_cancelled_slots, args=(doctor_email, patient)).start()
