@@ -36,10 +36,9 @@ class BookCancelReschedule:
 
 
     @staticmethod
-    def patient_cancel(patient_email, date, doctor_email):
+    def patient_cancel(date, doctor_email):
         """
 
-        :param patient_email: email address of patient
         :param date: date of cancellation
         :param doctor_email: email address of doctor whose appointment is to be cancelled
         :return: True , if cancellation is successful else False
@@ -50,8 +49,7 @@ class BookCancelReschedule:
                 new_val = {
                     "session": "cancelled"
                 }
-                condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
-                                                                                                   patient_email, date)
+                condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
                 res = config.cassandra.update("medhub.appointment", new_val, condition)
                 if res:
                     # Notification().notify_open_slots(doctor_email, date)

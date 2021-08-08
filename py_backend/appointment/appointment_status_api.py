@@ -30,8 +30,8 @@ class CancelSlot(Resource):
             date = request.get_json()['date']
             decoded = Token().validate_token(token)
             if decoded['valid']:
-                patient_email = decoded['decoded_token']['email']
-                return BookCancelReschedule().patient_cancel(patient_email, date, doctor_email)
+                # patient_email = decoded['decoded_token']['email']
+                return BookCancelReschedule().patient_cancel(date, doctor_email)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
