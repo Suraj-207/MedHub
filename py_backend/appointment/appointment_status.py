@@ -19,6 +19,7 @@ class BookCancelReschedule:
         """
         try:
             new_val = {
+                "patient_email": patient_email,
                 "status": "pending",
                 "issue": issue
             }
@@ -47,7 +48,9 @@ class BookCancelReschedule:
             difference = Convert().convert_str_to_timestamp(date) - datetime.datetime.now()
             if difference.days >= 3:
                 new_val = {
-                    "status": "NA"
+                    "patient_email": "NA",
+                    "status": "NA",
+                    "issue": "NA"
                 }
                 condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
                 res = config.cassandra.update("medhub.appointment", new_val, condition)
