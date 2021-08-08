@@ -231,8 +231,8 @@ class FetchFilter:
             query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' and " \
                                         "start >= '" + date + "' and start < '" + next_day + "' allow filtering "
             res = []
-            fetch_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "'"
-            fetch_name = config.cassandra.session.execute(fetch_name_query).one()
+            # fetch_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "'"
+            # fetch_name = config.cassandra.session.execute(fetch_name_query).one()
             history_record = {
                 "doctor_email": doctor_email,
                 "patient_email": patient_email,
@@ -242,14 +242,8 @@ class FetchFilter:
             config.cassandra.insert_one("medhub.history", history_record)
             for row in config.cassandra.session.execute(query).all():
                 res.append({
-                    "fname": fetch_name.fname,
-                    "lname": fetch_name.lname,
-                    "email": doctor_email,
-                    "start": row.start.isoformat(),
+                    "start": row.start.isoformat().split('T')[1][:-3],
                     "session": row.session,
-                    "appt_id": row.appt_id,
-                    "status": row.status,
-                    "issue": row.issue
                 })
             res = sorted(res, key=lambda x: x['start'])
             return res
