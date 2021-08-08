@@ -229,7 +229,7 @@ class FetchFilter:
             next_day = datetime.date.fromisoformat(date) + datetime.timedelta(days=1)
             next_day = next_day.isoformat()
             query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' and " \
-                                        "start >= '" + date + " and start < " + next_day + "' allow filtering "
+                                        "start >= '" + date + "' and start < '" + next_day + "' allow filtering "
             res = []
             fetch_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "'"
             fetch_name = config.cassandra.session.execute(fetch_name_query).one()
