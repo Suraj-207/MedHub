@@ -33,6 +33,7 @@ class Notification:
                 "doctor_email": doctor_email
             }
             config.cassandra.insert_one("medhub.notification", notify_record)
+            config.logger.log("INFO", "Sending mail...")
             SendMail(self.sender_email, self.sender_password, patient_email, message).send()
         except Exception as e:
             config.logger.log("ERROR", str(e))
@@ -55,6 +56,7 @@ class Notification:
             subject = "Subject: Free slot available\n\n"
             msg = "Your slot has been booked with Dr. " + doctor_name.fname + " " + doctor_name.lname + " on " + date
             message = from_ + to + subject + msg
+            config.logger.log("INFO", "Notifying patients")
             self.notify_automate(doctor_email, patient_email, message, msg)
         except Exception as e:
             config.logger.log("ERROR", str(e))
