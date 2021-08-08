@@ -22,8 +22,7 @@ class BookCancelReschedule:
                 "session": "pending",
                 "issue": issue
             }
-            condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
-                                                                                               patient_email, date)
+            condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
             res = config.cassandra.update("medhub.appointment", new_val, condition)
             if res:
                 # Notification().notify_book_slot(doctor_email, patient_email, date)
