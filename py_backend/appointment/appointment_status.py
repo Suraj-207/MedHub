@@ -89,9 +89,7 @@ class BookCancelReschedule:
                     new_val = {
                         "status": "cancelled"
                     }
-                    condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
-                                                                                                       patient['email'],
-                                                                                                       patient['date'])
+                    condition = "doctor_email = '{}' and and start = '{}'".format(doctor_email, patient['date'])
                     res = config.cassandra.update("medhub.appointment", new_val, condition)
                     if res:
                         # Notification().notify_cancelled_slots(doctor_email, patient)
@@ -115,11 +113,7 @@ class BookCancelReschedule:
                     new_val = {
                         "status": "rescheduled"
                     }
-                    condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
-                                                                                                       patients[i][
-                                                                                                           'email'],
-                                                                                                       patients[i][
-                                                                                                           'date'])
+                    condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, patients[i]['date'])
                     res = config.cassandra.update("medhub.appointment", new_val, condition)
                     new_val_1 = {
                         "status": "pending",
@@ -127,7 +121,7 @@ class BookCancelReschedule:
                         "issue": patients[i]['issue']
                     }
                     patients[i]['new_date'] = res[0]
-                    condition_1 = "doctor_email = '{}' and start = '{}'".format(doctor_email, patients[i]['email'], patients[i]['date'])
+                    condition_1 = "doctor_email = '{}' and start = '{}'".format(doctor_email, patients[i]['date'])
                     res_1 = config.cassandra.update("medhub.appointment", new_val_1, condition_1)
                     if res and res_1:
                         # Notification().notify_rescheduled_slots(doctor_email, patients[i])
@@ -137,9 +131,7 @@ class BookCancelReschedule:
                         new_val = {
                             "status": "cancelled"
                         }
-                        condition = "doctor_email = '{}' and patient_email = '{}' and start = '{}'".format(doctor_email,
-                                                                                                           patient['email'],
-                                                                                                           patient['date'])
+                        condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, patient['date'])
                         res_2 = config.cassandra.update("medhub.appointment", new_val, condition)
                         if res_2:
                             # Notification().notify_cancelled_slots(doctor_email, patient)
@@ -150,6 +142,25 @@ class BookCancelReschedule:
                     return False
         except Exception as e:
             config.logger.log("ERROR", str(e))
+
+    @staticmethod
+    def doctor_complete(doctor_email, date, diagnosis, prescription):
+        try:
+            new_val = {
+                "status": "completed",
+                "diagnosis": diagnosis,
+                "prescription": prescription
+            }
+            condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
+            res = config.cassandra.update("medhub.appointment", new_val, condition)
+            if res:
+                return True
+            return False
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+            return False
+
+
 
 
 
