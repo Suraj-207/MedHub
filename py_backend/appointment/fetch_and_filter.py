@@ -218,7 +218,7 @@ class FetchFilter:
             config.logger.log("ERROR", str(e))
 
     @staticmethod
-    def fetch_na_appointments(doctor_email, patient_email):
+    def fetch_na_appointments(doctor_email, patient_email, date):
         """
 
         :param doctor_email: email address of doctor
@@ -226,8 +226,10 @@ class FetchFilter:
         :return: available appointments of the doctor in ascending order
         """
         try:
+            next_day = datetime.date.fromisoformat(date) + datetime.timedelta(days=1)
+            next_day = next_day.isoformat()
             query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' and " \
-                                        "start > '" + datetime.datetime.now().isoformat()[:-7] + "' allow filtering "
+                                        "start >= '" + date + " and start < " + next_day + "' allow filtering "
             res = []
             fetch_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "'"
             fetch_name = config.cassandra.session.execute(fetch_name_query).one()
