@@ -1,0 +1,16 @@
+.notification {
+  margin-top: 5.625rem;
+  margin-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.notification_details{
+    font-family: cursive;
+    font-size: large;
+    border: 2px solid #2965e6;
+    background-color: #cfd6e6;
+    padding: 20px;
+}

@@ -190,13 +190,13 @@ class FetchFilter:
                     next_date = datetime.date.fromisoformat(changes['date']) + datetime.timedelta(days=1)
                     next_date = next_date.isoformat()
                     date_condition = " and start >= '" + changes['date'] + "' and start < '" + next_date + "'"
-            fetch_appt_info_query = "select * from medhub.appointment where patient_email = '" + patient_email + "'" + + date_condition + " allow filtering;"
+            fetch_appt_info_query = "select * from medhub.appointment where patient_email = '" + patient_email + "'" + date_condition + " allow filtering;"
             fetch_appt_info = config.cassandra.session.execute(fetch_appt_info_query).all()
             res = []
             for appt in fetch_appt_info:
-                fetch_info_query = "select speciality,experience from medhub.doctor where email = '" + appt.doctor_email + "'"
+                fetch_info_query = "select speciality,experience from medhub.doctor where email = '" + appt.doctor_email + "' allow filtering"
                 fetch_info = config.cassandra.session.execute(fetch_info_query).one()
-                fetch_name_query = "select fname,lname from medhub.user where email = '" + appt.doctor_email + "'"
+                fetch_name_query = "select fname,lname from medhub.user where email = '" + appt.doctor_email + "' allow filtering"
                 fetch_name = config.cassandra.session.execute(fetch_name_query).one()
                 res.append({
                     "fname": fetch_name.fname,

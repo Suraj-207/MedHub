@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../../shared/context/AuthContext";
-import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
-import "./Notification.css";
+import React,{useState, useContext, useEffect} from 'react'
+import "./Appointment.css"
+import LoadingSpinner from '../../shared/UIComponent/LoadingSpinner';
+import { AuthContext } from '../../shared/context/AuthContext';
 
-const Notification = () => {
-  const auth = useContext(AuthContext);
+const Appointment = () => {
+    const auth = useContext(AuthContext);
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState();
 
@@ -15,7 +15,7 @@ const Notification = () => {
       fetchData = async () => {
         const data = { token: auth.token };
         const response = await fetch(
-          "http://localhost:5000/api/notifications",
+          "http://localhost:5000/api/patient-fetch",
           {
             method: "POST",
             headers: {
@@ -46,22 +46,14 @@ const Notification = () => {
     }
     fetchData();
   }, [auth.token]);
+    return (
+        <React.Fragment>
+            <div>{load && <LoadingSpinner asOverlay />} </div>
+        <div>
+            
+        </div>
+        </React.Fragment>
+    )
+}
 
-  return (
-    <React.Fragment>
-      <div>{load && <LoadingSpinner asOverlay />} </div>
-      <div className="notification">
-        {details &&
-          details.map((item, index) => {
-            return (
-              <div className="notification_details">
-                <p>{item.message}</p>
-              </div>
-            );
-          })}
-      </div>
-    </React.Fragment>
-  );
-};
-
-export default Notification;
+export default Appointment
