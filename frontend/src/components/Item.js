@@ -71,7 +71,7 @@ const Item = (props) => {
             <p>Speciality: {props.speciality}</p>
             <Link to={{
                 pathname:"/confirm",
-                props: {referrer: `${props.email}`}
+                props: {email: `${props.email}`,fname: `${props.fname}`, lname: `${props.lname}`}
             }}>
               <h5>Click here to book an appointment</h5>
               </Link>

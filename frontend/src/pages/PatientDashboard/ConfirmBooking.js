@@ -36,7 +36,7 @@ const ConfirmBooking = () => {
     let fetchData;
     try {
       fetchData = async () => {
-        const data = { token: auth.token, email: props.referrer, date: fullDate };
+        const data = { token: auth.token, email: props.email, date: fullDate };
         const response = await fetch(
           "http://localhost:5000/api/fetch-na-appointments",
           {
@@ -118,15 +118,15 @@ const ConfirmBooking = () => {
           <div className="card">
             <div className="confirm_form">
               <h3>
-                Confirm your booking with Dr. {props.referrer.split("_")[0]}
+                Confirm your booking with Dr. {props.fname}
               </h3>
             </div>
-            <div className="confirm_form">
+            {/* <div className="confirm_form">
               <p>
-                {/* Dr {details[0].fname} conducts one session of{" "}
-                {details[0].session} hour. */}
+                Dr {props.fname} conducts one session of{" "}
+                {details[0].session} hour.
               </p>
-            </div>
+            </div> */}
             <div className="confirm_form">
               <Input
                 placeholder="Please mention your issue here"
