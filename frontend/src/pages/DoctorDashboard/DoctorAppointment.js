@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
-import "./Appointment.css";
+import React,{useContext, useEffect, useState} from "react";
+import "./DoctorAppointment.css"
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
 import { AuthContext } from "../../shared/context/AuthContext";
 
-const Appointment = () => {
+const DoctorAppointment = () => {
   const auth = useContext(AuthContext);
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState();
@@ -15,7 +15,7 @@ const Appointment = () => {
       fetchData = async () => {
         const data = { token: auth.token };
         const response = await fetch(
-          "http://localhost:5000/api/patient-fetch",
+          "http://localhost:5000/api/doctor-fetch-upcoming",
           {
             method: "POST",
             headers: {
@@ -54,8 +54,8 @@ const Appointment = () => {
         <table>
           <tbody>
             <tr>
-              <th>Doctor Firstname</th>
-              <th>Doctor Lastname</th>
+              <th>Patient Firstname</th>
+              <th>Patient Lastname</th>
               <th>Issue</th>
               <th>Session length</th>
               <th>Date</th>
@@ -75,9 +75,9 @@ const Appointment = () => {
                     <td>{item.session}</td>
                     <td>{item.start.split("T")[0]}</td>
                     <td>{item.start.split("T")[1].slice(0,5)}</td>
-                    <td>{item.diagnosis}</td>
-                    <td>{item.prescription}</td>
-                    <td><button>Click to Cancel</button></td>
+                    <td><textarea defaultValue={`${item.diagnosis}`} /></td>
+                    <td><textarea defaultValue={`${item.prescription}`} /></td>
+                    <td><button>Mark as Done</button></td>
                   </tr>
                 );
               })}
@@ -89,4 +89,4 @@ const Appointment = () => {
   );
 };
 
-export default Appointment;
+export default DoctorAppointment;

@@ -54,7 +54,7 @@ const Notification = () => {
         {details &&
           details.map((item, index) => {
             return (
-              <div className="notification_details">
+              <div className="notification_details" key={index}>
                 <p>{item.message}</p>
               </div>
             );

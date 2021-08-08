@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useLocation } from "react-router";
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
 import { AuthContext } from "../../shared/context/AuthContext";
@@ -17,10 +17,8 @@ const ConfirmBooking = () => {
   const [slot, setSlot] = useState("");
   const [status, setStatus] = useState(false);
   const [value, onChange] = useState(new Date());
-  const [formState, inputHandler, setFormData] = useForm();
+  const [formState, inputHandler] = useForm();
   const auth = useContext(AuthContext);
-  let maxDate, year, month, date;
-
   const fieldHandler = (e) => {
     setStatus(true);
     console.log(e.target.value);
@@ -75,15 +73,15 @@ const ConfirmBooking = () => {
     fetchData();
   };
 
-  const manageDate = (result) => {
-    console.log(result.length - 1);
-    const ndate = result[result.length - 1].start;
-    maxDate = ndate.split("T")[0].split("-");
-    year = maxDate[0];
-    month = +maxDate[1];
-    date = +maxDate[2];
-    console.log(month);
-  };
+  // const manageDate = (result) => {
+  //   console.log(result.length - 1);
+  //   const ndate = result[result.length - 1].start;
+  //   maxDate = ndate.split("T")[0].split("-");
+  //   year = maxDate[0];
+  //   month = +maxDate[1];
+  //   date = +maxDate[2];
+  //   console.log(month);
+  // };
   const handleSubmit = () => {
     const month = parseInt(value.toLocaleDateString().split("/")[0]);
     const date = parseInt(value.toLocaleDateString().split("/")[1]);

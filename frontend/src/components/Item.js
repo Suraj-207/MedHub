@@ -1,15 +1,15 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import "./Item.css";
-import { AuthContext } from "../shared/context/AuthContext";
-import LoadingSpinner from "../shared/UIComponent/LoadingSpinner";
-import { Link, Redirect, useHistory } from "react-router-dom";
+// import { AuthContext } from "../shared/context/AuthContext";
+// import LoadingSpinner from "../shared/UIComponent/LoadingSpinner";
+import { Link } from "react-router-dom";
 
 const Item = (props) => {
-  const auth = useContext(AuthContext);
-  const [load, setLoad] = useState(false);
-  const [err, setErr] = useState(false);
-  const [details, setDetails] = useState();
-  const history = useHistory();
+  // const auth = useContext(AuthContext);
+  // const [load, setLoad] = useState(false);
+  // const [err, setErr] = useState(false);
+  // const [details, setDetails] = useState();
+  // const history = useHistory();
   const handleClick = () => {
     console.log(props.email);
     // let fetchData;
@@ -54,7 +54,7 @@ const Item = (props) => {
   };
   return (
     <div>
-      <div>{load && <LoadingSpinner asOverlay />} </div>
+      {/* <div>{load && <LoadingSpinner asOverlay />} </div> */}
       <div className="row_data_item" key={props.email}>
         <div className="row_data_single">
           <img

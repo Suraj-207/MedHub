@@ -16,7 +16,6 @@ import Button from "../shared/FormElements/Button";
 
 const SignUp = () => {
   const [accountMode, setaccountMode] = useState(true);
-  const [valid, isValid] = useState(false);
   const history = useHistory();
   const auth = useContext(AuthContext);
   const [formState, inputHandler] = useForm();

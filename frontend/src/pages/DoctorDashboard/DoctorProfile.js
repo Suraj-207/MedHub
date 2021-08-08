@@ -13,7 +13,7 @@ const DoctorProfile = () => {
   const [details, setDetails] = useState({});
   const [load, setLoad] = useState(true);
   const auth = useContext(AuthContext);
-  const [formState, inputHandler, setFormData] = useForm();
+  const [formState, inputHandler] = useForm();
   // {
   //   email: {
   //     value: "",
@@ -149,7 +149,6 @@ const DoctorProfile = () => {
                 <Input
                   element="input"
                   type="text"
-                  element="input"
                   className="input_elements"
                   id="speciality"
                   validators={[VALIDATOR_REQUIRE()]}

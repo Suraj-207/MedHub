@@ -63,7 +63,6 @@ const PatientHome = () => {
                       email={item.email}
                       fname={item.fname}
                       lname={item.lname}
-                      lname={item.price}
                       city={item.city}
                       speciality={item.speciality}
                     />
