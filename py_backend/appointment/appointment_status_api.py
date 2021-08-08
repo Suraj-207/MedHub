@@ -50,3 +50,21 @@ class TakeALeave(Resource):
                 return BookCancelReschedule().doctor_leave(doctor_email, start, end, status)
         except Exception as e:
             config.logger.log("ERROR", str(e))
+
+
+class DoctorComplete(Resource):
+
+    def post(self):
+        try:
+            token = request.get_json()['token']
+            date = request.get_json()['date']
+            diagnosis = request.get_json()['diagnosis']
+            prescription = request.get_json()['prescription']
+            decoded = Token().validate_token(token)
+            if decoded['valid']:
+                doctor_email = decoded['decoded_token']['email']
+                return BookCancelReschedule().doctor_complete(doctor_email, date, diagnosis, prescription)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+
+

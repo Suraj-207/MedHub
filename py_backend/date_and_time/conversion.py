@@ -90,10 +90,12 @@ class Convert:
                     break_end = datetime.datetime.combine(date, Convert().convert_str_to_time(break_end))
                     appointments_before_break = list(iter(map(lambda x: x.astype(datetime.datetime).isoformat(), np.arange(start_time, break_start + datetime.timedelta(seconds=1), datetime.timedelta(hours=hours, minutes=minutes)))))
                     appointments_after_break = list(iter(map(lambda x: x.astype(datetime.datetime).isoformat(), np.arange(break_end, end_time + datetime.timedelta(seconds=1), datetime.timedelta(hours=hours, minutes=minutes)))))
-                    return appointments_before_break[:-1] + appointments_after_break[:-1]
+                    total =  appointments_before_break[:-1] + appointments_after_break[:-1]
+                    return total[:30]
                 else:
                     appointments = list(iter(map(lambda x: x.astype(datetime.datetime).isoformat(), np.arange(start_time, end_time + datetime.timedelta(seconds=1), datetime.timedelta(hours=hours, minutes=minutes)))))
-                    return appointments[:-1]
+                    total = appointments[:-1]
+                    return total[:30]
             else:
                 config.logger.log("CRITICAL", "Please set your appointment timings...")
         except Exception as e:
