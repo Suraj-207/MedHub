@@ -201,6 +201,7 @@ class FetchFilter:
                 res.append({
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
+                    "doctor_email": appt.doctor_email,
                     "speciality": fetch_info.speciality,
                     "experience": fetch_info.experience,
                     "patient_email": appt.patient_email,
