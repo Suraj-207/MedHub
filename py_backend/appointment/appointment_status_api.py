@@ -12,7 +12,7 @@ class BookSlot(Resource):
             token = request.get_json()['token']
             doctor_email = request.get_json()['doctor_email']
             issue = request.get_json()['issue']
-            date = request.get_json()['date']
+            date = request.get_json()['date'] + " " + request.get_json()['time']
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 patient_email = decoded['decoded_token']['email']
