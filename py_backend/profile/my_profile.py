@@ -46,7 +46,8 @@ class Profile:
                         "break_end": row.break_end,
                         "break_start": row.break_start,
                         "end_time": row.end_time,
-                        "start_time": row.start_time
+                        "start_time": row.start_time,
+                        "gender": row.gender
                     }
                     user_dict.update(doctor_dict)
                     return user_dict
@@ -58,7 +59,8 @@ class Profile:
                         "city": row.city,
                         "phone": row.phone,
                         "pin": row.pin,
-                        "state": row.state
+                        "state": row.state,
+                        "gender": row.gender
                     }
                     user_dict.update(patient_dict)
                     return user_dict
@@ -77,6 +79,10 @@ class Profile:
                 user = self.token['decoded_token']['user']
                 condition = "email = '" + email + "'"
                 if user == "doctor":
+                    if 'city' in changes.keys():
+                        changes['city'] = changes['city'].capitalize()
+                    if 'state' in changes.keys():
+                        changes['state'] = changes['state'].capitalize()
                     if 'experience' in changes.keys():
                         changes['experience'] = int(changes['experience'])
                     if changes['session'] != 'NA' and changes['start_time'] != "NA" and changes['end_time'] != "NA":
@@ -99,6 +105,10 @@ class Profile:
                         changes['pin'] = int(changes['pin'])
                     if 'phone' in changes.keys():
                         changes['phone'] = int(changes['phone'])
+                    if 'city' in changes.keys():
+                        changes['city'] = changes['city'].capitalize()
+                    if 'state' in changes.keys():
+                        changes['state'] = changes['state'].capitalize()
                     config.logger.log("INFO", "Updating patients profile")
                     response = config.cassandra.update("medhub.patient", changes, condition)
                     if response:

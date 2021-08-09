@@ -1,5 +1,6 @@
 import datetime
 import config
+from py_backend.geolocation.get_location import Geolocation
 
 
 class FetchFilter:
@@ -17,11 +18,14 @@ class FetchFilter:
                     datetime.date.today().isoformat() + "' allow filtering"
             res = []
             for row in config.cassandra.session.execute(query).all():
-                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
+                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "' allow filtering"
                 fetch_name = config.cassandra.session.execute(fetch_name_query).one()
+                fetch_gender_query = "select gender from medhub.patient where email = '" + row.patient_email + "' allow filtering"
+                fetch_gender = config.cassandra.session.execute(fetch_gender_query).one()
                 res.append({
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
+                    "gender": fetch_gender.gender,
                     "patient_email": row.patient_email,
                     "start": row.start.isoformat(),
                     "session": row.session,
@@ -60,11 +64,14 @@ class FetchFilter:
             query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'pending'" + date_condition + patient_condition + appt_condition + " allow filtering"
             res = []
             for row in config.cassandra.session.execute(query).all():
-                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
+                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "' allow filtering"
                 fetch_name = config.cassandra.session.execute(fetch_name_query).one()
+                fetch_gender_query = "select gender from medhub.patient where email = '" + row.patient_email + "' allow filtering"
+                fetch_gender = config.cassandra.session.execute(fetch_gender_query).one()
                 res.append({
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
+                    "gender": fetch_gender.gender,
                     "patient_email": row.patient_email,
                     "start": row.start.isoformat(),
                     "session": row.session,
@@ -92,11 +99,14 @@ class FetchFilter:
                     datetime.date.today().isoformat() + "' allow filtering "
             res = []
             for row in config.cassandra.session.execute(query).all():
-                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
+                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "' allow filtering"
                 fetch_name = config.cassandra.session.execute(fetch_name_query).one()
+                fetch_gender_query = "select gender from medhub.patient where email = '" + row.patient_email + "' allow filtering"
+                fetch_gender = config.cassandra.session.execute(fetch_gender_query).one()
                 res.append({
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
+                    "gender": fetch_gender.gender,
                     "patient_email": row.patient_email,
                     "start": row.start.isoformat(),
                     "session": row.session,
@@ -135,11 +145,14 @@ class FetchFilter:
             query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'completed'" + date_condition + patient_condition + appt_condition + " allow filtering"
             res = []
             for row in config.cassandra.session.execute(query).all():
-                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "'"
+                fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "' allow filtering"
                 fetch_name = config.cassandra.session.execute(fetch_name_query).one()
+                fetch_gender_query = "select gender from medhub.patient where email = '" + row.patient_email + "' allow filtering"
+                fetch_gender = config.cassandra.session.execute(fetch_gender_query).one()
                 res.append({
                     "fname": fetch_name.fname,
                     "lname": fetch_name.lname,
+                    "gender": fetch_gender.gender,
                     "patient_email": row.patient_email,
                     "start": row.start.isoformat(),
                     "session": row.session,
@@ -250,11 +263,15 @@ class FetchFilter:
             config.logger.log("ERROR", str(e))
 
     @staticmethod
-    def fetch_filter_doctors(patient_email, changes=None):
+    def fetch_filter_doctors(patient_email, longitude=None, latitude=None, city=None, state=None, speciality=None):
         """
 
+        :param speciality: filter by speciality
+        :param state: filter by state
+        :param city: filter by city
+        :param latitude: filter by user's geolocation
+        :param longitude: filter by user's geolocation
         :param patient_email: email address of patient
-        :param changes: filters applied (None by default)
         :return: doctors in descending order of experience that are nearest to the place patient lives in
         """
         try:
@@ -263,29 +280,51 @@ class FetchFilter:
             speciality_condition = ''
             city_condition = " and city = '" + fetch_patient_info.city + "'"
             state_condition = " and state = '" + fetch_patient_info.state + "'"
-            if changes is not None:
-                if changes['speciality'] is not None:
-                    speciality_condition = " and speciality = '" + changes['speciality'] + "'"
-                if changes['city'] is not None:
-                    city_condition = " and city = '" + changes['city'] + "'"
-                if changes['state'] is not None:
-                    state_condition = " and state = '" + changes['state'] + "'"
+            if longitude is not None and latitude is not None:
+                geolocation = Geolocation(longitude, latitude)
+                city_condition = " and city = '" + geolocation.get_city() + "'"
+                state_condition = " and state = '" + geolocation.get_state() + "'"
+            if city is not None:
+                city_condition = " and city = '" + city + "'"
+            if state is not None:
+                state_condition = " and state = '" + state + "'"
+            if speciality is not None:
+                speciality_condition = " and speciality = '" + speciality + "'"
             fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + state_condition + city_condition + speciality_condition + " allow filtering"
-            fetch_doctor = []
-            for row in config.cassandra.session.execute(fetch_doctor_query).all():
-                doctor_name_query = "select * from medhub.user where email = '" + row.email + "'"
-                doctor_name = config.cassandra.session.execute(doctor_name_query).one()
-                fetch_doctor.append({
-                    "email": row.email,
-                    "fname": doctor_name.fname,
-                    "lname": doctor_name.lname,
-                    "speciality": row.speciality,
-                    "experience": row.experience,
-                    "place_of_work": row.pow,
-                    "city": row.city,
-                    "state": row.state
-                })
+            fetch_doctor = FetchFilter().find_doctors(fetch_doctor_query)
+            if len(fetch_doctor) == 0:
+                fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + state_condition + speciality_condition + " allow filtering"
+                fetch_doctor = FetchFilter().find_doctors(fetch_doctor_query)
+                if len(fetch_doctor) == 0:
+                    fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + speciality_condition + " allow filtering"
+                    fetch_doctor = FetchFilter().find_doctors(fetch_doctor_query)
+                    if len(fetch_doctor) == 0:
+                        status = "No doctors found"
+                    else:
+                        status = "No doctors found in your state, showing doctors in the country"
+                else:
+                    status = "No doctors found in your city, showing doctors in your state"
+            else:
+                status = "Doctors found in your city"
             fetch_doctor = sorted(fetch_doctor, key=lambda x: x['experience'], reverse=True)
-            return fetch_doctor
+            return {"status": status, "doctors": fetch_doctor}
         except Exception as e:
             config.logger.log("ERROR", str(e))
+
+    @staticmethod
+    def find_doctors(fetch_doctor_query):
+        fetch_doctor = []
+        for row in config.cassandra.session.execute(fetch_doctor_query).all():
+            doctor_name_query = "select * from medhub.user where email = '" + row.email + "' allow filtering"
+            doctor_name = config.cassandra.session.execute(doctor_name_query).one()
+            fetch_doctor.append({
+                "email": row.email,
+                "fname": doctor_name.fname,
+                "lname": doctor_name.lname,
+                "speciality": row.speciality,
+                "experience": row.experience,
+                "place_of_work": row.pow,
+                "city": row.city,
+                "state": row.state
+            })
+        return fetch_doctor

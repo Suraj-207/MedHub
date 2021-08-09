@@ -35,8 +35,8 @@ class Registration:
                     "experience": int(record['experience']),
                     "pow": record['place_of_work'],
                     "proof": record['proof'],
-                    "city": record['city'],
-                    "state": record['state'],
+                    "city": record['city'].capitalize(),
+                    "state": record['state'].capitalize(),
                     "active": False,
                     "time_set": False,
                     "break_end": "NA",
@@ -44,16 +44,18 @@ class Registration:
                     "end_time": "NA",
                     "start_time": "NA",
                     "session": "NA"
+                    # "gender": record['gender']
                 }
                 msg = "Welcome to Medhub, {} {}. We are glad to welcome you to our community.\n".format("Dr.", record['fname'] + " " + record['lname'])
                 self.message = from_ + to + subject + msg
             else:
                 self.info_record = {
                     "email": record['email'],
-                    "city": record['city'],
-                    "state": record['state'],
+                    "city": record['city'].capitalize(),
+                    "state": record['state'].capitalize(),
                     "pin": int(record['pin']),
                     "phone": int(record['phone'])
+                    # "gender": record['gender']
                 }
                 msg = "Welcome to Medhub, {}. We are glad to welcome you to our community.\n".format(record['fname'] + " " + record['lname'])
                 self.message = from_ + to + subject + msg
