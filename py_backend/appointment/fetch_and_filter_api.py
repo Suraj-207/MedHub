@@ -135,7 +135,7 @@ class FilterDoctors(Resource):
             token = request.get_json()['token']
             city = request.get_json()['city'].capitalize()
             state = request.get_json()['state'].capitalize()
-            speciality = request.get_json()['speciality']
+            speciality = request.get_json()['speciality'].capitalize()
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
