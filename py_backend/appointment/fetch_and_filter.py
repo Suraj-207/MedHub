@@ -232,8 +232,6 @@ class FetchFilter:
             query = "select * from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' and " \
                                         "start >= '" + date + "' and start < '" + next_day + "' allow filtering "
             res = []
-            # fetch_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "'"
-            # fetch_name = config.cassandra.session.execute(fetch_name_query).one()
             history_record = {
                 "doctor_email": doctor_email,
                 "patient_email": patient_email,
