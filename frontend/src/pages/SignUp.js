@@ -29,7 +29,8 @@ const SignUp = () => {
   let fetchData;
 
   const dropdownHandler = () => {
-    if (region && country) setState((prev) => !prev);
+    if(region && country)
+      setState(prev => !prev);
 
     console.log(1);
   };
@@ -389,7 +390,7 @@ const SignUp = () => {
         <Button
           onClick={handleSubmit}
           type="submit"
-          disabled={state ? !formState.isValid : true}
+          disabled={state ? !formState.isValid: true}
         >
           {"Confirm"}
         </Button>

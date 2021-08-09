@@ -1,21 +1,52 @@
 import React, { useState, useContext, useEffect } from "react";
 import "./Appointment.css";
+import Confirm from "react-confirm-bootstrap";
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
 import { AuthContext } from "../../shared/context/AuthContext";
+import ConfirmModal from "../../shared/UIComponent/ConfirmModal";
+import Modal from "react-modal";
 
 const Appointment = () => {
   const auth = useContext(AuthContext);
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState();
-  const [itemIndex, setIndex] = useState();
-  const [confirmstatus, setConfirmStatus] = useState(false);
+  const [itemIndex, setIndex] = useState("");
+  const [modalIsOpen, setIsOpen] = useState(false);
+  let subtitle;
+
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  };
 
   const handleClick = (index) => {
-    setIndex(index);
-    setConfirmStatus(true);
-  };
+    setIndex(index)
+    openModal()
+    
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = '#f00';
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+    
+
   const confirmHandler = () => {
-    let fetchData
+    let fetchData;
     try {
       fetchData = async () => {
         setLoad(true);
@@ -25,21 +56,19 @@ const Appointment = () => {
           date: details[itemIndex].start,
         };
         console.log(data);
-        const response = await fetch(
-          "http://localhost:5000/api/cancel-slot",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        const response = await fetch("http://localhost:5000/api/cancel-slot", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
         const result = await response.json();
         console.log(result);
         if (response.ok) {
           setLoad(false);
           console.log("done");
+          window.location.reload();
         }
       };
     } catch (err) {
@@ -89,9 +118,22 @@ const Appointment = () => {
   return (
     <React.Fragment>
       <div>{load && <LoadingSpinner asOverlay />} </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+        ariaHideApp={false}
+      >
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
+        <div>Confirm cancellation?</div>
+        <button onClick={closeModal}>close</button>
+        <button onClick={confirmHandler}>Confirm</button>
+      </Modal>
       <div className="appointment_details">
         {details && (
-          <table>
+          <table className="dstable dstable-striped dstable-light">
             <tbody>
               <tr>
                 <th>S.No</th>
@@ -105,7 +147,7 @@ const Appointment = () => {
                 <th>Diagnosis</th>
                 <th>Prescription</th>
                 <th>Status</th>
-                {confirmstatus && <th>Confirm status</th>}
+                {/* {confirmstatus && <th>Confirm status</th>} */}
               </tr>
 
               {details &&
@@ -127,13 +169,13 @@ const Appointment = () => {
                           Click to Cancel
                         </button>
                       </td>
-                      {confirmstatus && (
+                      {/* {confirmstatus && (
                         <td>
                           <button onClick={confirmHandler}>
                             Confirm cancellation
                           </button>
                         </td>
-                      )}
+                      )} */}
                     </tr>
                   );
                 })}
