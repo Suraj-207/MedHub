@@ -78,10 +78,10 @@ class BookCancelReschedule:
         """
         try:
             query = "select patient_email, start, issue from medhub.appointment where doctor_email = '{}' and start >= '{}' and " \
-                    "start <= '{}'".format(doctor_email, start, end)
+                    "start <= '{}' allow filtering".format(doctor_email, start, end)
             patients = [{
                 "email": row.patient_email,
-                "date": row.start.isoformat()[:-7],
+                "date": row.start.isoformat(),
                 "issue": row.issue
             } for row in config.cassandra.session.execute(query).all()]
             if status == 'cancel':
@@ -99,15 +99,15 @@ class BookCancelReschedule:
                         return False
             else:
                 res, res_1, res_2 = False, False, False
-                na_appointments = "select start from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' " \
-                                                                                                                 "start > '" + datetime.datetime.now().isoformat()[:-7] + "' allow filtering "
-                res = [row.start.isoformat() for row in config.cassandra.session.execute(na_appointments).all()]
-                res = sorted(res)
-                if len(res) >= len(patients):
+                na_appointments = "select start from medhub.appointment where doctor_email = '" + doctor_email + "' and status  = 'NA' '" \
+                                                                                                                 "start > '" + end + "' allow filtering "
+                result = [row.start.isoformat() for row in config.cassandra.session.execute(na_appointments).all()]
+                result = sorted(result)
+                if len(result) >= len(patients):
                     count = len(patients)
                     cancellation = False
                 else:
-                    count = len(res)
+                    count = len(result)
                     cancellation = True
                 for i in range(count):
                     new_val = {
@@ -120,7 +120,7 @@ class BookCancelReschedule:
                         "patient_email": patients[i]['email'],
                         "issue": patients[i]['issue']
                     }
-                    patients[i]['new_date'] = res[0]
+                    patients[i]['new_date'] = result[i]
                     condition_1 = "doctor_email = '{}' and start = '{}'".format(doctor_email, patients[i]['date'])
                     res_1 = config.cassandra.update("medhub.appointment", new_val_1, condition_1)
                     if res and res_1:
