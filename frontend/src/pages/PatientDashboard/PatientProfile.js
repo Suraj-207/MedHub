@@ -113,27 +113,27 @@ const PatientProfile = () => {
       </div>
       <div>{load && <LoadingSpinner asOverlay />} </div>
       {!load && details && (
-        <div className="form">
-          <div className="form-left">
-            <div className="doctor_profile">
+        <div className="patient_form">
+          <div className="patient_form-left">
+            <div className="patient_profile">
               <h4>Firstname:</h4>
               <label>
                 {Object.keys(details).length > 0 ? details.fname : ""}
               </label>
             </div>
-            <div className="doctor_profile">
+            <div className="patient_profile">
               <h4>Lastname:</h4>
               <label>
                 {Object.keys(details).length > 0 ? details.lname : ""}
               </label>
             </div>
-            <div className="doctor_profile">
+            <div className="patient_profile">
               <h4>Email:</h4>
               <label>
                 {Object.keys(details).length > 0 ? details.email : ""}
               </label>
             </div>
-            <div className="doctor_profile">
+            <div className="patient_profile">
               <h4>Phone:</h4>
               <div>
                 <Input
@@ -152,7 +152,7 @@ const PatientProfile = () => {
                 />
               </div>
             </div>
-            <div className="doctor_profile">
+            <div className="patient_profile">
               <h4>City:</h4>
               <div>
                 <Input
@@ -169,7 +169,7 @@ const PatientProfile = () => {
                 />
               </div>
             </div>
-            <div className="doctor_profile">
+            <div className="patient_profile">
               <h4>State:</h4>
               <div>
                 <Input
@@ -185,7 +185,7 @@ const PatientProfile = () => {
                 />
               </div>
             </div>
-            <div className="doctor_profile">
+            <div className="patient_profile">
               <h4>Pin:</h4>
               <div>
                 <Input
@@ -205,7 +205,7 @@ const PatientProfile = () => {
           </div>
         </div>
       )}
-      <div className="doctor_profile_button">
+      <div className="patient_profile_button">
         {/* <button onClick={handleSubmit}>Confirm Changes</button> */}
         <Button onClick={handleSubmit} type="submit" disabled={!formState.isValid}>
             {"Confirm changes"}

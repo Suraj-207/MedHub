@@ -28,3 +28,28 @@
 .dstable-light > th {
   background-color: #fdfdfe;
 }
+
+.inactive_button{
+  padding: 5px;
+  border-radius: 10px;
+  background-color:white;
+  color: blue;
+}
+
+.inactive_button:hover{
+  background-color:blue;
+  color: white;
+  cursor: pointer;
+}
+
+.select{
+    display: flex;
+}
+
+.action_button{
+  background-color:blue;
+  color: white;
+  cursor: pointer;
+}
+
+

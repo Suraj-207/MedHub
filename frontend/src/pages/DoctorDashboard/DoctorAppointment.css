@@ -2,13 +2,42 @@
     margin-top: 90px;
 }
 
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-  }
-  th, td {
-    padding: 5px;
-  }
-  th {
-    text-align: left;
-  }
+.dstable {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+  border: none;
+}
+.dstable td,
+.dstable th {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  border-color: #dee2e6;
+  text-align: left;
+}
+.dstable thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+.dstable-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.dstable-light,
+.dstable-light > td,
+.dstable-light > th {
+  background-color: #fdfdfe;
+}
+
+.action_button{
+  padding: 5px;
+  border-radius: 10px;
+  background-color:white;
+  color: blue;
+}
+
+.action_button:hover{
+  background-color:blue;
+  color: white;
+  cursor: pointer;
+}

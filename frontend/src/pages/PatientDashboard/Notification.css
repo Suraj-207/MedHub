@@ -7,10 +7,26 @@
   align-items: flex-start;
 }
 
+.notification_details p{
+  font-family: cursive;
+}
 .notification_details{
     font-family: cursive;
     font-size: large;
-    border: 2px solid #2965e6;
-    background-color: #cfd6e6;
+    background-color: #edf1f7;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 5px #e6e9ed;
+    margin: 10px;
     padding: 20px;
+}
+
+@media only screen and (max-width: 768px){
+  .notification{
+    margin-left: 0.5rem;
+  }
+  .notification_details p{
+    font-size: small;
+    font-family: cursive;
+  }
+  
 }

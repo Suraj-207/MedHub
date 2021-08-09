@@ -1,10 +1,60 @@
-.form .doctor_profile{
+.patient_form .patient_profile{
     margin-top: 0px;
 }
 
-.form{
+.patient_form{
     margin-top: 40px;
 }
+
+.patient_form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+  
+  .patient_form-left {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+  }
+  
+  .patient_form-left > .patient_profile{
+      margin: 40px;
+  }
+  
+  .patient_profile .input_elements{
+      border-radius: 2px;
+      width: 100%;
+      height: 100%;
+  }
+  
+  .patient_profile_button{
+      display: flex;
+      justify-content: center;
+  }
+  
+  .details_time{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 450px;
+  }
+  label{
+    margin-bottom: 10px;
+  }
+  .details_time{
+    margin-bottom: 30px;
+  }
+  
+  .patient_profile{
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  h4{
+    width:20%;
+  }
 
 @media only screen and (max-width: 768px){
     .form{

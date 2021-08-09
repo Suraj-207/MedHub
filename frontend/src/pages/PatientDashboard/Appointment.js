@@ -1,35 +1,33 @@
 import React, { useState, useContext, useEffect } from "react";
 import "./Appointment.css";
-import Confirm from "react-confirm-bootstrap";
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
 import { AuthContext } from "../../shared/context/AuthContext";
-import ConfirmModal from "../../shared/UIComponent/ConfirmModal";
 import Modal from "react-modal";
+import Button from "../../shared/FormElements/Button";
 
 const Appointment = () => {
   const auth = useContext(AuthContext);
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState();
   const [itemIndex, setIndex] = useState("");
+  const [status, setcancelStatus] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   let subtitle;
 
   const customStyles = {
     content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
     },
   };
 
-  const handleClick = (index) => {
-    setIndex(index)
-    openModal()
-    
-  }
+  // const handleClick = (index) => {
+
+  // }
 
   function openModal() {
     setIsOpen(true);
@@ -37,13 +35,18 @@ const Appointment = () => {
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
-    subtitle.style.color = '#f00';
+    subtitle.style.color = "#f00";
   }
 
   function closeModal() {
     setIsOpen(false);
   }
-    
+
+  const cancelStatus = (index) => {
+    setIndex(index);
+    openModal();
+    setcancelStatus((prev) => !prev);
+  };
 
   const confirmHandler = () => {
     let fetchData;
@@ -147,6 +150,7 @@ const Appointment = () => {
                 <th>Diagnosis</th>
                 <th>Prescription</th>
                 <th>Status</th>
+                <th>Action</th>
                 {/* {confirmstatus && <th>Confirm status</th>} */}
               </tr>
 
@@ -165,9 +169,18 @@ const Appointment = () => {
                       <td>{item.diagnosis}</td>
                       <td>{item.prescription}</td>
                       <td>
-                        <button onClick={() => handleClick(index)}>
+                        {item.status}
+                      </td>
+                      <td>
+                        <Button
+                          onClick={() => {
+                            cancelStatus(index);
+                          }}
+                          
+                          disabled={item.status!=="pending"}
+                        >
                           Click to Cancel
-                        </button>
+                        </Button>
                       </td>
                       {/* {confirmstatus && (
                         <td>

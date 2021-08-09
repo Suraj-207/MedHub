@@ -1,3 +1,50 @@
 .leave_application{
-    margin-top: 90px;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    width: 500px;
+    background-color: #edf1f7;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 5px #e6e9ed;
 }
+.take-leave{
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.take_leave_params{
+    margin: 10px;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inactive_button{
+    padding: 5px;
+    border-radius: 10px;
+    background-color:white;
+    color: blue;
+  }
+  
+  .inactive_button:hover{
+    background-color:blue;
+    color: white;
+    cursor: pointer;
+  }
+
+  .select{
+      display: flex;
+  }
+
+  .action_button{
+    background-color:blue;
+    color: white;
+    cursor: pointer;
+  }

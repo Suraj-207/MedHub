@@ -19,6 +19,10 @@ const ConfirmBooking = () => {
   const [value, onChange] = useState(new Date());
   const [formState, inputHandler] = useForm();
   const auth = useContext(AuthContext);
+  const theDate = new Date();
+  const myNewDate = new Date(theDate);
+  myNewDate.setDate(myNewDate.getDate() + 15);
+
   const fieldHandler = (e) => {
     setStatus(true);
     console.log(e.target.value);
@@ -144,6 +148,7 @@ const ConfirmBooking = () => {
               id="issue"
               validators={[VALIDATOR_REQUIRE()]}
               errorText="Please fill the above field"
+              initialValid={true}
             />
           </div>
           <div className="confirm_form">
@@ -152,6 +157,7 @@ const ConfirmBooking = () => {
               onChange={onChange}
               value={value}
               minDate={new Date()}
+              maxDate={myNewDate}
               format="y-MM-dd"
               // maxDate={new Date(details[details.length - 1].start)}
             />
