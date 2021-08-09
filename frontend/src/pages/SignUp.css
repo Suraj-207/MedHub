@@ -33,7 +33,6 @@
     flex: 2;
     flex-direction: column;
     margin-top: 40px;
-    margin-left: 100px;
 }
 
 .signup-button{
@@ -46,6 +45,35 @@
     justify-content: center;
     margin-top: 2.5rem;
 }
-.doctor-signup{
-    margin-right: 30px;
+.form-right > .doctor-signup{
+    margin-left: 40px;
+}
+
+.state{
+    margin-bottom: 50px;
+}
+
+.doctor-signup-dropdown{
+    margin-top: 55px;
+    margin-left: 40px;
+}
+
+@media only screen and (max-width: 768px){
+    .form{
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-around;
+        align-items: flex-start;
+    }
+
+    .form-right{
+        display: flex;
+        flex: 2;
+        flex-direction: column;
+        margin-top: 0px;
+    }
+
+    .signup-button{
+        margin-top: 40px;
+    }
 }

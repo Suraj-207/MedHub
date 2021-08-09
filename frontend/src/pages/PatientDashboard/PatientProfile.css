@@ -5,3 +5,12 @@
 .form{
     margin-top: 40px;
 }
+
+@media only screen and (max-width: 768px){
+    .form{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+    }
+}

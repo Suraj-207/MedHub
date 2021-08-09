@@ -25,7 +25,14 @@ const SignUp = () => {
   const [formState, inputHandler] = useForm();
   const [country, setCountry] = useState();
   const [region, setRegion] = useState();
+  const [state, setState] = useState(false);
   let fetchData;
+
+  const dropdownHandler = () => {
+    if (region && country) setState((prev) => !prev);
+
+    console.log(1);
+  };
 
   const switchModeHandler = () => {
     setaccountMode((prevMode) => !prevMode);
@@ -49,8 +56,8 @@ const SignUp = () => {
               account: "doctor",
               speciality: formState.inputs.speciality.value,
               experience: formState.inputs.experience.value,
-              city: formState.inputs.city.value,
-              state: formState.inputs.state.value,
+              city: region,
+              state: country,
               place_of_work: formState.inputs.place_of_work.value,
               proof: formState.inputs.proof.value,
             }),
@@ -81,8 +88,8 @@ const SignUp = () => {
               email: formState.inputs.email.value,
               password: formState.inputs.password.value,
               account: "patient",
-              city: formState.inputs.city.value,
-              state: formState.inputs.state.value,
+              city: region,
+              state: country,
               phone: formState.inputs.phone.value,
               pin: formState.inputs.pin.value,
             }),
@@ -215,9 +222,15 @@ const SignUp = () => {
                 validators={[VALIDATOR_REQUIRE()]}
                 onInput={inputHandler}
               />
-              <div className="doctor-signup">
-                <CountryDropdown value={country} onChange={setCountry} />
-                {/* <Input
+            </div>
+            <div className="doctor-signup-dropdown">
+              <CountryDropdown
+                className="state"
+                value={country}
+                onChange={setCountry}
+                onBlur={dropdownHandler}
+              />
+              {/* <Input
                   element="input"
                   id="city"
                   type="text"
@@ -228,15 +241,16 @@ const SignUp = () => {
                   placeholder="city"
                   onInput={inputHandler}
                 /> */}
-              </div>
-              <div className="doctor-signup">
-                <RegionDropdown
+            </div>
+            <div className="doctor-signup-dropdown">
+              <RegionDropdown
                 blankOptionLabel="Please select a state first"
-                  country={country}
-                  value={region}
-                  onChange={setRegion}
-                />
-                {/* <Input
+                country={country}
+                value={region}
+                onChange={setRegion}
+                onBlur={dropdownHandler}
+              />
+              {/* <Input
                   element="input"
                   id="state"
                   label="State"
@@ -248,7 +262,6 @@ const SignUp = () => {
                   placeholder="state"
                   onInput={inputHandler}
                 /> */}
-              </div>
             </div>
           </div>
         </div>
@@ -307,39 +320,6 @@ const SignUp = () => {
           </div>
           <div className="form-right">
             <div className="doctor-signup">
-              <CountryDropdown value={country} onChange={setCountry} />
-              {/* <Input
-                element="input"
-                id="city"
-                type="text"
-                className="input_elements"
-                label="City"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter your city"
-                placeholder="city"
-                onInput={inputHandler}
-              /> */}
-            </div>
-            <div className="doctor-signup">
-              <RegionDropdown
-                country={country}
-                value={region}
-                onChange={setRegion}
-              />
-              {/* <Input
-                element="input"
-                id="state"
-                label="State"
-                type="text"
-                className="input_elements"
-                name="State"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter your state"
-                placeholder="state"
-                onInput={inputHandler}
-              /> */}
-            </div>
-            <div className="doctor-signup">
               <Input
                 element="input"
                 type="text"
@@ -365,6 +345,43 @@ const SignUp = () => {
                 onInput={inputHandler}
               />
             </div>
+            <div className="doctor-signup-dropdown">
+              <CountryDropdown value={country} onChange={setCountry} />
+              {/* <Input
+                element="input"
+                id="city"
+                type="text"
+                className="input_elements"
+                label="City"
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText="Please enter your city"
+                placeholder="city"
+                onInput={inputHandler}
+              /> */}
+            </div>
+
+            <div className="doctor-signup-dropdown">
+              <RegionDropdown
+                blankOptionLabel="Please select a state first"
+                country={country}
+                value={region}
+                onChange={() => {
+                  setRegion();
+                }}
+              />
+              {/* <Input
+                element="input"
+                id="state"
+                label="State"
+                type="text"
+                className="input_elements"
+                name="State"
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText="Please enter your state"
+                placeholder="state"
+                onInput={inputHandler}
+              /> */}
+            </div>
           </div>
         </div>
       )}
@@ -372,7 +389,7 @@ const SignUp = () => {
         <Button
           onClick={handleSubmit}
           type="submit"
-          disabled={!formState.isValid}
+          disabled={state ? !formState.isValid : true}
         >
           {"Confirm"}
         </Button>
