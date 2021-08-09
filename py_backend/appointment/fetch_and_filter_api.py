@@ -139,6 +139,12 @@ class FilterDoctors(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
+                if city == '':
+                    city = None
+                if state == '':
+                    state = None
+                if speciality == '':
+                    speciality = None
                 return FetchFilter().fetch_filter_doctors(patient_email=email, city=city, state=state, speciality=speciality)
         except Exception as e:
             config.logger.log("ERROR", str(e))

@@ -299,7 +299,12 @@ class FetchFilter:
                     fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + speciality_condition + " allow filtering"
                     fetch_doctor = FetchFilter().find_doctors(fetch_doctor_query)
                     if len(fetch_doctor) == 0:
-                        status = "No doctors found"
+                        fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True allow filtering"
+                        fetch_doctor = FetchFilter().find_doctors(fetch_doctor_query)
+                        if len(fetch_doctor) == 0:
+                            status = "No doctors found"
+                        else:
+                            status = "No doctors of such speciality found, showing all doctors"
                     else:
                         status = "No doctors found in your state, showing doctors in the country"
                 else:
