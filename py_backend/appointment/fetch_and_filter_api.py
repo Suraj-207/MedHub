@@ -117,11 +117,11 @@ class FetchDoctors(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
-                try:
+                if 'longitude' in list(request.get_json().keys()):
                     longitude = request.get_json()['longitude']
                     latitude = request.get_json()['latitude']
                     return FetchFilter().fetch_filter_doctors(patient_email=email, longitude=longitude, latitude=latitude)
-                except:
+                else:
                     return FetchFilter().fetch_filter_doctors(patient_email=email)
         except Exception as e:
             config.logger.log("ERROR", str(e))
