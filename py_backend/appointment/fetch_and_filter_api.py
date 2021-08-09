@@ -114,8 +114,8 @@ class FetchDoctors(Resource):
         try:
             config.logger.log("INFO", "Fetching doctors as per patient requirements")
             token = request.get_json()['token']
-            longitude = request.get_json()['longitude']
-            latitude = request.get_json()['latitude']
+            longitude = str(request.get_json()['longitude'])
+            latitude = str(request.get_json()['latitude'])
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
