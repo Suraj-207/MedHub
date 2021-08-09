@@ -34,7 +34,7 @@ const PatientHome = () => {
         } else {
           //auth.login(result.user, result.token);
           console.log(result);
-          setDetails(result);
+          setDetails(result.doctors);
           console.log("done");
         //   setDetailsHandler(result);
           setLoad(false);

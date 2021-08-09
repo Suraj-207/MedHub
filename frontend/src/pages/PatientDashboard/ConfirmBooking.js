@@ -109,17 +109,16 @@ const ConfirmBooking = () => {
         if (result === null) {
           // setErr(true);
           setLoad(false);
+          setDetails(result)
           console.log("unidentified token");
         } else {
           //auth.login(result.user, result.token);
           console.log(result);
-          if (result) {
-            console.log("1");
-          }
           setDetails(result);
           console.log("done");
         }
         if (response.ok) {
+          
           console.log("done");
         }
       };
@@ -162,7 +161,7 @@ const ConfirmBooking = () => {
               Check for slot
             </Button>
           </div>
-          {details && <h1>Each appointment is of {details[0].session}</h1>}
+          {details && details.length>0 && <h1>Each appointment is of {details[0].session}</h1>}
           <div className="slot_time" onClick={fieldHandler}>
             {details ?
               details.map((item, index) => {
