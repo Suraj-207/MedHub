@@ -276,12 +276,10 @@ class FetchFilter:
         """
         try:
             fetch_patient_info_query = "select city, state from medhub.patient where email = '" + patient_email + "' allow filtering"
-            print(fetch_patient_info_query)
             fetch_patient_info = config.cassandra.session.execute(fetch_patient_info_query).one()
             speciality_condition = ''
             city_condition = " and city = '" + fetch_patient_info.city + "'"
             state_condition = " and state = '" + fetch_patient_info.state + "'"
-            print(1)
             if longitude is not None and latitude is not None:
                 geolocation = Geolocation(longitude, latitude)
                 city_condition = " and city = '" + geolocation.get_city() + "'"
@@ -294,7 +292,6 @@ class FetchFilter:
                 speciality_condition = " and speciality = '" + speciality + "'"
             fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + state_condition + city_condition + speciality_condition + " allow filtering"
             fetch_doctor = FetchFilter().find_doctors(fetch_doctor_query)
-            print(2)
             if len(fetch_doctor) == 0:
                 fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + state_condition + speciality_condition + " allow filtering"
                 fetch_doctor = FetchFilter().find_doctors(fetch_doctor_query)
@@ -302,7 +299,12 @@ class FetchFilter:
                     fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True" + speciality_condition + " allow filtering"
                     fetch_doctor = FetchFilter().find_doctors(fetch_doctor_query)
                     if len(fetch_doctor) == 0:
-                        status = "No doctors found"
+                        fetch_doctor_query = "select * from medhub.doctor where active = True and time_set = True allow filtering"
+                        fetch_doctor = FetchFilter().find_doctors(fetch_doctor_query)
+                        if len(fetch_doctor) == 0:
+                            status = "No doctors found"
+                        else:
+                            status = "No doctors of such speciality found, showing all doctors"
                     else:
                         status = "No doctors found in your state, showing doctors in the country"
                 else:

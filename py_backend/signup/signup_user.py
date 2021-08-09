@@ -31,7 +31,7 @@ class Registration:
             if record['account'] == 'doctor':
                 self.info_record = {
                     "email": record['email'],
-                    "speciality": record['speciality'],
+                    "speciality": record['speciality'].capitalize(),
                     "experience": int(record['experience']),
                     "pow": record['place_of_work'],
                     "proof": record['proof'],

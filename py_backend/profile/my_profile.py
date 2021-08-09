@@ -83,6 +83,8 @@ class Profile:
                         changes['city'] = changes['city'].capitalize()
                     if 'state' in changes.keys():
                         changes['state'] = changes['state'].capitalize()
+                    if 'speciality' in changes.keys():
+                        changes['speciality'] = changes['speciality'].capitalize()
                     if 'experience' in changes.keys():
                         changes['experience'] = int(changes['experience'])
                     if changes['session'] != 'NA' and changes['start_time'] != "NA" and changes['end_time'] != "NA":
