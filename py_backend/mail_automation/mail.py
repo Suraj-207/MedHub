@@ -38,7 +38,7 @@ class SendMail:
             config.logger.log("INFO", "Mail sent")
             return True
         except smtplib.SMTPRecipientsRefused:
-            config.logger.log("Invalid mail provided")
+            config.logger.log("ERROR", "Invalid mail provided")
             return False
         except Exception as e:
             config.logger.log("ERROR", str(e))

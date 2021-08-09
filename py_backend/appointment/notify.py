@@ -1,6 +1,5 @@
 import config
 import datetime
-from py_backend.date_and_time.conversion import Convert
 from py_backend.mail_automation.mail import SendMail
 import os
 from dotenv import load_dotenv
@@ -107,14 +106,14 @@ class Notification:
         try:
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
             doctor_name = config.cassandra.session.execute(doctor_name_query).one()
-            patient_name_query = "select fname,lname from medhub.user where email = '" + patient + "' allow filtering"
+            patient_name_query = "select fname,lname from medhub.user where email = '" + patient['email'] + "' allow filtering"
             patient_name = config.cassandra.session.execute(patient_name_query).one()
             from_ = "From: MedHub <{}>\n".format(self.sender_email)
             to = "To: {} <{}>\n".format(patient_name.fname + " " + patient_name.lname, patient['email'])
             subject = "Subject: Cancellation of appointment\n\n"
-            msg = "Your session with Dr. " + doctor_name.fname + " " + doctor_name.lname + " on " + patient['date'] + " has been cancelled"
+            msg = "Your session with Dr. " + doctor_name.fname + " " + doctor_name.lname + " on " + patient['date'].replace('T', ' ')[:-3] + " has been cancelled"
             message = from_ + to + subject + msg
-            self.notify_automate(doctor_email, patient, message, msg)
+            self.notify_automate(doctor_email, patient['email'], message, msg)
         except Exception as e:
             config.logger.log("ERROR", str(e))
             
@@ -129,14 +128,14 @@ class Notification:
         try:
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
             doctor_name = config.cassandra.session.execute(doctor_name_query).one()
-            patient_name_query = "select fname,lname from medhub.user where email = '" + patient + "' allow filtering"
+            patient_name_query = "select fname,lname from medhub.user where email = '" + patient['email'] + "' allow filtering"
             patient_name = config.cassandra.session.execute(patient_name_query).one()
             from_ = "From: MedHub <{}>\n".format(self.sender_email)
             to = "To: {} <{}>\n".format(patient_name.fname + " " + patient_name.lname, patient['email'])
             subject = "Subject: Rescheduling of appointment\n\n"
-            msg = "Your session with Dr. " + doctor_name.fname + " " + doctor_name.lname + " on " + patient['date'] + " has been rescheduled to " + patient['new_date']
+            msg = "Your session with Dr. " + doctor_name.fname + " " + doctor_name.lname + " on " + patient['date'].replace('T', ' ')[:-3] + " has been rescheduled to " + patient['new_date'].replace('T', ' ')[:-3]
             message = from_ + to + subject + msg
-            self.notify_automate(doctor_email, patient, message, msg)
+            self.notify_automate(doctor_email, patient['email'], message, msg)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
