@@ -14,7 +14,7 @@
 }
 
 .login_cover img {
-    margin-left: 80px;
+    margin-left: 5rem;
   max-width: 50vw;
   object-fit: contain;
 }
@@ -69,4 +69,50 @@
 }
 .form-footer {
   text-align: center;
+}
+
+@media (max-width: 768px){
+  .login{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .login_cover {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    background-image: linear-gradient(to right, #04194f, #0938b0);
+    width: 768px;
+    /* flex: 3; */
+  }
+  
+  .login_cover img {
+    margin-left: 3.5rem;
+    max-width: 75vw;
+    max-height: 70vw;
+    object-fit: contain;
+  }
+  
+}
+
+@media (max-width: 1024px) and (min-width : 769px){
+  .login{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .login_cover {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    background-image: linear-gradient(to right, #04194f, #0938b0);
+    width:1024px;
+    /* height: 1366px; */
+    /* flex: 3; */
+  }
+  
+  .login_cover img {
+    margin-left: 10vw;
+    max-width: 75vw;
+    max-height: 70vw;
+    /* object-fit: contain; */
+  }
 }
