@@ -9,6 +9,7 @@ import Modal from "react-modal";
 import Input from "../../shared/FormElements/Input";
 import Button from "../../shared/FormElements/Button";
 import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
+import useGeolocation from "react-hook-geolocation";
 
 const PatientHome = () => {
   const [load, setLoad] = useState(false);
@@ -18,7 +19,20 @@ const PatientHome = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [details, setDetails] = useState([]);
   const [formState, inputHandler] = useForm();
+  const geolocation = useGeolocation();
   let subtitle;
+
+  // useEffect( ()=>{
+  //   const fetchLocation = async () =>{
+  //     const latitude = await geolocation.latitude
+  //     const longitude = await geolocation.longitude
+  //     const alatitude = await geolocation.latitude
+  //     const alongitude = await geolocation.longitude
+  //     console.log(latitude, longitude)
+  //   }
+
+  //   fetchLocation()
+  // },[])
 
   const customStyles = {
     content: {
@@ -31,6 +45,51 @@ const PatientHome = () => {
     },
   };
 
+  const getGeolocation = () => {
+    const latitude = geolocation.latitude;
+    const longitude = geolocation.longitude;
+
+    setLoad(true);
+    let fetchData;
+    try {
+      fetchData = async () => {
+        const data = {
+          token: auth.token,
+          longitude: longitude,
+          latitude: latitude,
+        };
+        const response = await fetch(
+          "http://localhost:5000/api/fetch-doctors",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const result = await response.json();
+        if (result === null) {
+          setErr(true);
+          setLoad(false);
+          console.log("unidentified token");
+        } else {
+          //auth.login(result.user, result.token);
+          console.log(result);
+          setDetails(result.doctors);
+          console.log("done");
+          //   setDetailsHandler(result);
+          setLoad(false);
+        }
+        if (response.ok) {
+          console.log("done");
+        }
+      };
+    } catch (err) {
+      console.log(err);
+    }
+    fetchData();
+  };
   const filterHandler = () => {
     openModal();
   };
@@ -52,6 +111,51 @@ const PatientHome = () => {
     console.log(country);
     console.log(formState.inputs.city);
     console.log(formState.inputs.speciality);
+
+    setLoad(true);
+    let fetchData;
+    try {
+      fetchData = async () => {
+        const data = {
+          token: auth.token,
+          city: formState.inputs.city.isValid ? formState.inputs.city : "",
+          speciality: formState.inputs.speciality.isValid
+            ? formState.inputs.speciality.value
+            : "",
+          state: country,
+        };
+        const response = await fetch(
+          "http://localhost:5000/api/filter-doctors",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const result = await response.json();
+        if (result === null) {
+          setErr(true);
+          setLoad(false);
+          console.log("unidentified token");
+        } else {
+          //auth.login(result.user, result.token);
+          console.log(result);
+          setDetails(result.doctors);
+          console.log("done");
+          //   setDetailsHandler(result);
+          setLoad(false);
+        }
+        if (response.ok) {
+          console.log("done");
+          closeModal();
+        }
+      };
+    } catch (err) {
+      console.log(err);
+    }
+    fetchData();
   };
 
   useEffect(() => {
@@ -59,7 +163,11 @@ const PatientHome = () => {
     let fetchData;
     try {
       fetchData = async () => {
-        const data = { token: auth.token };
+        const data = {
+          token: auth.token,
+          longitude: "",
+          latitude: "",
+        };
         const response = await fetch(
           "http://localhost:5000/api/fetch-doctors",
           {
@@ -128,8 +236,17 @@ const PatientHome = () => {
         </Modal>
         <div>{load && <LoadingSpinner asOverlay />} </div>
         <div>{err && <div>No doctor found</div>} </div>
-        <div className="filter" onClick={filterHandler}>
-          <button> Filter </button>
+
+        <div className="filter_geolocation">
+          <div className="type">
+            <p>Filter by</p>
+          </div>
+          <div className="type">
+            <Button onClick={filterHandler}>Criteria </Button>
+          </div>
+          <div className="type">
+            <Button onClick={getGeolocation}>Geolocation</Button>
+          </div>
         </div>
         <div className="row_data">
           {details &&

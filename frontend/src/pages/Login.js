@@ -1,16 +1,14 @@
-import React, { useState, useContext,useEffect } from "react";
+import React, { useState, useContext } from "react";
 import logincover from "../shared/UIComponent/logincover.png";
 import "./Login.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../shared/context/AuthContext";
 import LoadingSpinner from "../shared/UIComponent/LoadingSpinner";
-import useGeolocation from 'react-hook-geolocation'
 
 const Login = () => {
   const [formData, setFormData] = useState("");
   const [load, setLoad] = useState(false);
   const auth = useContext(AuthContext);
-  const geolocation = useGeolocation()
   let fetchData;
   const handleChange = (e) => {
     setFormData({
@@ -18,10 +16,6 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
-
-  useEffect(() => {
-      console.log(geolocation)
-  },[geolocation]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

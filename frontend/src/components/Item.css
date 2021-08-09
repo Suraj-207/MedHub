@@ -13,11 +13,13 @@
 }
 
 .row_data_item{
+    display: flex;
+    flex-direction: column;
     width: 85vw;
 }
 
 .row_data_single {
-    border: 2px solid #86878a;
+    /* border: 2px solid #86878a; */
     display: flex;
     flex-direction: column;
     margin-top: 75px;

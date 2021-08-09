@@ -57,24 +57,31 @@ const Item = (props) => {
       {/* <div>{load && <LoadingSpinner asOverlay />} </div> */}
       <div className="row_data_item" key={props.email}>
         <div className="row_data_single">
-          <img
-            src="https://www.clipartmax.com/png/middle/171-1717870_stockvader-predicted-cron-for-may-user-profile-icon-png.png"
-            alt={props.fname}
-          />
+          <div>
+            <img
+              src="https://www.clipartmax.com/png/middle/171-1717870_stockvader-predicted-cron-for-may-user-profile-icon-png.png"
+              alt={props.fname}
+            />
+          </div>
           <div
             className="row_data_single_desc"
             name="href"
             onClick={handleClick}
           >
-            <p>{`Name: Dr.${props.fname}`}</p>
-            <p>City: {props.city}</p>
+            <p>{`Name: Dr.${props.fname} `} {` | City: ${props.city}`}</p>
             <p>Speciality: {props.speciality}</p>
-            <Link to={{
-                pathname:"/confirm",
-                props: {email: `${props.email}`,fname: `${props.fname}`, lname: `${props.lname}`}
-            }}>
+            <Link
+              to={{
+                pathname: "/confirm",
+                props: {
+                  email: `${props.email}`,
+                  fname: `${props.fname}`,
+                  lname: `${props.lname}`,
+                },
+              }}
+            >
               <h5>Click here to book an appointment</h5>
-              </Link>
+            </Link>
           </div>
         </div>
         {/* {load && <LoadingSpinner asOverlay />} */}

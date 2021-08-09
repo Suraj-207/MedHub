@@ -1,24 +1,35 @@
 .row{
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .row {
     margin-left: 6.25rem;
     display: flex;
+    flex-direction: column;
   }
   
   .row_data {
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    /* overflow-y: hidden;
-      overflow-x: scroll; */
-    /* padding: 20px; */
-  }
-  .filter{
-    float: right;
+    /* flex-wrap: wrap; */
+    /* flex-direction: column; */
   }
 
+  .filter_geolocation{
+    display: flex;
+    justify-content: flex-end;
+    max-height: 40px;
+    align-items: baseline;
+  }
+  .filter_geolocation .type{
+    margin: 10px;
+    font-family: cursive;
+    font-weight: 400;
+  }
+
+  .filter_geolocation .type p{
+    display: flex;
+    align-self: stretch;
+  }
   @media only screen and (max-width: 768px) {
     .row {
       margin-left: 2.5rem;
