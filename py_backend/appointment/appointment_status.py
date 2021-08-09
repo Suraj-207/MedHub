@@ -110,8 +110,7 @@ class BookCancelReschedule:
                         "status": "rescheduled"
                     }
                     condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, patients[i]['date'])
-                    print(patients[i]['date'])
-                    res_3 = config.cassandra.update("medhub.appointment", new_val, condition)
+                    res = config.cassandra.update("medhub.appointment", new_val, condition)
                     new_val_1 = {
                         "status": "pending",
                         "patient_email": patients[i]['email'],
@@ -123,7 +122,6 @@ class BookCancelReschedule:
                     if res and res_1:
                         threading.Thread(target=Notification().notify_rescheduled_slots, args=(doctor_email, patients[i])).start()
                 if cancellation:
-                    print(3)
                     for patient in patients[count:]:
                         new_val = {
                             "status": "cancelled"
@@ -131,7 +129,6 @@ class BookCancelReschedule:
                         condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, patient['date'])
                         res_2 = config.cassandra.update("medhub.appointment", new_val, condition)
                         if res_2:
-                            print(patient)
                             threading.Thread(target=Notification().notify_cancelled_slots, args=(doctor_email, patient)).start()
                 return True
         except Exception as e:

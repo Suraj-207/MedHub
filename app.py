@@ -29,7 +29,7 @@ scheduler.add_job(
     trigger="interval",
     seconds=86400,
     next_run_time=datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=0),
-                                            datetime.time(hour=12, minute=55)))
+                                            datetime.time(hour=16, minute=30)))
 scheduler.start()
 multiexit.install()
 multiexit.register(config.cassandra.shutdown, shared=True)
