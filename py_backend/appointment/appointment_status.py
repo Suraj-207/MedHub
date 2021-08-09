@@ -26,7 +26,6 @@ class BookCancelReschedule:
             condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
             res = config.cassandra.update("medhub.appointment", new_val, condition)
             if res:
-                # Notification().notify_book_slot(doctor_email, patient_email, date)
                 threading.Thread(target=Notification().notify_book_slot, args=(doctor_email, patient_email, date)).start()
                 return True
             else:
@@ -55,7 +54,6 @@ class BookCancelReschedule:
                 condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
                 res = config.cassandra.update("medhub.appointment", new_val, condition)
                 if res:
-                    # Notification().notify_open_slots(doctor_email, date)
                     threading.Thread(target=Notification().notify_open_slots, args=(doctor_email, date)).start()
                     return True
                 else:
@@ -78,7 +76,11 @@ class BookCancelReschedule:
         """
         try:
             query = "select patient_email, start, issue from medhub.appointment where doctor_email = '{}' and start >= '{}' and " \
+<<<<<<< HEAD
                     "start <= '{}' allow filtering".format(doctor_email, start, end)
+=======
+                    "start <= '{}' and status = 'pending' allow filtering".format(doctor_email, start, end)
+>>>>>>> f8a25a2aaa6da4c0cef81c986d4201f70bc0d326
             patients = [{
                 "email": row.patient_email,
                 "date": row.start.isoformat(),
@@ -89,25 +91,32 @@ class BookCancelReschedule:
                     new_val = {
                         "status": "cancelled"
                     }
-                    condition = "doctor_email = '{}' and and start = '{}'".format(doctor_email, patient['date'])
+                    condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, patient['date'])
                     res = config.cassandra.update("medhub.appointment", new_val, condition)
                     if res:
-                        # Notification().notify_cancelled_slots(doctor_email, patient)
                         threading.Thread(target=Notification().notify_cancelled_slots, args=(doctor_email, patient)).start()
                         return True
                     else:
                         return False
             else:
+<<<<<<< HEAD
                 res, res_1, res_2 = False, False, False
                 na_appointments = "select start from medhub.appointment where doctor_email = '" + doctor_email + "' and status = 'NA' and " \
                                                                                                                  "start > '" + datetime.datetime.now().isoformat()[:-7] + "' allow filtering "
                 res = [row.start.isoformat() for row in config.cassandra.session.execute(na_appointments).all()]
                 res = sorted(res)
                 if len(res) >= len(patients):
+=======
+                na_appointments = "select start from medhub.appointment where doctor_email = '" + doctor_email + "' and status  = 'NA' and " \
+                                                                                                                 "start > '" + end + "' allow filtering "
+                result = [row.start.isoformat() for row in config.cassandra.session.execute(na_appointments).all()]
+                result = sorted(result)
+                if len(result) >= len(patients):
+>>>>>>> f8a25a2aaa6da4c0cef81c986d4201f70bc0d326
                     count = len(patients)
                     cancellation = False
                 else:
-                    count = len(res)
+                    count = len(result)
                     cancellation = True
                 for i in range(count):
                     new_val = {
@@ -121,14 +130,22 @@ class BookCancelReschedule:
                         "patient_email": patients[i]['email'],
                         "issue": patients[i]['issue']
                     }
+<<<<<<< HEAD
                     patients[i]['new_date'] = res[0]
                     condition_1 = "doctor_email = '{}' and start = '{}'".format(doctor_email, patients[i]['date'])
                     print(patients[i]['new_date'])
                     res_1 = config.cassandra.update("medhub.appointment", new_val_1, condition_1)
                     if res_3 and res_1:
                         # Notification().notify_rescheduled_slots(doctor_email, patients[i])
+=======
+                    patients[i]['new_date'] = result[i]
+                    condition_1 = "doctor_email = '{}' and start = '{}'".format(doctor_email, patients[i]['new_date'])
+                    res_1 = config.cassandra.update("medhub.appointment", new_val_1, condition_1)
+                    if res and res_1:
+>>>>>>> f8a25a2aaa6da4c0cef81c986d4201f70bc0d326
                         threading.Thread(target=Notification().notify_rescheduled_slots, args=(doctor_email, patients[i])).start()
                 if cancellation:
+                    print(3)
                     for patient in patients[count:]:
                         new_val = {
                             "status": "cancelled"
@@ -136,12 +153,16 @@ class BookCancelReschedule:
                         condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, patient['date'])
                         res_2 = config.cassandra.update("medhub.appointment", new_val, condition)
                         if res_2:
-                            # Notification().notify_cancelled_slots(doctor_email, patient)
+                            print(patient)
                             threading.Thread(target=Notification().notify_cancelled_slots, args=(doctor_email, patient)).start()
+<<<<<<< HEAD
                 if res_3 and res_1 and res_2:
                     return True
                 else:
                     return False
+=======
+                return True
+>>>>>>> f8a25a2aaa6da4c0cef81c986d4201f70bc0d326
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
