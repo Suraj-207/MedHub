@@ -28,8 +28,8 @@ scheduler.add_job(
     func=SlotMaker().assign_slots_scheduling,
     trigger="interval",
     seconds=86400,
-    next_run_time=datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=0),
-                                            datetime.time(hour=12, minute=55)))
+    next_run_time=datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1),
+                                            datetime.time(hour=00, minute=1)))
 scheduler.start()
 multiexit.install()
 multiexit.register(config.cassandra.shutdown, shared=True)

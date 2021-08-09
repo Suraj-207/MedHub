@@ -117,7 +117,12 @@ class FetchDoctors(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
-                return FetchFilter().fetch_filter_doctors(email)
+                if 'longitude' in request.json().keys():
+                    longitude = request.get_json()['longitude']
+                    latitude = request.get_json()['latitude']
+                    return FetchFilter().fetch_filter_doctors(email, longitude=longitude, latitude=latitude)
+                else:
+                    return FetchFilter().fetch_filter_doctors(email)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
@@ -128,10 +133,12 @@ class FilterDoctors(Resource):
         try:
             config.logger.log("INFO", "Fetching doctors as per patient requirements")
             token = request.get_json()['token']
-            changes = request.get_json()['changes']
+            city = request.get_json()['city'].capitalize()
+            state = request.get_json()['state'].capitalize()
+            speciality = request.get_json()['speciality']
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 email = decoded['decoded_token']['email']
-                return FetchFilter().fetch_filter_doctors(email, changes)
+                return FetchFilter().fetch_filter_doctors(email, city=city, state=state, speciality=speciality)
         except Exception as e:
             config.logger.log("ERROR", str(e))

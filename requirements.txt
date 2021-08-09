@@ -11,3 +11,4 @@ numpy~=1.21.1
 flask-restful
 flask-cors
 secure-smtplib
+geopy
