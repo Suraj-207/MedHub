@@ -16,9 +16,6 @@ const NavLinks = (props) => {
   if (auth.user === "doctor") {
     mainNavigation = (
       <ul className="nav-links">
-        {/* <li>
-      <NavLink to="/" exact>Home</NavLink>
-    </li> */}
         {/* {auth.isLoggedIn && ( */}
         <li>
           {/* <NavLink to={`/${auth.userId}/places`}>MY PLACES</NavLink> */}
@@ -53,9 +50,6 @@ const NavLinks = (props) => {
   } else {
     mainNavigation = (
       <ul className="nav-links">
-        {/* <li>
-      <NavLink to="/" exact>Home</NavLink>
-    </li> */}
         {/* {auth.isLoggedIn && ( */}
         <li>
           {/* <NavLink to={`/${auth.userId}/places`}>MY PLACES</NavLink> */}

@@ -1,7 +1,5 @@
 import React, { useState, useContext } from "react";
 import "./SignUp.css";
-// import Doctor from "../components/Doctor";
-// import Patient from "../components/Patient";
 import { AuthContext } from "../shared/context/AuthContext";
 import { useHistory } from "react-router-dom";
 import Input from "../shared/FormElements/Input";
@@ -231,17 +229,6 @@ const SignUp = () => {
                 onChange={setCountry}
                 onBlur={dropdownHandler}
               />
-              {/* <Input
-                  element="input"
-                  id="city"
-                  type="text"
-                  className="input_elements"
-                  label="City"
-                  validators={[VALIDATOR_REQUIRE()]}
-                  errorText="Please enter your city"
-                  placeholder="city"
-                  onInput={inputHandler}
-                /> */}
             </div>
             <div className="doctor-signup-dropdown">
               <RegionDropdown
@@ -251,18 +238,6 @@ const SignUp = () => {
                 onChange={setRegion}
                 onBlur={dropdownHandler}
               />
-              {/* <Input
-                  element="input"
-                  id="state"
-                  label="State"
-                  type="text"
-                  className="input_elements"
-                  name="State"
-                  validators={[VALIDATOR_REQUIRE()]}
-                  errorText="Please enter your state"
-                  placeholder="state"
-                  onInput={inputHandler}
-                /> */}
             </div>
           </div>
         </div>
@@ -348,17 +323,6 @@ const SignUp = () => {
             </div>
             <div className="doctor-signup-dropdown">
               <CountryDropdown value={country} onChange={setCountry} />
-              {/* <Input
-                element="input"
-                id="city"
-                type="text"
-                className="input_elements"
-                label="City"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter your city"
-                placeholder="city"
-                onInput={inputHandler}
-              /> */}
             </div>
 
             <div className="doctor-signup-dropdown">
@@ -370,18 +334,6 @@ const SignUp = () => {
                   setRegion();
                 }}
               />
-              {/* <Input
-                element="input"
-                id="state"
-                label="State"
-                type="text"
-                className="input_elements"
-                name="State"
-                validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter your state"
-                placeholder="state"
-                onInput={inputHandler}
-              /> */}
             </div>
           </div>
         </div>

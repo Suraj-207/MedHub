@@ -17,14 +17,14 @@ const DoctorAppointment = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   let subtitle;
   const tdate = new Date();
-  tdate.toLocaleDateString()
+  tdate.toLocaleDateString();
   const month = parseInt(tdate.toLocaleDateString().split("/")[0]);
-    const date = parseInt(tdate.toLocaleDateString().split("/")[1]);
-    const year = parseInt(tdate.toLocaleDateString().split("/")[2]);
-    const newDate = `${year}-${month < 10 ? 0 : ""}${month}-${
-      date < 10 ? 0 : ""
-    }${date}`;
-    console.log(newDate);
+  const date = parseInt(tdate.toLocaleDateString().split("/")[1]);
+  const year = parseInt(tdate.toLocaleDateString().split("/")[2]);
+  const newDate = `${year}-${month < 10 ? 0 : ""}${month}-${
+    date < 10 ? 0 : ""
+  }${date}`;
+  console.log(newDate);
 
   const customStyles = {
     content: {
@@ -47,7 +47,6 @@ const DoctorAppointment = () => {
   }
 
   function afterOpenModal() {
-    // references are now sync'd and can be accessed.
     subtitle.style.color = "#f00";
   }
 
@@ -109,15 +108,12 @@ const DoctorAppointment = () => {
         );
         const result = await response.json();
         if (result === null) {
-          //   setErr(true);
           setLoad(false);
           console.log("unidentified token");
         } else {
-          //auth.login(result.user, result.token);
           console.log(result);
           setDetails(result);
           console.log("done");
-          //   setDetailsHandler(result);
           setLoad(false);
         }
         if (response.ok) {
@@ -139,7 +135,9 @@ const DoctorAppointment = () => {
         contentLabel="Example Modal"
         ariaHideApp={false}
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Confirm appointment completion?</h2>
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
+          Confirm appointment completion?
+        </h2>
         <button onClick={closeModal}>close</button>
         <button onClick={confirmHandler}>Confirm</button>
       </Modal>
@@ -182,7 +180,7 @@ const DoctorAppointment = () => {
                         }
                       </td>
                       <td>
-                      {
+                        {
                           <Input
                             id="prescription"
                             validators={[VALIDATOR_REQUIRE()]}

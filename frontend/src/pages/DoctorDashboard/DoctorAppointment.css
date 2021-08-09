@@ -8,6 +8,7 @@
   background-color: transparent;
   border: none;
 }
+
 .dstable td,
 .dstable th {
   padding: 0.75rem;
@@ -16,13 +17,16 @@
   border-color: #dee2e6;
   text-align: left;
 }
+
 .dstable thead th {
   vertical-align: bottom;
   border-bottom: 2px solid #dee2e6;
 }
+
 .dstable-striped tbody tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.05);
 }
+
 .dstable-light,
 .dstable-light > td,
 .dstable-light > th {

@@ -38,7 +38,6 @@
 .login-form {
   width: 350px;
   margin: 0 auto;
-  /* border: 1px solid #ddd; */
   padding: 2rem;
   background: #ffffff;
 }
@@ -82,7 +81,6 @@
     display: flex;
     background-image: linear-gradient(to right, #04194f, #0938b0);
     width: 768px;
-    /* flex: 3; */
   }
   
   .login_cover img {
@@ -105,14 +103,11 @@
     display: flex;
     background-image: linear-gradient(to right, #04194f, #0938b0);
     width:1024px;
-    /* height: 1366px; */
-    /* flex: 3; */
   }
   
   .login_cover img {
     margin-left: 10vw;
     max-width: 75vw;
     max-height: 70vw;
-    /* object-fit: contain; */
   }
 }
