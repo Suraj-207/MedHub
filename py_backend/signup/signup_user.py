@@ -43,8 +43,8 @@ class Registration:
                     "break_start": "NA",
                     "end_time": "NA",
                     "start_time": "NA",
-                    "session": "NA"
-                    # "gender": record['gender']
+                    "session": "NA",
+                    "gender": record['gender']
                 }
                 msg = "Welcome to Medhub, {} {}. We are glad to welcome you to our community.\n".format("Dr.", record['fname'] + " " + record['lname'])
                 self.message = from_ + to + subject + msg
@@ -54,8 +54,8 @@ class Registration:
                     "city": record['city'].capitalize(),
                     "state": record['state'].capitalize(),
                     "pin": int(record['pin']),
-                    "phone": int(record['phone'])
-                    # "gender": record['gender']
+                    "phone": int(record['phone']),
+                    "gender": record['gender']
                 }
                 msg = "Welcome to Medhub, {}. We are glad to welcome you to our community.\n".format(record['fname'] + " " + record['lname'])
                 self.message = from_ + to + subject + msg
