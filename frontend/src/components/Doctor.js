@@ -4,6 +4,8 @@ import Input from "../shared/FormElements/Input";
 import { VALIDATOR_REQUIRE } from "../shared/util/validators";
 import { useForm } from "../shared/hooks/form-hook";
  
+
+/* Doctor component  */
 const Doctor = () => {
   const [inputHandler] = useForm();
   return (

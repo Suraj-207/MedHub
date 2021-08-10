@@ -103,7 +103,7 @@ const PatientHome = () => {
       fetchData = async () => {
         const data = {
           token: auth.token,
-          city: formState.inputs.city.isValid ? formState.inputs.city : "",
+          city: formState.inputs.city.isValid ? formState.inputs.city.value : "",
           speciality: formState.inputs.speciality.isValid
             ? formState.inputs.speciality.value
             : "",

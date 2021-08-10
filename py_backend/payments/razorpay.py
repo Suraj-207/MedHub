@@ -18,6 +18,7 @@ class Payment:
 
     def get_link(self):
         try:
+            config.logger.log("INFO", "Generating payment link...")
             response = requests.post(
                 url="https://api.razorpay.com/v1/payment_links/",
                 json={

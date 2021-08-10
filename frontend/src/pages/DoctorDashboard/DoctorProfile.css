@@ -1,36 +1,32 @@
-/* .profile {
-  margin-top: 60px;
-}
-
-.form {
+.dashboard_form {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: flex-start;
 }
 
-.form-left {
+.dashboard_form-left {
   display: flex;
   flex-direction: column;
   flex: 2;
 }
 
-.form-left > .doctor_profile{
-    margin: 40px;
+.dashboard_form-left > .dashboard_doctor_profile{
+    margin: 35px;
 }
 
-.doctor_profile .input_elements{
+.dashboard_doctor_profile .dashboard_input_elements{
     border-radius: 2px;
     width: 100%;
     height: 100%;
 }
 
-.doctor_profile_button{
+.dashboard_doctor_profile_button{
     display: flex;
     justify-content: center;
 }
 
-.details_time{
+.dashboard_details_time{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -39,11 +35,11 @@
 label{
   margin-bottom: 10px;
 }
-.details_time{
+.dashboard_details_time{
   margin-bottom: 30px;
 }
 
-.doctor_profile{
+.dashboard_doctor_profile{
   display: flex;
   justify-content: flex-start;
 }
@@ -52,11 +48,30 @@ h4{
   width:20%;
 }
 
+.dashboard_form-right{
+  margin-top: 35px;
+}
+
+.active_dot{
+  height: 25px;
+  width: 25px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.inactive_dot{
+  height: 25px;
+  width: 25px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+}
 @media only screen and (max-width: 768px){
-  .form{
+  .dashboard_form{
       display: flex;
       flex-direction: column;
       justify-content: space-around;
       align-items: flex-start;
   }
-} */
+}

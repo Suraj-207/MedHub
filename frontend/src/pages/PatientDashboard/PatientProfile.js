@@ -123,6 +123,12 @@ const PatientProfile = () => {
               </label>
             </div>
             <div className="patient_profile">
+              <h4>Gender:</h4>
+              <label>
+                {Object.keys(details).length > 0 ? details.gender : ""}
+              </label>
+            </div>
+            <div className="patient_profile">
               <h4>Phone:</h4>
               <div>
                 <Input

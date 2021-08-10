@@ -34,6 +34,7 @@ const ConfirmBooking = () => {
   };
 
   const confirmBookingHandler = () => {
+
     let fetchData;
     try {
       fetchData = async () => {
@@ -60,9 +61,6 @@ const ConfirmBooking = () => {
           console.log("unidentified token");
         } else {
           console.log(result);
-          if (result) {
-            console.log("1");
-          }
           console.log("done");
         }
         if (response.ok) {
@@ -86,6 +84,7 @@ const ConfirmBooking = () => {
     console.log(formState.inputs.issue.value);
     let fetchData;
     try {
+      setLoad(true)
       fetchData = async () => {
         const data = { token: auth.token, email: props.email, date: newDate };
         const response = await fetch(
@@ -107,9 +106,10 @@ const ConfirmBooking = () => {
           console.log(result);
           setDetails(result);
           console.log("done");
+          setLoad(false)
         }
         if (response.ok) {
-          
+          setLoad(false)
           console.log("done");
         }
       };

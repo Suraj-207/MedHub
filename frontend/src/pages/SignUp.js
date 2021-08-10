@@ -22,16 +22,15 @@ const SignUp = () => {
   const auth = useContext(AuthContext);
   const [formState, inputHandler] = useForm();
   const [country, setCountry] = useState();
-  const [region, setRegion] = useState();
+  const [gender, setGender] = useState("");
   const [state, setState] = useState(false);
   let fetchData;
 
-  const dropdownHandler = () => {
-    if(region && country)
-      setState(prev => !prev);
 
-    console.log(1);
-  };
+  const genderHandler = (e)=> {
+    setGender(e.target.value)
+    setState(true)
+  }
 
   const switchModeHandler = () => {
     setaccountMode((prevMode) => !prevMode);
@@ -55,8 +54,9 @@ const SignUp = () => {
               account: "doctor",
               speciality: formState.inputs.speciality.value,
               experience: formState.inputs.experience.value,
-              city: region,
+              city: formState.inputs.experience.value,
               state: country,
+              gender: gender,
               place_of_work: formState.inputs.place_of_work.value,
               proof: formState.inputs.proof.value,
             }),
@@ -87,7 +87,7 @@ const SignUp = () => {
               email: formState.inputs.email.value,
               password: formState.inputs.password.value,
               account: "patient",
-              city: region,
+              city: formState.inputs.city.value,
               state: country,
               phone: formState.inputs.phone.value,
               pin: formState.inputs.pin.value,
@@ -169,6 +169,17 @@ const SignUp = () => {
                 onInput={inputHandler}
               />
             </div>
+            <div className="signup" onClick={(e)=>genderHandler(e)} >
+              <select >
+                <option >Select gender</option>
+                <option value="male" >
+                  Male
+                </option>
+                <option value="female">
+                  Female
+                </option>
+              </select>
+            </div>
           </div>
           <div className="form-right">
             <div className="doctor-signup">
@@ -227,16 +238,18 @@ const SignUp = () => {
                 className="state"
                 value={country}
                 onChange={setCountry}
-                onBlur={dropdownHandler}
               />
             </div>
             <div className="doctor-signup-dropdown">
-              <RegionDropdown
-                blankOptionLabel="Please select a state first"
-                country={country}
-                value={region}
-                onChange={setRegion}
-                onBlur={dropdownHandler}
+              <Input
+                element="input"
+                id="city"
+                type="text"
+                label="City"
+                placeholder="City name"
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText="Please enter your city."
+                onInput={inputHandler}
               />
             </div>
           </div>
@@ -295,6 +308,17 @@ const SignUp = () => {
             </div>
           </div>
           <div className="form-right">
+            <div className="doctor_signup" onClick={(e)=>genderHandler(e)}>
+              <select >
+                <option >Select gender</option>
+                <option value="male" >
+                  Male
+                </option>
+                <option value="female">
+                  Female
+                </option>
+              </select>
+            </div>
             <div className="doctor-signup">
               <Input
                 element="input"
@@ -324,15 +348,16 @@ const SignUp = () => {
             <div className="doctor-signup-dropdown">
               <CountryDropdown value={country} onChange={setCountry} />
             </div>
-
             <div className="doctor-signup-dropdown">
-              <RegionDropdown
-                blankOptionLabel="Please select a state first"
-                country={country}
-                value={region}
-                onChange={() => {
-                  setRegion();
-                }}
+              <Input
+                element="input"
+                id="city"
+                type="text"
+                label="City"
+                placeholder="City name"
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText="Please enter your city."
+                onInput={inputHandler}
               />
             </div>
           </div>
@@ -342,7 +367,7 @@ const SignUp = () => {
         <Button
           onClick={handleSubmit}
           type="submit"
-          disabled={state ? !formState.isValid: true}
+          disabled={ state && formState.isValid ? false: true}
         >
           {"Confirm"}
         </Button>
