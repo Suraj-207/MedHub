@@ -31,7 +31,7 @@ export const useAuth = () => {
         } else {
           const data = storedData.token;
           const response = await fetch(
-            "http://localhost:5000/api/check-token",
+            "https://localhost:5000/api/check-token",
             {
               method: "POST",
               headers: {

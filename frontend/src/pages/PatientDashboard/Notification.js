@@ -15,7 +15,7 @@ const Notification = () => {
       fetchData = async () => {
         const data = { token: auth.token };
         const response = await fetch(
-          "http://localhost:5000/api/notifications",
+          "http://localhosts:5000/api/notifications",
           {
             method: "POST",
             headers: {
