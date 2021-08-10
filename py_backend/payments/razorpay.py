@@ -7,29 +7,27 @@ import json
 
 class Payment:
 
-    def __init__(self, name, email, phone, amount):
+    def __init__(self):
         load_dotenv("py_backend/env/payment.env")
         self.key = os.getenv("KEY")
         self.secret = os.getenv("SECRET")
-        self.name = name
-        self.email = email
-        self.phone = str(phone)
-        self.amount = int(amount * 100)
 
-    def get_link(self):
+    def get_link(self, name, email, phone, amount):
         try:
+            phone = str(phone)
+            amount = int(amount * 100)
             config.logger.log("INFO", "Generating payment link...")
             response = requests.post(
                 url="https://api.razorpay.com/v1/payment_links/",
                 json={
-                    "amount": self.amount,
+                    "amount": amount,
                     "currency": "INR",
                     "accept_partial": False,
                     "description": "Payment for appointment",
                     "customer": {
-                        "name": self.name,
-                        "contact": self.phone,
-                        "email": self.email
+                        "name": name,
+                        "contact": phone,
+                        "email": email
                     },
                     "notify": {
                         "sms": True,
@@ -39,7 +37,7 @@ class Payment:
                     "notes": {
                         "policy_name": "MedHub"
                     },
-                    "callback_url": "https://localhost:3000/",
+                    "callback_url": "https://localhost:3000/confirmpayment/",
                     "callback_method": "get"
                 },
                 auth=requests.auth.HTTPBasicAuth(self.key, self.secret)

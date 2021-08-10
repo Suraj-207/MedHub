@@ -8,6 +8,35 @@ from py_backend.payments.razorpay import Payment
 class BookCancelReschedule:
 
     @staticmethod
+    def patient_book_confirm(patient_email, date, doctor_email, pay_id):
+        try:
+            if pay_id is not None:
+                new_val = {
+                    "patient_email": patient_email,
+                    "status": "pending",
+                    "pay_id": pay_id
+                }
+                condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
+                res = config.cassandra.update("medhub.appointment", new_val, condition)
+                if res:
+                    threading.Thread(target=Notification().notify_book_slot, args=(doctor_email, patient_email, date)).start()
+                    return "Slot booked successfully"
+            else:
+                new_val = {
+                    "patient_email": "NA",
+                    "status": "NA",
+                    "issue": "NA"
+                }
+                condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
+                res = config.cassandra.update("medhub.appointment", new_val, condition)
+                if res:
+                    return "Couldn't book slot"
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+            return False
+
+
+    @staticmethod
     def patient_book(patient_email, date, doctor_email, issue):
         """
 
@@ -20,18 +49,21 @@ class BookCancelReschedule:
         try:
             new_val = {
                 "patient_email": patient_email,
-                "status": "pending",
+                "status": "in process",
                 "issue": issue
             }
             condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
-            res = config.cassandra.update("medhub.appointment", new_val, condition)
-            if res:
-                threading.Thread(target=Notification().notify_book_slot, args=(doctor_email, patient_email, date)).start()
-                fetch_patient_name_query = "select fname, lname from medhub.user where email = '" + patient_email +"' allow filtering"
-                fetch_patient_phone_query = "select phone from medhub.patient where email = '" + patient_email +"' allow filtering"
-                fetch_patient_name = config.cassandra.session.execute(fetch_patient_name_query).one()
-                fetch_patient_phone = config.cassandra.session.execute(fetch_patient_phone_query).one()
-                return Payment(fetch_patient_name.fname + " " + fetch_patient_name.lname, patient_email, fetch_patient_phone.phone, 1).get_link()
+            re_check_query = "select status from medhub.appointment where " + condition + " allow filtering"
+            if config.cassandra.session.execute(re_check_query).one().status == 'pending':
+                res = config.cassandra.update("medhub.appointment", new_val, condition)
+                if res:
+                    fetch_patient_name_query = "select fname, lname from medhub.user where email = '" + patient_email +"' allow filtering"
+                    fetch_patient_phone_query = "select phone from medhub.patient where email = '" + patient_email +"' allow filtering"
+                    fetch_patient_name = config.cassandra.session.execute(fetch_patient_name_query).one()
+                    fetch_patient_phone = config.cassandra.session.execute(fetch_patient_phone_query).one()
+                    return Payment().get_link(fetch_patient_name.fname + " " + fetch_patient_name.lname, patient_email, fetch_patient_phone.phone, 1)
+                else:
+                    return False
             else:
                 return False
         except Exception as e:

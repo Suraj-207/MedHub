@@ -21,6 +21,22 @@ class BookSlot(Resource):
             config.logger.log("ERROR", str(e))
 
 
+class ConfirmSlot(Resource):
+
+    def post(self):
+        try:
+            token = request.get_json()['token']
+            doctor_email = request.get_json()['doctor_email']
+            pay_id = request.get_json()['pay_id']
+            date = request.get_json()['date'] + " " + request.get_json()['time']
+            decoded = Token().validate_token(token)
+            if decoded['valid']:
+                patient_email = decoded['decoded_token']['email']
+                return BookCancelReschedule().patient_book_confirm(patient_email, date, doctor_email, pay_id)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+
+
 class CancelSlot(Resource):
 
     def post(self):
