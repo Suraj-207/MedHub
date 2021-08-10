@@ -3,6 +3,21 @@ from flask_restful import Resource
 import config
 from py_backend.jwt_token.token import Token
 from py_backend.appointment.appointment_status import BookCancelReschedule
+from py_backend.payments.razorpay import Payment
+
+
+class ConfirmPayment(Resource):
+
+    def get(self):
+        try:
+            pay_id = request.args.get("razorpay_payment_id")
+            payment = Payment()
+            notes = payment.get_notes_from_pay_id(pay_id)
+            acc_id = 'acc_HiislGOtj2ztgi'
+            payment.transfer(acc_id, pay_id)
+            return BookCancelReschedule().patient_book_confirm(notes['patient_email'], notes['date'], notes['doctor_email'], pay_id)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
 
 
 class BookSlot(Resource):
@@ -12,7 +27,7 @@ class BookSlot(Resource):
             token = request.get_json()['token']
             doctor_email = request.get_json()['doctor_email']
             issue = request.get_json()['issue']
-            date = request.get_json()['date'] + " " + request.get_json()['time']
+            date = request.get_json()['date'] + "T" + request.get_json()['time']
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 patient_email = decoded['decoded_token']['email']
@@ -31,7 +46,11 @@ class CancelSlot(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 # patient_email = decoded['decoded_token']['email']
-                return BookCancelReschedule().patient_cancel(date, doctor_email)
+                result = BookCancelReschedule().patient_cancel(date, doctor_email)
+                if result:
+                    pay_id_fetch_query = "select pay_id from medhub.appointment where doctor_email = '" + doctor_email + "' and start = '" + date + "' allow filtering"
+                    pay_id_fetch = config.cassandra.session.execute(pay_id_fetch_query).one()
+                    Payment().refund(pay_id_fetch.pay_id)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 

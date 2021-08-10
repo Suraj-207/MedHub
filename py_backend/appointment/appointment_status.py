@@ -12,7 +12,6 @@ class BookCancelReschedule:
         try:
             if pay_id is not None:
                 new_val = {
-                    "patient_email": patient_email,
                     "status": "pending",
                     "pay_id": pay_id
                 }
@@ -49,20 +48,20 @@ class BookCancelReschedule:
         try:
             new_val = {
                 "patient_email": patient_email,
-                "status": "pending",
+                "status": "in process",
                 "issue": issue
             }
             condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
             re_check_query = "select status from medhub.appointment where " + condition + " allow filtering"
-            if config.cassandra.session.execute(re_check_query).one().status == 'pending':
+            if config.cassandra.session.execute(re_check_query).one().status == 'NA':
                 res = config.cassandra.update("medhub.appointment", new_val, condition)
                 if res:
-                    print(1)
+                    config.logger.log("INFO", "payment in process..")
                     fetch_patient_name_query = "select fname, lname from medhub.user where email = '" + patient_email +"' allow filtering"
                     fetch_patient_phone_query = "select phone from medhub.patient where email = '" + patient_email +"' allow filtering"
                     fetch_patient_name = config.cassandra.session.execute(fetch_patient_name_query).one()
                     fetch_patient_phone = config.cassandra.session.execute(fetch_patient_phone_query).one()
-                    return Payment().get_link(fetch_patient_name.fname + " " + fetch_patient_name.lname, patient_email, fetch_patient_phone.phone, 1)
+                    return Payment().get_link(fetch_patient_name.fname + " " + fetch_patient_name.lname, patient_email, fetch_patient_phone.phone, 2, doctor_email, date)
                 else:
                     return False
             else:
@@ -120,13 +119,17 @@ class BookCancelReschedule:
                 "issue": row.issue
             } for row in config.cassandra.session.execute(query).all()]
             if status == 'cancel':
+                print(1)
                 for patient in patients:
                     new_val = {
                         "status": "cancelled"
                     }
                     condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, patient['date'])
+                    pay_id_fetch_query = "select pay_id from medhub.appointment where doctor_email = '" + doctor_email + "' and start = '" + patient['date'] + "' allow filtering"
+                    pay_id_fetch = config.cassandra.session.execute(pay_id_fetch_query).one()
                     res = config.cassandra.update("medhub.appointment", new_val, condition)
                     if res:
+                        Payment().refund(pay_id_fetch.pay_id)
                         threading.Thread(target=Notification().notify_cancelled_slots, args=(doctor_email, patient)).start()
                         return True
                     else:
@@ -164,9 +167,12 @@ class BookCancelReschedule:
                             "status": "cancelled"
                         }
                         condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, patient['date'])
+                        pay_id_fetch_query = "select pay_id from medhub.appointment where doctor_email = '" + doctor_email + "' and start = '" + patient['date'] + "' allow filtering"
+                        pay_id_fetch = config.cassandra.session.execute(pay_id_fetch_query).one()
                         res_2 = config.cassandra.update("medhub.appointment", new_val, condition)
                         if res_2:
                             threading.Thread(target=Notification().notify_cancelled_slots, args=(doctor_email, patient)).start()
+                            Payment().refund(pay_id_fetch.pay_id)
                 return True
         except Exception as e:
             config.logger.log("ERROR", str(e))

@@ -13,8 +13,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from py_backend.appointment.slots import SlotMaker
 from py_backend.appointment.fetch_and_filter_api import DoctorFetchPast, DoctorFetchUpcoming, DoctorFilterPast, DoctorFilterUpcoming, PatientFetch, PatientFilter, FetchNAAppointments, FetchDoctors, FilterDoctors
 from py_backend.appointment.notify_patient_api import NotifyPatient
-from py_backend.appointment.appointment_status_api import BookSlot, CancelSlot, TakeALeave, DoctorComplete
-from py_backend.payments.razorpay_api import ConfirmPayment
+from py_backend.appointment.appointment_status_api import BookSlot, CancelSlot, TakeALeave, DoctorComplete, ConfirmPayment
 import multiexit
 import datetime
 

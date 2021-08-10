@@ -69,7 +69,7 @@ const TakeLeave = () => {
           end: end,
         };
         console.log(data);
-        const response = await fetch("http://localhost:5000/api/take-a-leave", {
+        const response = await fetch("https://localhost:5000/api/take-a-leave", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
