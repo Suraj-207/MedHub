@@ -34,7 +34,7 @@ const PatientProfile = () => {
         };
         console.log(data);
         const response = await fetch(
-          "http://localhost:5000/api/change-profile",
+          "https://localhost:5000/api/change-profile",
           {
             method: "POST",
             headers: {
@@ -70,7 +70,7 @@ const PatientProfile = () => {
       fetchData = async () => {
         const data = { token: auth.token };
         const response = await fetch(
-          "http://localhost:5000/api/fetch-profile",
+          "https://localhost:5000/api/fetch-profile",
           {
             method: "POST",
             headers: {
@@ -120,6 +120,12 @@ const PatientProfile = () => {
               <h4>Email:</h4>
               <label>
                 {Object.keys(details).length > 0 ? details.email : ""}
+              </label>
+            </div>
+            <div className="patient_profile">
+              <h4>Gender:</h4>
+              <label>
+                {Object.keys(details).length > 0 ? details.gender : ""}
               </label>
             </div>
             <div className="patient_profile">

@@ -1,5 +1,9 @@
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import { AuthContext } from "./shared/context/AuthContext";
@@ -15,9 +19,10 @@ import Appointment from "./pages/PatientDashboard/Appointment";
 import DoctorAppointment from "./pages/DoctorDashboard/DoctorAppointment";
 import TakeLeave from "./pages/DoctorDashboard/TakeLeave";
 import Patient from "./pages/DoctorDashboard/Patient";
+import ConfirmPayment from "./pages/PatientDashboard/ConfirmPayment";
 
 function App() {
-  const {token, login, logout, load, isToken, userId} = useAuth();
+  const { token, login, logout, payment, load, isToken, userId } = useAuth();
   let routes;
 
   if (token && userId === "doctor") {
@@ -70,6 +75,9 @@ function App() {
         <Route path="/patient/signout" exact>
           <MainNavigation />
         </Route>
+        <Route path="/confirmpayment/:payment" exact>
+          <ConfirmPayment />
+        </Route>
       </Switch>
     );
   } else if (!isToken) {
@@ -99,13 +107,14 @@ function App() {
         isLoggedIn: token,
         token: token,
         user: userId,
+        payment: "",
         login: login,
         logout: logout,
       }}
     >
       <Router>
-            <div>{load && <LoadingSpinner asOverlay />} </div>
-            <div>{routes}</div>
+        <div>{load && <LoadingSpinner asOverlay />} </div>
+        <div>{routes}</div>
       </Router>
     </AuthContext.Provider>
   );

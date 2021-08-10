@@ -8,36 +8,43 @@ import { useForm } from "../../shared/hooks/form-hook";
 import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
 
 const DoctorProfile = () => {
-  // const [dropdown, setDropdown] = useState();
-  const [formData, updateFormData] = useState();
   const [details, setDetails] = useState({});
   const [load, setLoad] = useState(true);
   const auth = useContext(AuthContext);
+  const [allValues, setAllValues] = useState({
+    start_time: "",
+    end_time: "",
+    session: "",
+    break_start: "",
+    break_end: "",
+  });
+
   const [formState, inputHandler] = useForm();
   let data, fetchData;
 
   const handleFieldChange = (e) => {
-    updateFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setAllValues({...allValues, [e.target.name]: e.target.value})
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(allValues);
     try {
       fetchData = async () => {
         setLoad(true);
-        const data = { token: auth.token, changes: {
-          start_time:formData.start_time,
-          end_time: formData.end_time,
-          break_start: formData.break_start,
-          break_end: formData.break_end,
-          session: formData.session,
-          speciality: formState.inputs.speciality.value,
-          experience: formState.inputs.experience.value,
-          pow: formState.inputs.pow.value
-        } };
+        const data = {
+          token: auth.token,
+          changes: {
+            start_time: allValues.start_time,
+            end_time: allValues.end_time,
+            break_start: allValues.break_start,
+            break_end: allValues.break_end,
+            session: allValues.session,
+            speciality: formState.inputs.speciality.value,
+            experience: formState.inputs.experience.value,
+            pow: formState.inputs.pow.value,
+          },
+        };
         console.log(data);
         const response = await fetch(
           "http://localhost:5000/api/change-profile",
@@ -92,6 +99,13 @@ const DoctorProfile = () => {
         } else {
           console.log(result);
           setDetailsHandler(result);
+          setAllValues({
+            start_time: result.start_time,
+            end_time: result.end_time,
+            session: result.session,
+            break_start: result.break_start,
+            break_end: result.break_end,
+          })
         }
         if (response.ok) {
           console.log("done");
@@ -110,27 +124,27 @@ const DoctorProfile = () => {
       </div>
       <div>{load && <LoadingSpinner asOverlay />} </div>
       {!load && (
-        <div className="form">
-          <div className="form-left">
-            <div className="doctor_profile">
+        <div className="dashboard_form">
+          <div className="dashboard_form-left">
+            <div className="dashboard_doctor_profile">
               <h4>Firstname:</h4>
               <label>
                 {Object.keys(details).length > 0 ? details.fname : ""}
               </label>
             </div>
-            <div className="doctor_profile">
+            <div className="dashboard_doctor_profile">
               <h4>Lastname:</h4>
               <label>
                 {Object.keys(details).length > 0 ? details.lname : ""}
               </label>
             </div>
-            <div className="doctor_profile">
+            <div className="dashboard_doctor_profile">
               <h4>Email:</h4>
               <label>
                 {Object.keys(details).length > 0 ? details.email : ""}
               </label>
             </div>
-            <div className="doctor_profile">
+            <div className="dashboard_doctor_profile">
               <h4>Speciality:</h4>
               <div>
                 <Input
@@ -146,7 +160,7 @@ const DoctorProfile = () => {
                 />
               </div>
             </div>
-            <div className="doctor_profile">
+            <div className="dashboard_doctor_profile">
               <h4>Experience:</h4>
               <div>
                 <Input
@@ -162,7 +176,7 @@ const DoctorProfile = () => {
                 />
               </div>
             </div>
-            <div className="doctor_profile">
+            <div className="dashboard_doctor_profile">
               <h4>Place Of Work:</h4>
               <div>
                 <Input
@@ -179,9 +193,9 @@ const DoctorProfile = () => {
               </div>
             </div>
           </div>
-          <div className="form-right">
+          <div className="dashboard_form-right">
             <h4>Start time </h4>
-            <div className="details_time">
+            <div className="dashboard_details_time">
               <div>
                 <label>
                   {Object.keys(details).length > 0
@@ -200,7 +214,7 @@ const DoctorProfile = () => {
               </div>
             </div>
             <h4>End time </h4>
-            <div className="details_time">
+            <div className="dashboard_details_time">
               <div>
                 <label>
                   {Object.keys(details).length > 0
@@ -221,7 +235,7 @@ const DoctorProfile = () => {
               </div>
             </div>
             <h4>Time/per session </h4>
-            <div className="details_time">
+            <div className="dashboard_details_time">
               <div>
                 <label>
                   {Object.keys(details).length > 0
@@ -242,7 +256,7 @@ const DoctorProfile = () => {
               </div>
             </div>
             <h4>Break start time </h4>
-            <div className="details_time">
+            <div className="dashboard_details_time">
               <div>
                 <label>
                   {Object.keys(details).length > 0
@@ -263,7 +277,7 @@ const DoctorProfile = () => {
               </div>
             </div>
             <h4>Break End time</h4>
-            <div className="details_time">
+            <div className="dashboard_details_time">
               <div>
                 <label>
                   {Object.keys(details).length > 0
@@ -283,10 +297,18 @@ const DoctorProfile = () => {
                 />
               </div>
             </div>
+            <div>
+              <span
+                class={details.active ? "active_dot" : "inactive_dot"}
+              ></span>{" "}
+              {details.active
+                ? " Your account is active."
+                : " Complete your profile to activate your account."}
+            </div>
           </div>
         </div>
       )}
-      <div className="doctor_profile_button">
+      <div className="dashboard_doctor_profile_button">
         <Button
           onClick={handleSubmit}
           type="submit"

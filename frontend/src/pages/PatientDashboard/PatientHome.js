@@ -103,14 +103,14 @@ const PatientHome = () => {
       fetchData = async () => {
         const data = {
           token: auth.token,
-          city: formState.inputs.city.isValid ? formState.inputs.city : "",
+          city: formState.inputs.city.isValid ? formState.inputs.city.value : "",
           speciality: formState.inputs.speciality.isValid
             ? formState.inputs.speciality.value
             : "",
           state: country,
         };
         const response = await fetch(
-          "http://localhost:5000/api/filter-doctors",
+          "https://localhost:5000/api/filter-doctors",
           {
             method: "POST",
             headers: {
@@ -152,7 +152,7 @@ const PatientHome = () => {
           latitude: "",
         };
         const response = await fetch(
-          "http://localhost:5000/api/fetch-doctors",
+          "https://localhost:5000/api/fetch-doctors",
           {
             method: "POST",
             headers: {

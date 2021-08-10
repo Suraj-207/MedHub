@@ -8,6 +8,8 @@ import Input from "../../shared/FormElements/Input";
 import { useForm } from "../../shared/hooks/form-hook";
 import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
 import Button from "../../shared/FormElements/Button";
+import { useHistory } from "react-router-dom";
+
 
 const ConfirmBooking = () => {
   const { props } = useLocation();
@@ -18,6 +20,7 @@ const ConfirmBooking = () => {
   const [status, setStatus] = useState(false);
   const [value, onChange] = useState(new Date());
   const [formState, inputHandler] = useForm();
+  const history = useHistory()
   const auth = useContext(AuthContext);
   const theDate = new Date();
   const myNewDate = new Date(theDate);
@@ -34,6 +37,7 @@ const ConfirmBooking = () => {
   };
 
   const confirmBookingHandler = () => {
+
     let fetchData;
     try {
       fetchData = async () => {
@@ -45,7 +49,7 @@ const ConfirmBooking = () => {
           time: slot,
         };
         const response = await fetch(
-          "http://localhost:5000/api/book-slot",
+          "https://localhost:5000/api/book-slot",
           {
             method: "POST",
             headers: {
@@ -55,15 +59,13 @@ const ConfirmBooking = () => {
           }
         );
         const result = await response.json();
-        if (result === null) {
+        if (result === null || result === false ) {
           setLoad(false);
           console.log("unidentified token");
         } else {
           console.log(result);
-          if (result) {
-            console.log("1");
-          }
           console.log("done");
+          window.location.href = result;
         }
         if (response.ok) {
           console.log("done");
@@ -86,10 +88,11 @@ const ConfirmBooking = () => {
     console.log(formState.inputs.issue.value);
     let fetchData;
     try {
+      setLoad(true)
       fetchData = async () => {
         const data = { token: auth.token, email: props.email, date: newDate };
         const response = await fetch(
-          "http://localhost:5000/api/fetch-na-appointments",
+          "https://localhost:5000/api/fetch-na-appointments",
           {
             method: "POST",
             headers: {
@@ -107,9 +110,10 @@ const ConfirmBooking = () => {
           console.log(result);
           setDetails(result);
           console.log("done");
+          setLoad(false)
         }
         if (response.ok) {
-          
+          setLoad(false)
           console.log("done");
         }
       };
