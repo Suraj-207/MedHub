@@ -2,7 +2,7 @@ import datetime
 import threading
 import config
 from py_backend.appointment.notify import Notification
-from py_backend.date_and_time.conversion import Convert
+from py_backend.payments.razorpay import Payment
 
 
 class BookCancelReschedule:
@@ -27,7 +27,11 @@ class BookCancelReschedule:
             res = config.cassandra.update("medhub.appointment", new_val, condition)
             if res:
                 threading.Thread(target=Notification().notify_book_slot, args=(doctor_email, patient_email, date)).start()
-                return True
+                fetch_patient_name_query = "select fname, lname from medhub.user where email = '" + patient_email +"' allow filtering"
+                fetch_patient_phone_query = "select phone from medhub.patient where email = '" + patient_email +"' allow filtering"
+                fetch_patient_name = config.cassandra.session.execute(fetch_patient_name_query).one()
+                fetch_patient_phone = config.cassandra.session.execute(fetch_patient_phone_query).one()
+                return Payment(fetch_patient_name.fname + " " + fetch_patient_name.lname, patient_email, fetch_patient_phone.phone, 1)
             else:
                 return False
         except Exception as e:
