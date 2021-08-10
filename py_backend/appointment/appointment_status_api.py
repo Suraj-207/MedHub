@@ -4,6 +4,7 @@ import config
 from py_backend.jwt_token.token import Token
 from py_backend.appointment.appointment_status import BookCancelReschedule
 from py_backend.payments.razorpay import Payment
+import threading
 
 
 class ConfirmPayment(Resource):
@@ -66,7 +67,8 @@ class TakeALeave(Resource):
             decoded = Token().validate_token(token)
             if decoded['valid']:
                 doctor_email = decoded['decoded_token']['email']
-                return BookCancelReschedule().doctor_leave(doctor_email, start, end, status)
+                threading.Thread(target=BookCancelReschedule().doctor_leave,
+                                 args=(doctor_email, start, end, status)).start()
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
