@@ -12,7 +12,7 @@ class Validation:
         :param password: password of the user
         """
         try:
-            self.email = email
+            self.email = email.lower()
             self.password = password
         except Exception as e:
             config.logger.log("ERROR", str(e))

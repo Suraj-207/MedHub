@@ -22,7 +22,7 @@ class Registration:
             to = "To: {} <{}>\n".format(record['fname'] + " " + record['lname'], self.receiver_email)
             subject = "Subject: Registration in MedHub successful\n\n"
             self.user_record = {
-                "email": record['email'],
+                "email": record['email'].lower(),
                 "password": generate_password_hash(record['password']),
                 "fname": record['fname'],
                 "lname": record['lname'],
@@ -30,7 +30,7 @@ class Registration:
             }
             if record['account'] == 'doctor':
                 self.info_record = {
-                    "email": record['email'],
+                    "email": record['email'].lower(),
                     "speciality": record['speciality'].capitalize(),
                     "experience": int(record['experience']),
                     "pow": record['place_of_work'],
@@ -50,7 +50,7 @@ class Registration:
                 self.message = from_ + to + subject + msg
             else:
                 self.info_record = {
-                    "email": record['email'],
+                    "email": record['email'].lower(),
                     "city": record['city'].capitalize(),
                     "state": record['state'].capitalize(),
                     "pin": int(record['pin']),
