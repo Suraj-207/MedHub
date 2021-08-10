@@ -22,18 +22,6 @@ const PatientHome = () => {
   const geolocation = useGeolocation();
   let subtitle;
 
-  // useEffect( ()=>{
-  //   const fetchLocation = async () =>{
-  //     const latitude = await geolocation.latitude
-  //     const longitude = await geolocation.longitude
-  //     const alatitude = await geolocation.latitude
-  //     const alongitude = await geolocation.longitude
-  //     console.log(latitude, longitude)
-  //   }
-
-  //   fetchLocation()
-  // },[])
-
   const customStyles = {
     content: {
       top: "50%",
@@ -74,11 +62,9 @@ const PatientHome = () => {
           setLoad(false);
           console.log("unidentified token");
         } else {
-          //auth.login(result.user, result.token);
           console.log(result);
           setDetails(result.doctors);
           console.log("done");
-          //   setDetailsHandler(result);
           setLoad(false);
         }
         if (response.ok) {
@@ -99,7 +85,6 @@ const PatientHome = () => {
   }
 
   function afterOpenModal() {
-    // references are now sync'd and can be accessed.
     subtitle.style.color = "#f00";
   }
 
@@ -140,11 +125,9 @@ const PatientHome = () => {
           setLoad(false);
           console.log("unidentified token");
         } else {
-          //auth.login(result.user, result.token);
           console.log(result);
           setDetails(result.doctors);
           console.log("done");
-          //   setDetailsHandler(result);
           setLoad(false);
         }
         if (response.ok) {
@@ -184,11 +167,9 @@ const PatientHome = () => {
           setLoad(false);
           console.log("unidentified token");
         } else {
-          //auth.login(result.user, result.token);
           console.log(result);
           setDetails(result.doctors);
           console.log("done");
-          //   setDetailsHandler(result);
           setLoad(false);
         }
         if (response.ok) {

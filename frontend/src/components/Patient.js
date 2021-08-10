@@ -6,19 +6,7 @@ import { useForm } from "../shared/hooks/form-hook";
 
 
 const Patient = (props) => {
-  const [formState, inputHandler, setFormData] = useForm(
-    // {
-    //   email: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   password: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    // },
-    // false
-  )
+  const [inputHandler] = useForm();
 
   const handleChange = (e) => {
     props.onFieldChange(e);

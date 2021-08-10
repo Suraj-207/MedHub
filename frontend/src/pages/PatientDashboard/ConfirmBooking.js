@@ -56,11 +56,9 @@ const ConfirmBooking = () => {
         );
         const result = await response.json();
         if (result === null) {
-          // setErr(true);
           setLoad(false);
           console.log("unidentified token");
         } else {
-          //auth.login(result.user, result.token);
           console.log(result);
           if (result) {
             console.log("1");
@@ -77,15 +75,6 @@ const ConfirmBooking = () => {
     fetchData();
   };
 
-  // const manageDate = (result) => {
-  //   console.log(result.length - 1);
-  //   const ndate = result[result.length - 1].start;
-  //   maxDate = ndate.split("T")[0].split("-");
-  //   year = maxDate[0];
-  //   month = +maxDate[1];
-  //   date = +maxDate[2];
-  //   console.log(month);
-  // };
   const handleSubmit = () => {
     const month = parseInt(value.toLocaleDateString().split("/")[0]);
     const date = parseInt(value.toLocaleDateString().split("/")[1]);
@@ -111,12 +100,10 @@ const ConfirmBooking = () => {
         );
         const result = await response.json();
         if (result === null) {
-          // setErr(true);
           setLoad(false);
           setDetails(result)
           console.log("unidentified token");
         } else {
-          //auth.login(result.user, result.token);
           console.log(result);
           setDetails(result);
           console.log("done");
@@ -159,7 +146,6 @@ const ConfirmBooking = () => {
               minDate={new Date()}
               maxDate={myNewDate}
               format="y-MM-dd"
-              // maxDate={new Date(details[details.length - 1].start)}
             />
           </div>
           <div>

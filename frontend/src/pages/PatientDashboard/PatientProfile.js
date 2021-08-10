@@ -12,20 +12,11 @@ import Button from "../../shared/FormElements/Button";
 import "./PatientProfile.css"
 
 const PatientProfile = () => {
-  // const [formData, updateFormData] = useState();
   const [details, setDetails] = useState({});
   const [load, setLoad] = useState(true);
   const [formState, inputHandler] = useForm();
   const auth = useContext(AuthContext);
-
   let data, fetchData;
-
-  // const handleFieldChange = (e) => {
-  //   updateFormData({
-  //     ...formData,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -92,7 +83,6 @@ const PatientProfile = () => {
         if (result === null) {
           console.log("unidentified token");
         } else {
-          //auth.login(result.user, result.token);
           setDetailsHandler(result);
         }
         if (response.ok) {
@@ -105,7 +95,6 @@ const PatientProfile = () => {
     fetchData();
   }, [auth.token]);
 
-  // const handleDropdownChange = () => {};
   return (
     <React.Fragment>
       <div className="heading">
@@ -206,7 +195,6 @@ const PatientProfile = () => {
         </div>
       )}
       <div className="patient_profile_button">
-        {/* <button onClick={handleSubmit}>Confirm Changes</button> */}
         <Button onClick={handleSubmit} type="submit" disabled={!formState.isValid}>
             {"Confirm changes"}
           </Button>

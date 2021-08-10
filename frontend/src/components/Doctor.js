@@ -4,26 +4,8 @@ import Input from "../shared/FormElements/Input";
 import { VALIDATOR_REQUIRE } from "../shared/util/validators";
 import { useForm } from "../shared/hooks/form-hook";
  
-const Doctor = (props) => {
-  const [formState, inputHandler, setFormData] = useForm(
-    // {
-    //   email: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    //   password: {
-    //     value: "",
-    //     isValid: false,
-    //   },
-    // },
-    // false
-  );
-
-  const handleChange = (e) => {
-    props.onFieldChange(e);
-  }
-
-
+const Doctor = () => {
+  const [inputHandler] = useForm();
   return (
     <div className="doctor">
       <div className="doctor-signup">
@@ -66,7 +48,6 @@ const Doctor = (props) => {
       </div>
       <div className="doctor-signup">
         <Input
-          // element="input"
           label="Acting professional proof"
           id="proof"
           type="link"

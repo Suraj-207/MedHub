@@ -25,15 +25,12 @@ const Patient = () => {
           );
           const result = await response.json();
           if (result === null) {
-            //   setErr(true);
             setLoad(false);
             console.log("unidentified token");
           } else {
-            //auth.login(result.user, result.token);
             console.log(result);
             setDetails(result);
             console.log("done");
-            //   setDetailsHandler(result);
             setLoad(false);
           }
           if (response.ok) {

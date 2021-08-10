@@ -25,16 +25,11 @@ const Appointment = () => {
     },
   };
 
-  // const handleClick = (index) => {
-
-  // }
-
   function openModal() {
     setIsOpen(true);
   }
 
   function afterOpenModal() {
-    // references are now sync'd and can be accessed.
     subtitle.style.color = "#f00";
   }
 
@@ -98,15 +93,12 @@ const Appointment = () => {
         );
         const result = await response.json();
         if (result === null) {
-          //   setErr(true);
           setLoad(false);
           console.log("unidentified token");
         } else {
-          //auth.login(result.user, result.token);
           console.log(result);
           setDetails(result);
           console.log("done");
-          //   setDetailsHandler(result);
           setLoad(false);
         }
         if (response.ok) {
@@ -151,7 +143,6 @@ const Appointment = () => {
                 <th>Prescription</th>
                 <th>Status</th>
                 <th>Action</th>
-                {/* {confirmstatus && <th>Confirm status</th>} */}
               </tr>
 
               {details &&
@@ -182,13 +173,6 @@ const Appointment = () => {
                           Click to Cancel
                         </Button>
                       </td>
-                      {/* {confirmstatus && (
-                        <td>
-                          <button onClick={confirmHandler}>
-                            Confirm cancellation
-                          </button>
-                        </td>
-                      )} */}
                     </tr>
                   );
                 })}

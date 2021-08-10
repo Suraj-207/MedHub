@@ -19,7 +19,6 @@
 }
 
 .row_data_single {
-    /* border: 2px solid #86878a; */
     display: flex;
     flex-direction: column;
     margin-top: 75px;
@@ -29,7 +28,6 @@
   .row_data_single img{
       margin-top: 2rem;
       margin-left: 3.125rem;
-      /* margin-right: 50px; */
       max-width: 15vw;
       max-height: 15vw;
   }

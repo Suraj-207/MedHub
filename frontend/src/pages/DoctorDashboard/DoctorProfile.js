@@ -14,17 +14,6 @@ const DoctorProfile = () => {
   const [load, setLoad] = useState(true);
   const auth = useContext(AuthContext);
   const [formState, inputHandler] = useForm();
-  // {
-  //   email: {
-  //     value: "",
-  //     isValid: false,
-  //   },
-  //   password: {
-  //     value: "",
-  //     isValid: false,
-  //   },
-  // },
-  // false
   let data, fetchData;
 
   const handleFieldChange = (e) => {
@@ -101,7 +90,6 @@ const DoctorProfile = () => {
         if (result === null) {
           console.log("unidentified token");
         } else {
-          //auth.login(result.user, result.token);
           console.log(result);
           setDetailsHandler(result);
         }
@@ -115,7 +103,6 @@ const DoctorProfile = () => {
     fetchData();
   }, [auth.token]);
 
-  // const handleDropdownChange = () => {};
   return (
     <React.Fragment>
       <div className="heading">
@@ -208,7 +195,6 @@ const DoctorProfile = () => {
                   className="input_elements"
                   name="start_time"
                   onChange={handleFieldChange}
-                  // placeholder={Object.keys(details).length> 0 ? details.start_time : ""}
                   placeholder="10:53"
                 />
               </div>
@@ -301,7 +287,6 @@ const DoctorProfile = () => {
         </div>
       )}
       <div className="doctor_profile_button">
-        {/* <button onClick={handleSubmit}>Confirm Changes</button> */}
         <Button
           onClick={handleSubmit}
           type="submit"
