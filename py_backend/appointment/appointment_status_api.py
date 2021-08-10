@@ -69,6 +69,7 @@ class TakeALeave(Resource):
                 doctor_email = decoded['decoded_token']['email']
                 threading.Thread(target=BookCancelReschedule().doctor_leave,
                                  args=(doctor_email, start, end, status)).start()
+                return True
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
