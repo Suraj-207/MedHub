@@ -13,15 +13,10 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from py_backend.appointment.slots import SlotMaker
 from py_backend.appointment.fetch_and_filter_api import DoctorFetchPast, DoctorFetchUpcoming, DoctorFilterPast, DoctorFilterUpcoming, PatientFetch, PatientFilter, FetchNAAppointments, FetchDoctors, FilterDoctors
 from py_backend.appointment.notify_patient_api import NotifyPatient
-from py_backend.appointment.appointment_status_api import BookSlot, CancelSlot, TakeALeave, DoctorComplete
-from py_backend.payments.razorpay_api import ConfirmPayment
+from py_backend.appointment.appointment_status_api import BookSlot, CancelSlot, TakeALeave, DoctorComplete, ConfirmPayment
 import multiexit
 import datetime
-from OpenSSL import SSL
 
-# context = SSL.Context()
-# context.use_privatekey_file('frontend/certificate.key')
-# context.use_certificate_file('frontend/certificate.crt')
 
 app = Flask(__name__, static_url_path='', static_folder='/frontend/build')
 CORS(app)
@@ -65,7 +60,7 @@ api.add_resource(BookSlot, '/api/book-slot')
 api.add_resource(CancelSlot, '/api/cancel-slot')
 api.add_resource(TakeALeave, '/api/take-a-leave')
 api.add_resource(DoctorComplete, '/api/doctor-complete')
-api.add_resource(ConfirmPayment, '/api/confirmpayment/')
+api.add_resource(ConfirmPayment, '/api/confirm-payment/')
 
 
 if __name__ == '__main__':

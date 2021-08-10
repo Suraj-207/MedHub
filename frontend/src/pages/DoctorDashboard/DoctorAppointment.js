@@ -67,7 +67,7 @@ const DoctorAppointment = () => {
         };
         console.log(data);
         const response = await fetch(
-          "http://localhost:5000/api/doctor-complete",
+          "https://localhost:5000/api/doctor-complete",
           {
             method: "POST",
             headers: {
@@ -97,7 +97,7 @@ const DoctorAppointment = () => {
       fetchData = async () => {
         const data = { token: auth.token };
         const response = await fetch(
-          "http://localhost:5000/api/doctor-fetch-upcoming",
+          "https://localhost:5000/api/doctor-fetch-upcoming",
           {
             method: "POST",
             headers: {

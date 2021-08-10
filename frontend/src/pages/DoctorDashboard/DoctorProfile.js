@@ -47,7 +47,7 @@ const DoctorProfile = () => {
         };
         console.log(data);
         const response = await fetch(
-          "http://localhost:5000/api/change-profile",
+          "https://localhost:5000/api/change-profile",
           {
             method: "POST",
             headers: {
@@ -84,7 +84,7 @@ const DoctorProfile = () => {
       fetchData = async () => {
         const data = { token: auth.token };
         const response = await fetch(
-          "http://localhost:5000/api/fetch-profile",
+          "https://localhost:5000/api/fetch-profile",
           {
             method: "POST",
             headers: {
