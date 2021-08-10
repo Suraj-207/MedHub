@@ -58,11 +58,10 @@ api.add_resource(FetchDoctors, '/api/fetch-doctors')
 api.add_resource(FilterDoctors, '/api/filter-doctors')
 api.add_resource(NotifyPatient, '/api/notifications')
 api.add_resource(BookSlot, '/api/book-slot')
-# api.add_resource(ConfirmSlot, '/api/confirm-slot')
 api.add_resource(CancelSlot, '/api/cancel-slot')
 api.add_resource(TakeALeave, '/api/take-a-leave')
 api.add_resource(DoctorComplete, '/api/doctor-complete')
-api.add_resource(ConfirmPayment, '/api/confirmpayment/')
+api.add_resource(ConfirmPayment, '/api/confirm-payment/')
 
 
 if __name__ == '__main__':

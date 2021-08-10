@@ -49,7 +49,7 @@ class BookCancelReschedule:
         try:
             new_val = {
                 "patient_email": patient_email,
-                "status": "in process",
+                "status": "pending",
                 "issue": issue
             }
             condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
@@ -57,6 +57,7 @@ class BookCancelReschedule:
             if config.cassandra.session.execute(re_check_query).one().status == 'pending':
                 res = config.cassandra.update("medhub.appointment", new_val, condition)
                 if res:
+                    print(1)
                     fetch_patient_name_query = "select fname, lname from medhub.user where email = '" + patient_email +"' allow filtering"
                     fetch_patient_phone_query = "select phone from medhub.patient where email = '" + patient_email +"' allow filtering"
                     fetch_patient_name = config.cassandra.session.execute(fetch_patient_name_query).one()

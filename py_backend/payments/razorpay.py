@@ -37,7 +37,7 @@ class Payment:
                     "notes": {
                         "policy_name": "MedHub"
                     },
-                    "callback_url": "https://localhost:5000/api/confirmpayment/",
+                    "callback_url": "https://localhost:5000/api/confirm-payment/",
                     "callback_method": "get"
                 },
                 auth=requests.auth.HTTPBasicAuth(self.key, self.secret)
