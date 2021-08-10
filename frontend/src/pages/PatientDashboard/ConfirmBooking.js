@@ -40,6 +40,7 @@ const ConfirmBooking = () => {
 
     let fetchData;
     try {
+      setLoad(true);
       fetchData = async () => {
         const data = {
           token: auth.token,
@@ -68,6 +69,7 @@ const ConfirmBooking = () => {
           window.location.href = result;
         }
         if (response.ok) {
+          setLoad(false);
           console.log("done");
         }
       };
