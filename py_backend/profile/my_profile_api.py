@@ -2,6 +2,7 @@ from flask import request
 from flask_restful import Resource
 from py_backend.profile.my_profile import Profile
 import config
+from PIL import Image
 
 
 class FetchProfile(Resource):
@@ -26,3 +27,14 @@ class ChangeProfile(Resource):
             return Profile(token).change_profile(changes)
         except Exception as e:
             config.logger.log("ERROR", str(e))
+
+
+class FetchImage(Resource):
+
+    def post(self):
+        print(request.files)
+        img = request.files['image']
+        im = Image.open(img)
+        im.show()
+
+

@@ -8,7 +8,7 @@ from py_backend.cassandra_db.crud import Operations
 from py_backend.login.login_api import Login
 from py_backend.signup.signup_api import Signup
 from py_backend.jwt_token.token_validation_api import IsValidToken
-from py_backend.profile.my_profile_api import FetchProfile, ChangeProfile
+from py_backend.profile.my_profile_api import FetchProfile, ChangeProfile, FetchImage
 from apscheduler.schedulers.background import BackgroundScheduler
 from py_backend.appointment.slots import SlotMaker
 from py_backend.appointment.fetch_and_filter_api import DoctorFetchPast, DoctorFetchUpcoming, DoctorFilterPast, DoctorFilterUpcoming, PatientFetch, PatientFilter, FetchNAAppointments, FetchDoctors, FilterDoctors
@@ -61,6 +61,7 @@ api.add_resource(CancelSlot, '/api/cancel-slot')
 api.add_resource(TakeALeave, '/api/take-a-leave')
 api.add_resource(DoctorComplete, '/api/doctor-complete')
 api.add_resource(ConfirmPayment, '/api/confirm-payment/')
+api.add_resource(FetchImage, '/api/fetch-image')
 
 
 if __name__ == '__main__':
