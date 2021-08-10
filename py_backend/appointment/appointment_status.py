@@ -31,7 +31,7 @@ class BookCancelReschedule:
                 fetch_patient_phone_query = "select phone from medhub.patient where email = '" + patient_email +"' allow filtering"
                 fetch_patient_name = config.cassandra.session.execute(fetch_patient_name_query).one()
                 fetch_patient_phone = config.cassandra.session.execute(fetch_patient_phone_query).one()
-                return Payment(fetch_patient_name.fname + " " + fetch_patient_name.lname, patient_email, fetch_patient_phone.phone, 1)
+                return Payment(fetch_patient_name.fname + " " + fetch_patient_name.lname, patient_email, fetch_patient_phone.phone, 1).get_link()
             else:
                 return False
         except Exception as e:
