@@ -64,8 +64,7 @@ const ConfirmBooking = () => {
         } else {
           console.log(result);
           console.log("done");
-          window.location.href = result;
-          // window.open({result},"target_blank");
+          window.open(`${result}`,"target_blank");
         }
         if (response.ok) {
           setLoad(false);

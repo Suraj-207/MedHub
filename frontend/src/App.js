@@ -17,6 +17,7 @@ import TakeLeave from "./pages/DoctorDashboard/TakeLeave";
 import Patient from "./pages/DoctorDashboard/Patient";
 import ConfirmPayment from "./pages/PatientDashboard/ConfirmPayment";
 import AdminHome from "./pages/AdminDashboard/AdminHome";
+import Inactive from "./pages/AdminDashboard/Inactive"
 
 function App() {
   const { token, login, logout, payment, load, isToken, userId } = useAuth();
@@ -83,6 +84,10 @@ function App() {
         <Route path="/" exact>
           <MainNavigation />
           <AdminHome />
+        </Route>
+        <Route path="/inactive" exact>
+          <MainNavigation />
+          <Inactive />
         </Route>
       </Switch>
     );

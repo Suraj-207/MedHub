@@ -90,6 +90,7 @@ class Admin:
                 "active": False
             }
             condition = "email = '" + email + "'"
+            print(1)
             res = config.cassandra.update("medhub.doctor", new_val, condition)
             if res:
                 return True

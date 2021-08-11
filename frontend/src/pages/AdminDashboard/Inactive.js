@@ -4,13 +4,14 @@ import Modal from "react-modal";
 import { AuthContext } from "../../shared/context/AuthContext";
 import Button from "../../shared/FormElements/Button";
 
-const AdminHome = () => {
+const Inactive = () => {
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState([]);
   const auth = useContext(AuthContext);
   const [index, setIndex] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
-  let subtitle
+  let subtitle;
+
   const cancelStatus = (index) => {
     setIndex(index);
     openModal();
@@ -39,45 +40,47 @@ const AdminHome = () => {
     setIsOpen(false);
   }
 
-    const handleSubmit = () => {
-      setLoad(true);
-      closeModal();
-      let fetchData;
-      try {
-        fetchData = async () => {
-          const data = {
-            token: auth.token,
-            email: details[0].email
-          };
-          const response = await fetch(
-            "https://localhost:5000/api/admin-change-active",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            }
-          );
-          const result = await response.json();
-          if (result === null) {
-          //   setErr(true);
-          window.location.reload();
-            setLoad(false);
-            console.log("unidentified token");
-          } else {
-            console.log("done");
-            setLoad(false);
-          }
-          if (response.ok) {
-            console.log("done");
-          }
+  const handleSubmit = () => {
+    setLoad(true);
+    let fetchData;
+    closeModal();
+    try {
+      fetchData = async () => {
+        const data = {
+          token: auth.token,
+          email: details[0].email,
+          acc_id: details[0].acc_id
         };
-      } catch (err) {
-        console.log(err);
-      }
-      fetchData();
-    };
+        const response = await fetch(
+          "https://localhost:5000/api/admin-change-inactive",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const result = await response.json();
+        if (result === null) {
+          //   setErr(true);
+          setLoad(false);
+          console.log("unidentified token");
+        } else {
+          console.log(result);
+          console.log("done");
+          window.location.reload();
+          setLoad(false);
+        }
+        if (response.ok) {
+          console.log("done");
+        }
+      };
+    } catch (err) {
+      console.log(err);
+    }
+    fetchData();
+  };
 
   useEffect(() => {
     setLoad(true);
@@ -88,7 +91,7 @@ const AdminHome = () => {
           token: auth.token,
         };
         const response = await fetch(
-          "https://localhost:5000/api/admin-fetch-active",
+          "https://localhost:5000/api/admin-fetch-inactive",
           {
             method: "POST",
             headers: {
@@ -128,7 +131,7 @@ const AdminHome = () => {
         ariaHideApp={false}
       >
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
-         Deactivate?
+          Activate?
         </h2>
         <button onClick={closeModal}>close</button>
         <button onClick={handleSubmit}>Confirm</button>
@@ -164,15 +167,17 @@ const AdminHome = () => {
                       <td>{item.proof}</td>
                       <td>{item.active ? "true" : "false"}</td>
                       {/* <td>
-                        {item.status}
-                      </td> */}
+                            {item.status}
+                          </td> */}
                       <td>
                         <Button
                           onClick={() => {
                             cancelStatus(index);
                           }}
                         >
-                          {item.active ? "Click to deactivate" : "Click to activate"}
+                          {item.active
+                            ? "Click to deactivate"
+                            : "Click to activate"}
                         </Button>
                       </td>
                     </tr>
@@ -186,4 +191,4 @@ const AdminHome = () => {
   );
 };
 
-export default AdminHome;
+export default Inactive;
