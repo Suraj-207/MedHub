@@ -75,13 +75,13 @@ class Payment:
                   "transfers": [
                     {
                       "account": acc_id,
-                      "amount": info['amount'] - 100,
+                      "amount": info['amount'] - 5000,
                       "currency": "INR",
                       "notes": {
                         "name": fetch_name.fname + ' ' + fetch_name.lname
                       },
-                      "on_hold": True,
-                      "on_hold_until": hold
+                      "on_hold": False
+                      # "on_hold_until":
                     }]},
                 auth=requests.auth.HTTPBasicAuth(self.key, self.secret)
             )
@@ -96,7 +96,7 @@ class Payment:
             response = requests.post(
                 url="https://api.razorpay.com/v1/payments/{}/refund/".format(pay_id),
                 json={
-                  "amount": info['amount'] - 100,
+                  "amount": info['amount'] - 5000,
                   "reverse_all": 1
                 },
                 auth=requests.auth.HTTPBasicAuth(self.key, self.secret)
