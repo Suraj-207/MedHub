@@ -41,6 +41,7 @@ class FetchImage(Resource):
         im.save(raw_bytes, "JPEG")
         raw_bytes.seek(0)
         img_base64 = base64.b64encode(raw_bytes.read())
+        print(type(img_base64))
         return str(img_base64)
 
 
