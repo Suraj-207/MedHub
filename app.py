@@ -15,6 +15,7 @@ from py_backend.appointment.fetch_and_filter_api import DoctorFetchPast, DoctorF
 from py_backend.appointment.notify_patient_api import NotifyPatient
 from py_backend.appointment.appointment_status_api import BookSlot, CancelSlot, TakeALeave, DoctorComplete, ConfirmPayment
 from py_backend.admin.permissions_api import AdminFetch, AdminChange
+from py_backend.appointment.appointment_status import BookCancelReschedule
 import multiexit
 import datetime
 
@@ -29,8 +30,14 @@ scheduler.add_job(
     func=SlotMaker().assign_slots_scheduling,
     trigger="interval",
     seconds=86400,
-    next_run_time=datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=0),
-                                            datetime.time(hour=16, minute=30)))
+    next_run_time=datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1),
+                                            datetime.time(hour=00, minute=1))
+)
+scheduler.add_job(
+    func=BookCancelReschedule().routine_check_for_failed_appointments,
+    trigger="interval",
+    seconds=3600
+)
 scheduler.start()
 multiexit.install()
 multiexit.register(config.cassandra.shutdown, shared=True)

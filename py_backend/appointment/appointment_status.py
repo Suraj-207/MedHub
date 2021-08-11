@@ -214,11 +214,24 @@ class BookCancelReschedule:
 
     @staticmethod
     def routine_check_for_failed_appointments():
-        query = "select doctor_email, start, pay_id from medhub.appointment where status = 'in process' allow filtering"
-        for row in config.cassandra.session.execute(query).all():
-            time_passed = datetime.datetime.now() - row.pay_id
-            if time_passed.hours >= 1:
-                pass
+        """
+        Routine check for failed payments
+        :return: None
+        """
+        try:
+            query = "select doctor_email, start, pay_time from medhub.appointment where status = 'in process' allow filtering"
+            for row in config.cassandra.session.execute(query).all():
+                time_passed = datetime.datetime.now() - row.pay_time
+                if time_passed.total_seconds() >= 3600:
+                    new_val = {
+                        "status": "pending",
+                        "issue": "NA",
+                        "patient_email": "NA"
+                    }
+                    condition = "doctor_email = '{}' and start = '{}'".format(row.doctor_email, row.date)
+                    config.cassandra.update("medhub.appointment", new_val, condition)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
 
 
 
