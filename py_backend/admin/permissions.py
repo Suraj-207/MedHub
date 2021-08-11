@@ -17,7 +17,7 @@ class Admin:
                     "email": row.email,
                     "proof": row.proof,
                     "active": row.active,
-                    "acc_no": row.acc_no,
+                    "account": row.account,
                     "ifsc": row.ifsc,
                     "acc_id": row.acc_id
                 })

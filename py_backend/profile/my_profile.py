@@ -49,7 +49,7 @@ class Profile:
                         "start_time": row.start_time,
                         "gender": row.gender,
                         "amount": row.amount,
-                        "acc_no": row.acc_no,
+                        "acc_no": row.account,
                         "ifsc": row.ifsc
                     }
                     user_dict.update(doctor_dict)
@@ -84,8 +84,6 @@ class Profile:
                 if user == "doctor":
                     if "amount" in changes.keys():
                         changes['amount'] = int(changes['amount'])
-                    if "acc_no" in changes.keys():
-                        changes['acc_no'] = int(changes['acc_no'])
                     if 'city' in changes.keys():
                         changes['city'] = changes['city'].capitalize()
                     if 'state' in changes.keys():
@@ -100,9 +98,8 @@ class Profile:
                         changes['time_set'] = True
                     check_payment_changes_query = "select acc_no, ifsc, acc_id from medhub.doctor where email = '" + email + "' allow filtering"
                     check_payment_changes = config.cassandra.session.execute(check_payment_changes_query).one()
-                    if check_payment_changes.acc_id is not None:
-                        if changes['acc_no'] != check_payment_changes.acc_no:
-                            changes['active'] = False
+                    if check_payment_changes.acc_id != 'NA' and changes['account'] != check_payment_changes.account:
+                        changes['active'] = False
                     config.logger.log("INFO", "Updating doctors profile")
                     response = config.cassandra.update("medhub.doctor", changes, condition)
                     if response:
