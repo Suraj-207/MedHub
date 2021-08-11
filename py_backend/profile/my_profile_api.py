@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, send_file
 from flask_restful import Resource
 from py_backend.profile.my_profile import Profile
 import config
@@ -35,6 +35,6 @@ class FetchImage(Resource):
         print(request.files)
         img = request.files['image']
         im = Image.open(img)
-        im.show()
+        return send_file(im, mimetype='image/png')
 
 
