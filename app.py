@@ -14,7 +14,7 @@ from py_backend.appointment.slots import SlotMaker
 from py_backend.appointment.fetch_and_filter_api import DoctorFetchPast, DoctorFetchUpcoming, DoctorFilterPast, DoctorFilterUpcoming, PatientFetch, PatientFilter, FetchNAAppointments, FetchDoctors, FilterDoctors
 from py_backend.appointment.notify_patient_api import NotifyPatient
 from py_backend.appointment.appointment_status_api import BookSlot, CancelSlot, TakeALeave, DoctorComplete, ConfirmPayment
-from py_backend.admin.permissions_api import AdminFetch, AdminChange
+from py_backend.admin.permissions_api import AdminFetchInactive, AdminChangeInactive, AdminChangeActive, AdminFetchActive
 from py_backend.appointment.appointment_status import BookCancelReschedule
 import multiexit
 import datetime
@@ -70,8 +70,10 @@ api.add_resource(TakeALeave, '/api/take-a-leave')
 api.add_resource(DoctorComplete, '/api/doctor-complete')
 api.add_resource(ConfirmPayment, '/api/confirm-payment/')
 api.add_resource(FetchImage, '/api/fetch-image')
-api.add_resource(AdminFetch, '/api/admin-fetch')
-api.add_resource(AdminChange, '/api/admin-change')
+api.add_resource(AdminFetchInactive, '/api/admin-fetch-inactive')
+api.add_resource(AdminChangeInactive, '/api/admin-change-inactive')
+api.add_resource(AdminFetchActive, '/api/admin/admin-fetch-active')
+api.add_resource(AdminChangeActive, '/api/admin/admin-change-active')
 
 
 if __name__ == '__main__':

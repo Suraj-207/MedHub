@@ -34,19 +34,9 @@ class ChangeProfile(Resource):
 class FetchImage(Resource):
 
     def post(self):
-        print(0)
-        im = Image.open(request.files['image'])
-        file_object = io.BytesIO()
-        im.save(file_object,'PNG')
-        # im = Image.open(io.BytesIO(request.get_data()))
-        # im.save("hello.jpg")
-        converted_string = base64.b64encode(file_object.getvalue())
-        
-        return send_file(converted_string)
-        # print(request.get_json())
-        
-        # img = request.files['image']
-        # im = Image.open(img)
-        # im.show()
+        print(request.files)
+        img = request.files['image']
+        im = Image.open(img)
+        return send_file(im, mimetype='image/png')
 
 

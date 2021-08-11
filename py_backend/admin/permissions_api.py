@@ -5,7 +5,7 @@ from py_backend.jwt_token.token import Token
 from py_backend.admin.permissions import Admin
 
 
-class AdminFetch(Resource):
+class AdminFetchInactive(Resource):
 
     def post(self):
         try:
@@ -17,7 +17,7 @@ class AdminFetch(Resource):
             config.logger.log("ERROR", str(e))
 
 
-class AdminChange(Resource):
+class AdminChangeInactive(Resource):
 
     def post(self):
         try:
@@ -31,3 +31,28 @@ class AdminChange(Resource):
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
+
+class AdminFetchActive(Resource):
+
+    def post(self):
+        try:
+            token = request.get_json()['token']
+            decoded = Token().validate_token(token)
+            if decoded['valid']:
+                return Admin().show_all_active_doctor_status()
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+
+
+class AdminChangeActive(Resource):
+
+    def post(self):
+        try:
+            token = request.get_json()['token']
+            email = request.get_json()['email']
+            active = request.get_json()['active']
+            decoded = Token().validate_token(token)
+            if decoded['valid']:
+                return Admin().halt_permission(email, active)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
