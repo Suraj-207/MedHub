@@ -18,6 +18,7 @@ import Patient from "./pages/DoctorDashboard/Patient";
 import ConfirmPayment from "./pages/PatientDashboard/ConfirmPayment";
 import AdminHome from "./pages/AdminDashboard/AdminHome";
 import Inactive from "./pages/AdminDashboard/Inactive"
+import Imagetest from "./Imagetest";
 
 function App() {
   const { token, login, logout, payment, load, isToken, userId } = useAuth();
@@ -99,6 +100,9 @@ function App() {
         </Route>
         <Route path="/signup" exact>
           <SignUp />
+        </Route>
+        <Route path="/image" exact>
+          <Imagetest />
         </Route>
       </Switch>
     );

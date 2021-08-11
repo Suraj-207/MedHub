@@ -5,6 +5,7 @@ import config
 from PIL import Image
 import io
 import base64
+import requests
 
 
 class FetchProfile(Resource):
