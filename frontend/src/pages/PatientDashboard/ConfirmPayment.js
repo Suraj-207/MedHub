@@ -11,7 +11,7 @@ const ConfirmPayment = () => {
     try {
       fetchData = async () => {
         const response = await fetch(
-          "http://localhost:3000/confirmpayment/",
+          "https://localhost:3000/confirmpayment/",
           {
             method: "POST",
             headers: {
