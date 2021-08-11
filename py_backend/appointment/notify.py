@@ -46,7 +46,6 @@ class Notification:
         :return: None
         """
         try:
-            print(1)
             patient_name_query = "select fname,lname from medhub.user where email = '" + patient_email + "' allow filtering"
             patient_name = config.cassandra.session.execute(patient_name_query).one()
             doctor_name_query = "select fname,lname from medhub.user where email = '" + doctor_email + "' allow filtering"
