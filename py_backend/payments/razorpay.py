@@ -49,6 +49,7 @@ class Payment:
                     },
                     "reminder_enable": True,
                     "notes": {
+                        "patient_email": email,
                         "doctor_email": doctor_email,
                         "date": date
                     },
@@ -71,7 +72,7 @@ class Payment:
             client = razorpay.Client(auth=(self.key, self.secret))
             info = client.payment.fetch(pay_id)
             notes = info['notes']
-            notes.update({"patient_email": info['email']})
+            print(notes)
             return notes
         except Exception as e:
             config.logger.log("ERROR", str(e))

@@ -36,7 +36,7 @@ scheduler.add_job(
 scheduler.add_job(
     func=BookCancelReschedule().routine_check_for_failed_appointments,
     trigger="interval",
-    seconds=3600
+    seconds=600
 )
 scheduler.start()
 multiexit.install()

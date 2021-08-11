@@ -228,7 +228,7 @@ class BookCancelReschedule:
                         "issue": "NA",
                         "patient_email": "NA"
                     }
-                    condition = "doctor_email = '{}' and start = '{}'".format(row.doctor_email, row.date)
+                    condition = "doctor_email = '{}' and start = '{}'".format(row.doctor_email, row.start)
                     config.cassandra.update("medhub.appointment", new_val, condition)
         except Exception as e:
             config.logger.log("ERROR", str(e))
