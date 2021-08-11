@@ -3,18 +3,20 @@
 }
 
 .confirm {
-  border: 2px solid black;
+  margin-top: 100px;
   display: flex;
-  margin-left: 450px;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 50vw;
-  margin-top: 100px;
 }
 
 .confirm_form {
   margin: 20px;
+}
+
+.card p{
+  font-size: large;
+  font-family: cursive;
+  font-weight: 500;
 }
 
 .card {
@@ -22,6 +24,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: auto;
+  max-width: 800px;
+  background-color: #edf1f7;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 5px #e6e9ed;
 }
 .slot_time {
   display: flex;
@@ -41,13 +48,14 @@
   color: #ffffff;
 }
 
-.slot_time_button:hover{
-    background: #3cb0fd;
-    cursor: pointer;
+
+.slot_time_button:hover {
+  background: #3cb0fd;
+  cursor: pointer;
 }
 
-.slot_time_active{
-    margin: 1rem;
+.slot_time_active {
+  margin: 1rem;
   display: flex;
   border-radius: 6px;
   flex-wrap: wrap;

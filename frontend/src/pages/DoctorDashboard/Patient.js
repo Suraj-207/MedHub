@@ -1,6 +1,7 @@
 import React,{useState, useEffect, useContext} from 'react'
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
 import { AuthContext } from "../../shared/context/AuthContext";
+import Button from '../../shared/FormElements/Button';
 
 const Patient = () => {
     const auth = useContext(AuthContext);
@@ -73,7 +74,7 @@ const Patient = () => {
                       <td>{item.start.split("T")[1].slice(0,5)}</td>
                       <td><textarea defaultValue={`${item.diagnosis}`} /></td>
                       <td><textarea defaultValue={`${item.prescription}`} /></td>
-                      <td><button>Mark as Done</button></td>
+                      <td><Button>{item.status} </Button></td>
                     </tr>
                   );
                 })}

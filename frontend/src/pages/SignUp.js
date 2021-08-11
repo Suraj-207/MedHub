@@ -3,10 +3,7 @@ import "./SignUp.css";
 import { AuthContext } from "../shared/context/AuthContext";
 import { useHistory } from "react-router-dom";
 import Input from "../shared/FormElements/Input";
-import {
-  CountryDropdown,
-  RegionDropdown,
-} from "react-indian-state-region-selector";
+import { CountryDropdown } from "react-indian-state-region-selector";
 import { useForm } from "../shared/hooks/form-hook";
 import {
   VALIDATOR_EMAIL,
@@ -26,11 +23,10 @@ const SignUp = () => {
   const [state, setState] = useState(false);
   let fetchData;
 
-
-  const genderHandler = (e)=> {
-    setGender(e.target.value)
-    setState(true)
-  }
+  const genderHandler = (e) => {
+    setGender(e.target.value);
+    setState(true);
+  };
 
   const switchModeHandler = () => {
     setaccountMode((prevMode) => !prevMode);
@@ -169,15 +165,11 @@ const SignUp = () => {
                 onInput={inputHandler}
               />
             </div>
-            <div className="signup" onClick={(e)=>genderHandler(e)} >
-              <select >
-                <option >Select gender</option>
-                <option value="male" >
-                  Male
-                </option>
-                <option value="female">
-                  Female
-                </option>
+            <div className="signup" onClick={(e) => genderHandler(e)}>
+              <select>
+                <option>Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
             </div>
           </div>
@@ -308,15 +300,11 @@ const SignUp = () => {
             </div>
           </div>
           <div className="form-right">
-            <div className="doctor_signup" onClick={(e)=>genderHandler(e)}>
-              <select >
-                <option >Select gender</option>
-                <option value="male" >
-                  Male
-                </option>
-                <option value="female">
-                  Female
-                </option>
+            <div className="doctor_signup" onClick={(e) => genderHandler(e)}>
+              <select>
+                <option>Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
             </div>
             <div className="doctor-signup">
@@ -367,7 +355,7 @@ const SignUp = () => {
         <Button
           onClick={handleSubmit}
           type="submit"
-          disabled={ state && formState.isValid ? false: true}
+          disabled={state && formState.isValid ? false : true}
         >
           {"Confirm"}
         </Button>

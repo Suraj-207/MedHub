@@ -8,19 +8,17 @@ import Input from "../../shared/FormElements/Input";
 import { useForm } from "../../shared/hooks/form-hook";
 import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
 import Button from "../../shared/FormElements/Button";
-import { useHistory } from "react-router-dom";
-
 
 const ConfirmBooking = () => {
   const { props } = useLocation();
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState();
   const [fullDate, setFullDate] = useState();
+  const [slotStatus, setSlotStatus] = useState(false);
   const [slot, setSlot] = useState("");
   const [status, setStatus] = useState(false);
   const [value, onChange] = useState(new Date());
   const [formState, inputHandler] = useForm();
-  const history = useHistory()
   const auth = useContext(AuthContext);
   const theDate = new Date();
   const myNewDate = new Date(theDate);
@@ -67,6 +65,7 @@ const ConfirmBooking = () => {
           console.log(result);
           console.log("done");
           window.location.href = result;
+          // window.open({result},"target_blank");
         }
         if (response.ok) {
           setLoad(false);
@@ -131,7 +130,7 @@ const ConfirmBooking = () => {
       <React.Fragment>
         <div className="card">
           <div className="confirm_form">
-            <h3>Confirm your booking with Dr. {props.fname}</h3>
+            <p>Confirm your booking with Dr. {props.fname}</p>
           </div>
           <div className="confirm_form">
             <Input
@@ -159,9 +158,9 @@ const ConfirmBooking = () => {
               Check for slot
             </Button>
           </div>
-          {details && details.length>0 && <h1>Each appointment is of {details[0].session}</h1>}
+          {details && details.length>0 && <p>Each appointment is of {details[0].session}</p>}
           <div className="slot_time" onClick={fieldHandler}>
-            {details ?
+            {details && details.length>0 &&
               details.map((item, index) => {
                 return (
                   <button
@@ -173,11 +172,12 @@ const ConfirmBooking = () => {
                     {item.start}
                   </button>
                 );
-              }): <p>No slots available for specified date.</p>}
+              })}
           </div>
-          <div>{status && <h1>You selected {slot} slot. </h1>}</div>
+          <div>{details && details.length === 0 && <p>Sorry, no slots available</p>}</div>
+          <div>{status && <p>You selected {slot} slot. </p>}</div>
           {status && slot && (
-            <div>
+            <div className="confirm_handle">
               <Button onClick={confirmBookingHandler}> Cofirm booking</Button>
             </div>
           )}

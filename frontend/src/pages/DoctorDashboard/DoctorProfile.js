@@ -6,6 +6,7 @@ import Input from "../../shared/FormElements/Input";
 import Button from "../../shared/FormElements/Button";
 import { useForm } from "../../shared/hooks/form-hook";
 import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
+import ImageUpload from "../../shared/FormElements/ImageUpload";
 
 const DoctorProfile = () => {
   const [details, setDetails] = useState({});
@@ -23,7 +24,7 @@ const DoctorProfile = () => {
   let data, fetchData;
 
   const handleFieldChange = (e) => {
-    setAllValues({...allValues, [e.target.name]: e.target.value})
+    setAllValues({ ...allValues, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
@@ -105,7 +106,7 @@ const DoctorProfile = () => {
             session: result.session,
             break_start: result.break_start,
             break_end: result.break_end,
-          })
+          });
         }
         if (response.ok) {
           console.log("done");
@@ -192,118 +193,229 @@ const DoctorProfile = () => {
                 />
               </div>
             </div>
+            <div className="dashboard_doctor_profile">
+              <h4>Gender:</h4>
+              <div>
+                <Input
+                  element="input"
+                  type="text"
+                  className="input_elements"
+                  id="gender"
+                  validators={[VALIDATOR_REQUIRE()]}
+                  errorText="Please enter your place of work"
+                  initialValue={details.gender}
+                  initialValid={true}
+                  onInput={inputHandler}
+                />
+              </div>
+            </div>
           </div>
           <div className="dashboard_form-right">
-            <h4>Start time </h4>
-            <div className="dashboard_details_time">
-              <div>
-                <label>
-                  {Object.keys(details).length > 0
-                    ? details.start_time
-                    : "Not Set"}
-                </label>
+            <div className="side">
+              <h4>Start time </h4>
+              <div className="dashboard_details_time">
+                <div className="time_input">
+                  <label>
+                    {Object.keys(details).length > 0
+                      ? details.start_time
+                      : "Not Set"}
+                  </label>
+                </div>
+                <div className="time_input">
+                  <input
+                    type="time"
+                    className="input_elements"
+                    name="start_time"
+                    onChange={handleFieldChange}
+                    placeholder="10:53"
+                  />
+                </div>
               </div>
-              <div>
-                <input
-                  type="time"
-                  className="input_elements"
-                  name="start_time"
-                  onChange={handleFieldChange}
-                  placeholder="10:53"
-                />
+              <div className="time_head">
+                <p>End time </p>
               </div>
-            </div>
-            <h4>End time </h4>
-            <div className="dashboard_details_time">
-              <div>
-                <label>
-                  {Object.keys(details).length > 0
-                    ? details.end_time
-                    : "Not Set"}
-                </label>
-              </div>
-              <div>
-                <input
-                  type="time"
-                  className="input_elements"
-                  name="end_time"
-                  onChange={handleFieldChange}
-                  placeholder={
-                    Object.keys(details).length > 0 ? details.end_time : ""
-                  }
-                />
-              </div>
-            </div>
-            <h4>Time/per session </h4>
-            <div className="dashboard_details_time">
-              <div>
-                <label>
-                  {Object.keys(details).length > 0
-                    ? details.session
-                    : "Not Set"}
-                </label>
-              </div>
-              <div>
-                <input
-                  type="time"
-                  className="input_elements"
-                  name="session"
-                  onChange={handleFieldChange}
-                  placeholder={
-                    Object.keys(details).length > 0 ? details.session : ""
-                  }
-                />
+              <div className="dashboard_details_time">
+                <div className="time_input">
+                  <label>
+                    {Object.keys(details).length > 0
+                      ? details.end_time
+                      : "Not Set"}
+                  </label>
+                </div>
+                <div className="time_input">
+                  <input
+                    type="time"
+                    className="input_elements"
+                    name="end_time"
+                    onChange={handleFieldChange}
+                    placeholder={
+                      Object.keys(details).length > 0 ? details.end_time : ""
+                    }
+                  />
+                </div>
               </div>
             </div>
-            <h4>Break start time </h4>
-            <div className="dashboard_details_time">
-              <div>
-                <label>
-                  {Object.keys(details).length > 0
-                    ? details.break_start
-                    : "Not Set"}
-                </label>
-              </div>
-              <div>
-                <input
-                  type="time"
-                  className="input_elements"
-                  name="break_start"
-                  onChange={handleFieldChange}
-                  placeholder={
-                    Object.keys(details).length > 0 ? details.break_start : ""
-                  }
-                />
-              </div>
-            </div>
-            <h4>Break End time</h4>
-            <div className="dashboard_details_time">
-              <div>
-                <label>
-                  {Object.keys(details).length > 0
-                    ? details.break_end
-                    : "Not Set"}
-                </label>
-              </div>
-              <div>
-                <input
-                  type="time"
-                  className="input_elements"
-                  name="break_end"
-                  onChange={handleFieldChange}
-                  placeholder={
-                    Object.keys(details).length > 0 ? details.break_end : ""
-                  }
-                />
+            <div className="side">
+              <h4>Time/per session </h4>
+              <div className="dashboard_details_time">
+                <div className="time_input">
+                  <label>
+                    {Object.keys(details).length > 0
+                      ? details.session
+                      : "Not Set"}
+                  </label>
+                </div>
+                <div className="time_input">
+                  <input
+                    type="time"
+                    className="input_elements"
+                    name="session"
+                    onChange={handleFieldChange}
+                    placeholder={
+                      Object.keys(details).length > 0 ? details.session : ""
+                    }
+                  />
+                </div>
               </div>
             </div>
-            <div>
-              <span
-                class={details.active ? "active_dot" : "inactive_dot"}
-              ></span>{" "}
-              {details.active
-                ? " Your account is active."
-                : " Complete your profile to activate your account."}
+            <div className="side">
+              <h4>Break start time </h4>
+              <div className="dashboard_details_time">
+                <div className="time_input">
+                  <label>
+                    {Object.keys(details).length > 0
+                      ? details.break_start
+                      : "Not Set"}
+                  </label>
+                </div>
+                <div className="time_input">
+                  <input
+                    type="time"
+                    className="input_elements"
+                    name="break_start"
+                    onChange={handleFieldChange}
+                    placeholder={
+                      Object.keys(details).length > 0 ? details.break_start : ""
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="time_head">
+                <p>Break end time </p>
+              </div>
+              <div className="dashboard_details_time">
+                <div className="time_input">
+                  <label>
+                    {Object.keys(details).length > 0
+                      ? details.break_end
+                      : "Not Set"}
+                  </label>
+                </div>
+                <div className="time_input">
+                  <input
+                    type="time"
+                    className="input_elements"
+                    name="break_end"
+                    onChange={handleFieldChange}
+                    placeholder={
+                      Object.keys(details).length > 0 ? details.break_end : ""
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="image-left">
+              <div className="form-right-right">
+                <div className="form-details">
+                  <Input
+                    element="input"
+                    type="text"
+                    label="City"
+                    className="input_elements"
+                    id="city"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    // initialValue={details.account_number}
+                    errorText="Please enter city"
+                    initialValid={true}
+                    onInput={inputHandler}
+                  />
+                </div>
+                <div className="form-details">
+                  <Input
+                    element="input"
+                    type="text"
+                    label="State"
+                    className="input_elements"
+                    id="state"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    // initialValue={details.account_number}
+                    errorText="Please enter state"
+                    initialValid={true}
+                    onInput={inputHandler}
+                  />
+                </div>
+                <div className="form-details">
+                  <Input
+                    element="input"
+                    type="text"
+                    label="Account Number"
+                    className="input_elements"
+                    id="account_number"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    // initialValue={details.account_number}
+                    errorText="Please enter your account number"
+                    initialValid={true}
+                    onInput={inputHandler}
+                  />
+                </div>
+                <div className="form-details">
+                  <Input
+                    element="input"
+                    label="IFSC Code"
+                    type="text"
+                    className="input_elements"
+                    id="ifsc_code"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    initialValue={details.ifsc}
+                    errorText="Please enter your ifsc code"
+                    initialValid={true}
+                    onInput={inputHandler}
+                  />
+                </div>
+                <div className="form-details">
+                  <Input
+                    element="input"
+                    label="Amount charged per session"
+                    type="text"
+                    className="input_elements"
+                    id="ammount"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    initialValue={details.account}
+                    errorText="Please enter proper ammount."
+                    initialValid={true}
+                    onInput={inputHandler}
+                  />
+                </div>
+                <div>
+                  <span
+                    className={details.active ? "active_dot" : "inactive_dot"}
+                  ></span>{" "}
+                  {details.active
+                    ? " Your account is active."
+                    : " Complete your profile to activate your account."}
+                </div>
+              </div>
+              <div className="form-right-right">
+                <div className="form-details-image">
+                  <ImageUpload
+                    center
+                    id="image"
+                    onInput={inputHandler}
+                    errorText="Please provide an image"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -47,7 +47,7 @@ const NavLinks = (props) => {
         {/* )} */}
       </ul>
     );
-  } else {
+  } else if(auth.user === "patient") {
     mainNavigation = (
       <ul className="nav-links">
         {/* {auth.isLoggedIn && ( */}
@@ -81,6 +81,25 @@ const NavLinks = (props) => {
         {/* )} */}
       </ul>
     );
+  }else{
+    mainNavigation = (
+      <ul className="nav-links">
+        {/* {auth.isLoggedIn && ( */}
+        <li>
+          {/* <NavLink to={`/${auth.userId}/places`}>MY PLACES</NavLink> */}
+          <NavLink to="/" exact>
+            Admin Dashboard
+          </NavLink>
+        </li>
+        <li>
+          {/* <NavLink to="/patient/signout"> */}
+            <button onClick={handleClick}>SIGNOUT</button>
+          {/* </NavLink> */}
+          {/* <button >SIGNOUT</button> */}
+        </li>
+        {/* )} */}
+      </ul>
+    )
   }
   return <div>{mainNavigation}</div>;
 };

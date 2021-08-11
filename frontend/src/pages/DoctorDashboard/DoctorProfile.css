@@ -12,7 +12,7 @@
 }
 
 .dashboard_form-left > .dashboard_doctor_profile{
-    margin: 35px;
+    margin: 30px;
 }
 
 .dashboard_doctor_profile .dashboard_input_elements{
@@ -30,8 +30,15 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-right: 450px;
 }
+
+.form-details{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* padding-right: 450px; */
+}
+
 label{
   margin-bottom: 10px;
 }
@@ -50,7 +57,19 @@ h4{
 
 .dashboard_form-right{
   margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+  flex: 2;
 }
+
+.side{
+  display: flex;
+}
+
+
+/* .time_input{
+  margin: 20px;
+} */
 
 .active_dot{
   height: 25px;
@@ -67,6 +86,30 @@ h4{
   border-radius: 50%;
   display: inline-block;
 }
+
+.image-left{
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* .form-right-right{
+  margin
+} */
+
+.form-details-image{
+  margin-left: 12.5rem;
+}
+
+.time_head{
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+p{
+  font-size: medium;
+  font-weight: bold;
+}
+
 @media only screen and (max-width: 768px){
   .dashboard_form{
       display: flex;

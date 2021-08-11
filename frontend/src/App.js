@@ -1,9 +1,5 @@
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import { AuthContext } from "./shared/context/AuthContext";
@@ -20,6 +16,7 @@ import DoctorAppointment from "./pages/DoctorDashboard/DoctorAppointment";
 import TakeLeave from "./pages/DoctorDashboard/TakeLeave";
 import Patient from "./pages/DoctorDashboard/Patient";
 import ConfirmPayment from "./pages/PatientDashboard/ConfirmPayment";
+import AdminHome from "./pages/AdminDashboard/AdminHome";
 
 function App() {
   const { token, login, logout, payment, load, isToken, userId } = useAuth();
@@ -77,6 +74,15 @@ function App() {
         </Route>
         <Route path="/confirmpayment/:payment" exact>
           <ConfirmPayment />
+        </Route>
+      </Switch>
+    );
+  } else if (token && userId === "admin") {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <MainNavigation />
+          <AdminHome />
         </Route>
       </Switch>
     );

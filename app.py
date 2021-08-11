@@ -72,8 +72,8 @@ api.add_resource(ConfirmPayment, '/api/confirm-payment/')
 api.add_resource(FetchImage, '/api/fetch-image')
 api.add_resource(AdminFetchInactive, '/api/admin-fetch-inactive')
 api.add_resource(AdminChangeInactive, '/api/admin-change-inactive')
-api.add_resource(AdminFetchActive, '/api/admin/admin-fetch-active')
-api.add_resource(AdminChangeActive, '/api/admin/admin-change-active')
+api.add_resource(AdminFetchActive, '/api/admin-fetch-active')
+api.add_resource(AdminChangeActive, '/api/admin-change-active')
 
 
 if __name__ == '__main__':
