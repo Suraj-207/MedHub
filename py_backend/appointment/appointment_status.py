@@ -224,7 +224,7 @@ class BookCancelReschedule:
                 time_passed = datetime.datetime.now() - row.pay_time
                 if time_passed.total_seconds() >= 3600:
                     new_val = {
-                        "status": "pending",
+                        "status": "NA",
                         "issue": "NA",
                         "patient_email": "NA"
                     }
