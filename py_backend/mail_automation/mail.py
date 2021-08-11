@@ -35,6 +35,7 @@ class SendMail:
             with smtplib.SMTP_SSL(self.smtp_server, self.port, context=context) as server:
                 server.login(self.sender_email, self.sender_password)
                 server.sendmail(self.sender_email, self.receiver_email, self.message)
+            server.close()
             config.logger.log("INFO", "Mail sent")
             return True
         except smtplib.SMTPRecipientsRefused:
