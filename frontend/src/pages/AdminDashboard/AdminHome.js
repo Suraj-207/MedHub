@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
-import { useForm } from "../../shared/hooks/form-hook";
+import Modal from "react-modal";
 import { AuthContext } from "../../shared/context/AuthContext";
 import Button from "../../shared/FormElements/Button";
 
@@ -9,14 +9,39 @@ const AdminHome = () => {
   const [details, setDetails] = useState([]);
   const auth = useContext(AuthContext);
   const [index, setIndex] = useState();
- 
+  const [modalIsOpen, setIsOpen] = useState(false);
+  let subtitle
   const cancelStatus = (index) => {
     setIndex(index);
-    handleSubmit();
+    openModal();
+  }
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    subtitle.style.color = "#f00";
+  }
+
+  function closeModal() {
+    setIsOpen(false);
   }
 
     const handleSubmit = () => {
       setLoad(true);
+      closeModal();
       let fetchData;
       try {
         fetchData = async () => {
@@ -37,10 +62,10 @@ const AdminHome = () => {
           const result = await response.json();
           if (result === null) {
           //   setErr(true);
+          window.location.reload();
             setLoad(false);
             console.log("unidentified token");
           } else {
-            setDetails(result);
             console.log("done");
             setLoad(false);
           }
@@ -94,8 +119,22 @@ const AdminHome = () => {
   return (
     <React.Fragment>
       <div>{load && <LoadingSpinner asOverlay />}</div>
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+        ariaHideApp={false}
+      >
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
+         Deactivate?
+        </h2>
+        <button onClick={closeModal}>close</button>
+        <button onClick={handleSubmit}>Confirm</button>
+      </Modal>
       <div className="appointment_details">
-        {details && (
+        {details && details.length>0 && (
           <table className="dstable dstable-striped dstable-light">
             <tbody>
               <tr>

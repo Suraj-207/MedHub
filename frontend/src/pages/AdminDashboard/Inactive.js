@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
-import { useForm } from "../../shared/hooks/form-hook";
+import Modal from "react-modal";
 import { AuthContext } from "../../shared/context/AuthContext";
 import Button from "../../shared/FormElements/Button";
 
@@ -9,24 +9,50 @@ const Inactive = () => {
   const [details, setDetails] = useState([]);
   const auth = useContext(AuthContext);
   const [index, setIndex] = useState();
+  const [modalIsOpen, setIsOpen] = useState(false);
+  let subtitle;
 
   const cancelStatus = (index) => {
     setIndex(index);
-    handleSubmit();
+    openModal();
+  }
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    subtitle.style.color = "#f00";
+  }
+
+  function closeModal() {
+    setIsOpen(false);
   }
 
   const handleSubmit = () => {
     setLoad(true);
     let fetchData;
+    closeModal();
     try {
       fetchData = async () => {
         const data = {
           token: auth.token,
-          email: details[index].email,
-          acc_id: details[index].acc_id
+          email: details[0].email,
+          acc_id: details[0].acc_id
         };
         const response = await fetch(
-          "http://localhost:5000/api/admin-change-inactive",
+          "https://localhost:5000/api/admin-change-inactive",
           {
             method: "POST",
             headers: {
@@ -42,8 +68,8 @@ const Inactive = () => {
           console.log("unidentified token");
         } else {
           console.log(result);
-          setDetails(result.doctors);
           console.log("done");
+          window.location.reload();
           setLoad(false);
         }
         if (response.ok) {
@@ -96,8 +122,22 @@ const Inactive = () => {
   return (
     <React.Fragment>
       <div>{load && <LoadingSpinner asOverlay />}</div>
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+        ariaHideApp={false}
+      >
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
+          Activate?
+        </h2>
+        <button onClick={closeModal}>close</button>
+        <button onClick={handleSubmit}>Confirm</button>
+      </Modal>
       <div className="appointment_details">
-        {details && (
+        {details && details.length>0 && (
           <table className="dstable dstable-striped dstable-light">
             <tbody>
               <tr>
