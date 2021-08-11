@@ -35,7 +35,6 @@ class Admin:
 
         :param email: email of doctor
         :param acc_id: new account id assigned by admin to doctor after reviewing.
-        :param active: True is returned in case doctor passes all checks.
         :return: True if changes are successful else False
         """
         try:
@@ -84,7 +83,6 @@ class Admin:
         """
 
         :param email: email of doctor
-        :param active: True is returned if doctors profile is ceased.
         :return: True if changes are successful else False
         """
         try:
