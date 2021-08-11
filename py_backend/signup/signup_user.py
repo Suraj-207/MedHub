@@ -44,7 +44,7 @@ class Registration:
                     "end_time": "NA",
                     "start_time": "NA",
                     "session": "NA",
-                    "gender": record['gender']
+                    "gender": record['gender'],
                 }
                 msg = "Welcome to Medhub, {} {}. We are glad to welcome you to our community.\n".format("Dr.", record['fname'] + " " + record['lname'])
                 self.message = from_ + to + subject + msg
