@@ -15,6 +15,16 @@ class Payment:
         self.secret = os.getenv("SECRET")
 
     def get_link(self, name, email, phone, amount, doctor_email, date):
+        """
+
+        :param name: name of patient
+        :param email: email of patient
+        :param phone: phone no of patient
+        :param amount: amount charged by doctor
+        :param doctor_email: email of doctor
+        :param date: date of appointment
+        :return: link for payment
+        """
         try:
             phone = str(phone)
             amount = int(amount * 100)
@@ -52,6 +62,11 @@ class Payment:
             config.logger.log("ERROR", str(e))
 
     def get_notes_from_pay_id(self, pay_id):
+        """
+
+        :param pay_id: payment id generated after payment
+        :return: notes regarding appointment
+        """
         try:
             client = razorpay.Client(auth=(self.key, self.secret))
             info = client.payment.fetch(pay_id)
@@ -62,6 +77,12 @@ class Payment:
             config.logger.log("ERROR", str(e))
 
     def transfer(self, acc_id, pay_id):
+        """
+        transfers funds to doctors account
+        :param acc_id: doctor's account id
+        :param pay_id: payment id generated after booking
+        :return: None
+        """
         try:
             client = razorpay.Client(auth=(self.key, self.secret))
             info = client.payment.fetch(pay_id)
@@ -90,6 +111,11 @@ class Payment:
             config.logger.log("ERROR", str(e))
 
     def refund(self, pay_id):
+        """
+        refunds back the patient on cancellation.
+        :param pay_id: payment id generated
+        :return: None
+        """
         try:
             client = razorpay.Client(auth=(self.key, self.secret))
             info = client.payment.fetch(pay_id)

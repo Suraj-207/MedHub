@@ -9,6 +9,14 @@ class BookCancelReschedule:
 
     @staticmethod
     def patient_book_confirm(patient_email, date, doctor_email, pay_id):
+        """
+
+        :param patient_email: email of patient
+        :param date: date of appointment
+        :param doctor_email: email of doctor
+        :param pay_id: payment id generated after payment by the patient
+        :return: message whether the slot was booked successfully or not
+        """
         try:
             if pay_id is not None:
                 new_val = {
@@ -56,7 +64,8 @@ class BookCancelReschedule:
             new_val = {
                 "patient_email": patient_email,
                 "status": "in process",
-                "issue": issue
+                "issue": issue,
+                "pay_time": datetime.datetime.now().isoformat()[:-7]
             }
             condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
             re_check_query = "select status from medhub.appointment where " + condition + " allow filtering"
@@ -202,6 +211,14 @@ class BookCancelReschedule:
         except Exception as e:
             config.logger.log("ERROR", str(e))
             return False
+
+    @staticmethod
+    def routine_check_for_failed_appointments():
+        query = "select doctor_email, start, pay_id from medhub.appointment where status = 'in process' allow filtering"
+        for row in config.cassandra.session.execute(query).all():
+            time_passed = datetime.datetime.now() - row.pay_id
+            if time_passed.hours >= 1:
+                pass
 
 
 
