@@ -5,6 +5,10 @@ class Admin:
 
     @staticmethod
     def show_all_inactive_doctor_status():
+        """
+
+        :return: Doctors whose account are yet to be activated.
+        """
         try:
             doctors_query = 'select * from medhub.doctor where active = False allow filtering'
             doctors = []
@@ -27,6 +31,13 @@ class Admin:
 
     @staticmethod
     def give_permission(email, acc_id, active):
+        """
+
+        :param email: email of doctor
+        :param acc_id: new account id assigned by admin to doctor after reviewing.
+        :param active: True is returned in case doctor passes all checks.
+        :return: True if changes are successful else False
+        """
         try:
             new_val = {
                 "acc_id": acc_id,

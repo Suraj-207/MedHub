@@ -50,7 +50,9 @@ class Profile:
                         "gender": row.gender,
                         "amount": row.amount,
                         "acc_no": row.account,
-                        "ifsc": row.ifsc
+                        "ifsc": row.ifsc,
+                        "city": row.city,
+                        "state": row.state
                     }
                     user_dict.update(doctor_dict)
                     return user_dict
