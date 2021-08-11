@@ -4,55 +4,57 @@ import { useForm } from "../../shared/hooks/form-hook";
 import { AuthContext } from "../../shared/context/AuthContext";
 import Button from "../../shared/FormElements/Button";
 
-const AdminHome = () => {
+const Inactive = () => {
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState([]);
   const auth = useContext(AuthContext);
   const [index, setIndex] = useState();
- 
+
   const cancelStatus = (index) => {
     setIndex(index);
     handleSubmit();
   }
 
-    const handleSubmit = () => {
-      setLoad(true);
-      let fetchData;
-      try {
-        fetchData = async () => {
-          const data = {
-            token: auth.token,
-            email: details[0].email
-          };
-          const response = await fetch(
-            "https://localhost:5000/api/admin-change-active",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            }
-          );
-          const result = await response.json();
-          if (result === null) {
-          //   setErr(true);
-            setLoad(false);
-            console.log("unidentified token");
-          } else {
-            setDetails(result);
-            console.log("done");
-            setLoad(false);
-          }
-          if (response.ok) {
-            console.log("done");
-          }
+  const handleSubmit = () => {
+    setLoad(true);
+    let fetchData;
+    try {
+      fetchData = async () => {
+        const data = {
+          token: auth.token,
+          email: details[index].email,
+          acc_id: details[index].acc_id
         };
-      } catch (err) {
-        console.log(err);
-      }
-      fetchData();
-    };
+        const response = await fetch(
+          "http://localhost:5000/api/admin-change-inactive",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const result = await response.json();
+        if (result === null) {
+          //   setErr(true);
+          setLoad(false);
+          console.log("unidentified token");
+        } else {
+          console.log(result);
+          setDetails(result.doctors);
+          console.log("done");
+          setLoad(false);
+        }
+        if (response.ok) {
+          console.log("done");
+        }
+      };
+    } catch (err) {
+      console.log(err);
+    }
+    fetchData();
+  };
 
   useEffect(() => {
     setLoad(true);
@@ -63,7 +65,7 @@ const AdminHome = () => {
           token: auth.token,
         };
         const response = await fetch(
-          "https://localhost:5000/api/admin-fetch-active",
+          "https://localhost:5000/api/admin-fetch-inactive",
           {
             method: "POST",
             headers: {
@@ -125,15 +127,17 @@ const AdminHome = () => {
                       <td>{item.proof}</td>
                       <td>{item.active ? "true" : "false"}</td>
                       {/* <td>
-                        {item.status}
-                      </td> */}
+                            {item.status}
+                          </td> */}
                       <td>
                         <Button
                           onClick={() => {
                             cancelStatus(index);
                           }}
                         >
-                          {item.active ? "Click to deactivate" : "Click to activate"}
+                          {item.active
+                            ? "Click to deactivate"
+                            : "Click to activate"}
                         </Button>
                       </td>
                     </tr>
@@ -147,4 +151,4 @@ const AdminHome = () => {
   );
 };
 
-export default AdminHome;
+export default Inactive;

@@ -88,7 +88,10 @@ const NavLinks = (props) => {
         <li>
           {/* <NavLink to={`/${auth.userId}/places`}>MY PLACES</NavLink> */}
           <NavLink to="/" exact>
-            Admin Dashboard
+            Active Doctors
+          </NavLink>
+          <NavLink to="/inactive" exact>
+            Inactive Doctors
           </NavLink>
         </li>
         <li>
