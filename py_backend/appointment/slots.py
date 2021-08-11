@@ -20,20 +20,21 @@ class SlotMaker:
             config.logger.log("INFO", "Inserting new slots")
             for i in info:
                 date = datetime.date.today() + datetime.timedelta(days=15)
-                appointments = Convert().sessions_in_a_day(date, i.start_time, i.end_time, i.break_start, i.break_end, i.session)
-                for appointment in appointments:
-                    record = {
-                        "appt_id": generate_password_hash(i.email + datetime.datetime.now().isoformat())[21:],
-                        "doctor_email": i.email,
-                        "patient_email": "NA",
-                        "diagnosis": "NA",
-                        "prescription": "NA",
-                        "session": i.session,
-                        "start": appointment,
-                        "status": "NA",
-                        "issue": "NA"
-                    }
-                    config.cassandra.insert_one("medhub.appointment", record)
+                if date.isoweekday() != 7:
+                    appointments = Convert().sessions_in_a_day(date, i.start_time, i.end_time, i.break_start, i.break_end, i.session)
+                    for appointment in appointments:
+                        record = {
+                            "appt_id": generate_password_hash(i.email + datetime.datetime.now().isoformat())[21:],
+                            "doctor_email": i.email,
+                            "patient_email": "NA",
+                            "diagnosis": "NA",
+                            "prescription": "NA",
+                            "session": i.session,
+                            "start": appointment,
+                            "status": "NA",
+                            "issue": "NA"
+                        }
+                        config.cassandra.insert_one("medhub.appointment", record)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
@@ -52,19 +53,20 @@ class SlotMaker:
         try:
             for i in range(0, 15):
                 date = datetime.date.today() + datetime.timedelta(days=i)
-                appointments = Convert().sessions_in_a_day(date, start_time, end_time, break_start, break_end, session)
-                for appointment in appointments:
-                    record = {
-                        "appt_id": generate_password_hash(email + datetime.datetime.now().isoformat())[21:],
-                        "doctor_email": email,
-                        "patient_email": "NA",
-                        "diagnosis": "NA",
-                        "prescription": "NA",
-                        "session": session,
-                        "start": appointment,
-                        "status": "NA",
-                        "issue": "NA"
-                    }
-                    config.cassandra.insert_one("medhub.appointment", record)
+                if date.isoweekday() != 7:
+                    appointments = Convert().sessions_in_a_day(date, start_time, end_time, break_start, break_end, session)
+                    for appointment in appointments:
+                        record = {
+                            "appt_id": generate_password_hash(email + datetime.datetime.now().isoformat())[21:],
+                            "doctor_email": email,
+                            "patient_email": "NA",
+                            "diagnosis": "NA",
+                            "prescription": "NA",
+                            "session": session,
+                            "start": appointment,
+                            "status": "NA",
+                            "issue": "NA"
+                        }
+                        config.cassandra.insert_one("medhub.appointment", record)
         except Exception as e:
             config.logger.log("ERROR", str(e))
