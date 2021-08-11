@@ -47,7 +47,10 @@ class Profile:
                         "break_start": row.break_start,
                         "end_time": row.end_time,
                         "start_time": row.start_time,
-                        "gender": row.gender
+                        "gender": row.gender,
+                        "amount": row.amount,
+                        "acc_no": row.acc_no,
+                        "ifsc": row.ifsc
                     }
                     user_dict.update(doctor_dict)
                     return user_dict
@@ -79,6 +82,10 @@ class Profile:
                 user = self.token['decoded_token']['user']
                 condition = "email = '" + email + "'"
                 if user == "doctor":
+                    if "amount" in changes.keys():
+                        changes['amount'] = int(changes['amount'])
+                    if "acc_no" in changes.keys():
+                        changes['acc_no'] = int(changes['acc_no'])
                     if 'city' in changes.keys():
                         changes['city'] = changes['city'].capitalize()
                     if 'state' in changes.keys():
@@ -91,6 +98,11 @@ class Profile:
                         check_first_query = "select time_set from medhub.doctor where email = '" + email + "' allow filtering"
                         res = config.cassandra.session.execute(check_first_query).one()[0]
                         changes['time_set'] = True
+                    check_payment_changes_query = "select acc_no, ifsc, acc_id from medhub.doctor where email = '" + email + "' allow filtering"
+                    check_payment_changes = config.cassandra.session.execute(check_payment_changes_query).one()
+                    if check_payment_changes.acc_id is not None:
+                        if changes['acc_no'] != check_payment_changes.acc_no:
+                            changes['active'] = False
                     config.logger.log("INFO", "Updating doctors profile")
                     response = config.cassandra.update("medhub.doctor", changes, condition)
                     if response:

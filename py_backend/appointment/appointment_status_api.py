@@ -14,8 +14,6 @@ class ConfirmPayment(Resource):
             pay_id = request.args.get("razorpay_payment_id")
             payment = Payment()
             notes = payment.get_notes_from_pay_id(pay_id)
-            acc_id = 'acc_HiislGOtj2ztgi'
-            payment.transfer(acc_id, pay_id)
             return BookCancelReschedule().patient_book_confirm(notes['patient_email'], notes['date'], notes['doctor_email'], pay_id)
         except Exception as e:
             config.logger.log("ERROR", str(e))

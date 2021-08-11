@@ -17,9 +17,16 @@ class BookCancelReschedule:
                 }
                 condition = "doctor_email = '{}' and start = '{}'".format(doctor_email, date)
                 res = config.cassandra.update("medhub.appointment", new_val, condition)
+                payment = Payment()
                 if res:
                     threading.Thread(target=Notification().notify_book_slot, args=(doctor_email, patient_email, date)).start()
+                    fetch_acc_id_query = "select acc_id from medhub.doctor where email = '" + doctor_email + "' allow filtering"
+                    fetch_acc_id = config.cassandra.session.execute(fetch_acc_id_query).one()
+                    payment.transfer(fetch_acc_id.acc_id, pay_id)
                     return "Slot booked successfully"
+                else:
+                    payment.refund(pay_id)
+                    return "Couldn't book slot. Refunding money back to your account"
             else:
                 new_val = {
                     "patient_email": "NA",
@@ -59,9 +66,11 @@ class BookCancelReschedule:
                     config.logger.log("INFO", "payment in process..")
                     fetch_patient_name_query = "select fname, lname from medhub.user where email = '" + patient_email +"' allow filtering"
                     fetch_patient_phone_query = "select phone from medhub.patient where email = '" + patient_email +"' allow filtering"
+                    fetch_doctor_amount_query = "select amount from medhub.doctor where email = '" + doctor_email + "' allow filtering"
                     fetch_patient_name = config.cassandra.session.execute(fetch_patient_name_query).one()
                     fetch_patient_phone = config.cassandra.session.execute(fetch_patient_phone_query).one()
-                    return Payment().get_link(fetch_patient_name.fname + " " + fetch_patient_name.lname, patient_email, fetch_patient_phone.phone, 2, doctor_email, date)
+                    fetch_doctor_amount = config.cassandra.session.execute(fetch_doctor_amount_query).one()
+                    return Payment().get_link(fetch_patient_name.fname + " " + fetch_patient_name.lname, patient_email, fetch_patient_phone.phone, fetch_doctor_amount.amount + 50, doctor_email, date)
                 else:
                     return False
             else:
