@@ -13,7 +13,7 @@ class Admin:
             doctors_query = 'select * from medhub.doctor where active = False allow filtering'
             doctors = []
             for row in config.cassandra.session.execute(doctors_query).all():
-                name_query = "select fname,lname from medhub.user where email = " + row.email + "' allow filtering"
+                name_query = "select fname,lname from medhub.user where email = '" + row.email + "' allow filtering"
                 name = config.cassandra.session.execute(name_query).one()
                 doctors.append({
                     "fname": name.fname,
@@ -63,7 +63,7 @@ class Admin:
             doctors_query = 'select * from medhub.doctor where active = True allow filtering'
             doctors = []
             for row in config.cassandra.session.execute(doctors_query).all():
-                name_query = "select fname,lname from medhub.user where email = " + row.email + "' allow filtering"
+                name_query = "select fname,lname from medhub.user where email = '" + row.email + "' allow filtering"
                 name = config.cassandra.session.execute(name_query).one()
                 doctors.append({
                     "fname": name.fname,
