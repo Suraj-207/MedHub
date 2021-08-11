@@ -24,10 +24,9 @@ class AdminChangeInactive(Resource):
             token = request.get_json()['token']
             email = request.get_json()['email']
             acc_id = request.get_json()['acc_id']
-            active = request.get_json()['active']
             decoded = Token().validate_token(token)
             if decoded['valid']:
-                return Admin().give_permission(email, acc_id, active)
+                return Admin().give_permission(email, acc_id)
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
@@ -50,9 +49,8 @@ class AdminChangeActive(Resource):
         try:
             token = request.get_json()['token']
             email = request.get_json()['email']
-            active = request.get_json()['active']
             decoded = Token().validate_token(token)
             if decoded['valid']:
-                return Admin().halt_permission(email, active)
+                return Admin().halt_permission(email)
         except Exception as e:
             config.logger.log("ERROR", str(e))

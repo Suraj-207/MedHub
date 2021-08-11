@@ -30,7 +30,7 @@ class Admin:
             config.logger.log("ERROR", str(e))
 
     @staticmethod
-    def give_permission(email, acc_id, active):
+    def give_permission(email, acc_id):
         """
 
         :param email: email of doctor
@@ -41,7 +41,7 @@ class Admin:
         try:
             new_val = {
                 "acc_id": acc_id,
-                "active": bool(active)
+                "active": True
             }
             condition = "email = '" + email + "'"
             res = config.cassandra.update("medhub.doctor", new_val, condition)
@@ -80,7 +80,7 @@ class Admin:
             config.logger.log("ERROR", str(e))
 
     @staticmethod
-    def halt_permission(email, active):
+    def halt_permission(email):
         """
 
         :param email: email of doctor
@@ -89,7 +89,7 @@ class Admin:
         """
         try:
             new_val = {
-                "active": bool(active)
+                "active": False
             }
             condition = "email = '" + email + "'"
             res = config.cassandra.update("medhub.doctor", new_val, condition)
