@@ -53,7 +53,7 @@ class Notification:
             from_ = "From: MedHub <{}>\n".format(self.sender_email)
             to = "To: {} <{}>\n".format(patient_name.fname + " " + patient_name.lname, patient_email)
             subject = "Subject: Slot booking confirmation\n\n"
-            msg = "Your slot has been booked with Dr. " + doctor_name.fname + " " + doctor_name.lname + " on " + date
+            msg = "Your slot has been booked with Dr. " + doctor_name.fname + " " + doctor_name.lname + " on " + date.replace("T", " ")
             message = from_ + to + subject + msg
             config.logger.log("INFO", "Notifying patients")
             self.notify_automate(doctor_email, patient_email, message, msg)
