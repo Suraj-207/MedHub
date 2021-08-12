@@ -1,11 +1,7 @@
-from flask import request, send_file, redirect, url_for
+from flask import request
 from flask_restful import Resource
 from py_backend.profile.my_profile import Profile
 import config
-from PIL import Image
-import io
-import base64
-import json
 from py_backend.image_handler.img_to_b64 import ImageConvert
 
 
