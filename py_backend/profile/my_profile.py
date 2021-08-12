@@ -2,6 +2,7 @@ import config
 from py_backend.jwt_token.token import Token
 from py_backend.appointment.slots import SlotMaker
 import threading
+from py_backend.image_handler.img_to_b64 import ImageConvert
 
 
 class Profile:
@@ -52,7 +53,8 @@ class Profile:
                         "acc_no": row.account,
                         "ifsc": row.ifsc,
                         "city": row.city,
-                        "state": row.state
+                        "state": row.state,
+                        "image": row.image
                     }
                     user_dict.update(doctor_dict)
                     return user_dict
@@ -128,3 +130,22 @@ class Profile:
                         return "changed"
         except Exception as e:
             config.logger.log("ERROR", str(e))
+
+    def change_profile_image(self, img):
+        try:
+            if self.token['valid']:
+                email = self.token['decoded_token']['email']
+                decoded_img_data = ImageConvert().convert_to_b64(img)
+                new_val = {
+                    "image": decoded_img_data
+                }
+                condition = "email = '" + email + "'"
+                return config.cassandra.update("medhub.doctor", new_val, condition)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+            return False
+
+
+
+
+
