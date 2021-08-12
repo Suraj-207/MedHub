@@ -1,11 +1,11 @@
-from flask import request, send_file
+from flask import request, send_file, redirect, url_for
 from flask_restful import Resource
 from py_backend.profile.my_profile import Profile
 import config
 from PIL import Image
 import io
 import base64
-import requests
+import json
 
 
 class FetchProfile(Resource):
@@ -35,15 +35,14 @@ class ChangeProfile(Resource):
 class FetchImage(Resource):
 
     def post(self):
-        print(request.files)
         img = request.files['image']
         im = Image.open(img)
-        raw_bytes = io.BytesIO()
-        im.save(raw_bytes, "JPEG")
-        raw_bytes.seek(0)
-        img_base64 = base64.b64encode(raw_bytes.read())
-        img_list = [img_base64]
-        return {"image": img_list}
+        data = io.BytesIO()
+        im.save(data, "JPEG")
+        decoded_img_data = base64.b64encode(data.getvalue()).decode('utf-8')
+        d = {'decoded': decoded_img_data}
+        return d
+
 
 
 
