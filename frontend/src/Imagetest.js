@@ -27,7 +27,7 @@ const Imagetest = () => {
           body: data,
         });
         const result = await response;
-        console.log(result)
+        let str = Buffer.from(result,"base64").toString();
         if (response.ok) {
           console.log("done");
           setBackImage(true);
@@ -55,7 +55,6 @@ const Imagetest = () => {
         required
       />
       {image && <img src={`data:image/jpeg;base64,${value.image}`} /> }
-
       <button onClick={handleImageSubmit}>submit</button>
     </div>
   );
