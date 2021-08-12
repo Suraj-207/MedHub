@@ -39,11 +39,10 @@ class FetchImage(Resource):
         img = request.files['image']
         im = Image.open(img)
         raw_bytes = io.BytesIO()
-        im.save(raw_bytes, "JPEG")
+        im.save(raw_bytes, "PNG")
         raw_bytes.seek(0)
-        img_base64 = base64.b64encode(raw_bytes.read())
-        img_list = [img_base64]
-        return {"image": img_list}
+        img_base64 = base64.b64encode(raw_bytes.read()).decode('utf-8')
+        return img_base64
 
 
 
