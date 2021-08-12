@@ -24,9 +24,7 @@ class Profile:
                 email = self.token['decoded_token']['email']
                 user = self.token['decoded_token']['user']
                 user_query = "select * from medhub.user where email = '" + email + "' allow filtering"
-                print(user_query)
                 user_row = config.cassandra.session.execute(user_query).one()
-                print("query completed")
                 user_dict = {
                     "email": user_row.email,
                     "fname": user_row.fname,

@@ -50,6 +50,7 @@ class CancelSlot(Resource):
                     pay_id_fetch_query = "select pay_id from medhub.appointment where doctor_email = '" + doctor_email + "' and start = '" + date + "' allow filtering"
                     pay_id_fetch = config.cassandra.session.execute(pay_id_fetch_query).one()
                     Payment().refund(pay_id_fetch.pay_id)
+                    return True
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
