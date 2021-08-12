@@ -86,6 +86,7 @@ class Profile:
                 user = self.token['decoded_token']['user']
                 condition = "email = '" + email + "'"
                 if user == "doctor":
+                    res = True
                     if "amount" in changes.keys():
                         changes['amount'] = int(changes['amount'])
                     if 'city' in changes.keys():
@@ -100,7 +101,7 @@ class Profile:
                         check_first_query = "select time_set from medhub.doctor where email = '" + email + "' allow filtering"
                         res = config.cassandra.session.execute(check_first_query).one()[0]
                         changes['time_set'] = True
-                    check_payment_changes_query = "select acc_no, ifsc, acc_id from medhub.doctor where email = '" + email + "' allow filtering"
+                    check_payment_changes_query = "select account, ifsc, acc_id from medhub.doctor where email = '" + email + "' allow filtering"
                     check_payment_changes = config.cassandra.session.execute(check_payment_changes_query).one()
                     if check_payment_changes.acc_id != 'NA' and changes['account'] != check_payment_changes.account:
                         changes['active'] = False
