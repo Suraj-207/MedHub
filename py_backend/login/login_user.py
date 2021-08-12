@@ -12,7 +12,7 @@ class Validation:
         :param password: password of the user
         """
         try:
-            self.email = email.lower()
+            self.email = email
             self.password = password
         except Exception as e:
             config.logger.log("ERROR", str(e))
@@ -24,6 +24,7 @@ class Validation:
         """
         try:
             if self.email is not None and self.password is not None:
+                self.email = self.email.lower()
                 config.logger.log("INFO", "Searching for email in database...")
                 query = "select password,account from medhub.user where email = '" + self.email + "' allow filtering"
                 result = config.cassandra.session.execute(query).one()
