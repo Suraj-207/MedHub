@@ -94,9 +94,10 @@ class FetchFilter:
         :return: past appointments in descending order
         """
         try:
+            date = datetime.date.today() + datetime.timedelta(days=1)
             query = "select * from medhub.appointment where doctor_email = '" + email + "' and status = 'completed' and " \
                                                                                         "start < '" + \
-                    datetime.date.today().isoformat() + "' allow filtering "
+                    date.isoformat() + "' allow filtering "
             res = []
             for row in config.cassandra.session.execute(query).all():
                 fetch_name_query = "select fname,lname from medhub.user where email = '" + row.patient_email + "' allow filtering"
