@@ -330,6 +330,7 @@ class FetchFilter:
                 "experience": row.experience,
                 "place_of_work": row.pow,
                 "city": row.city,
-                "state": row.state
+                "state": row.state,
+                "image": row.image
             })
         return fetch_doctor

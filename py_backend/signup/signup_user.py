@@ -48,7 +48,8 @@ class Registration:
                     "account": "NA",
                     "ifsc": "NA",
                     "acc_id": "NA",
-                    "amount": 0
+                    "amount": 0,
+                    "image": "NA"
                 }
                 msg = "Welcome to Medhub, {} {}. We are glad to welcome you to our community.\n".format("Dr.", record['fname'] + " " + record['lname'])
                 self.message = from_ + to + subject + msg
