@@ -36,16 +36,14 @@ class FetchImage(Resource):
 
     def post(self):
         print(request.files)
-        img = request.files['image'].read()
-        files = {'file': img}
-        r = requests.post("http://127.0.0.1:8000/upload/", files=files)
-        # im = Image.open(img)
-        # raw_bytes = io.BytesIO()
-        # im.save(raw_bytes, "JPEG")
-        # raw_bytes.seek(0)
-        # img_base64 = base64.b64encode(raw_bytes.read())
-        # print(img_base64)
-        # return str(img_base64)
+        img = request.files['image']
+        im = Image.open(img)
+        raw_bytes = io.BytesIO()
+        im.save(raw_bytes, "JPEG")
+        raw_bytes.seek(0)
+        img_base64 = base64.b64encode(raw_bytes.read())
+        img_list = [img_base64]
+        return {"image": img_list}
 
 
 
