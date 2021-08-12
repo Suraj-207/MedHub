@@ -1,11 +1,8 @@
-from flask import request, send_file, redirect, url_for
+from flask import request
 from flask_restful import Resource
 from py_backend.profile.my_profile import Profile
 import config
-from PIL import Image
-import io
-import base64
-import json
+from py_backend.image_handler.img_to_b64 import ImageConvert
 
 
 class FetchProfile(Resource):
@@ -36,11 +33,7 @@ class FetchImage(Resource):
 
     def post(self):
         img = request.files['image']
-        ext = request.files['image'].mimetype.split("/")[1].upper()
-        im = Image.open(img)
-        data = io.BytesIO()
-        im.save(data, ext, quality=20, optimize=True)
-        decoded_img_data = base64.b64encode(data.getvalue()).decode('utf-8')
+        decoded_img_data = ImageConvert().convert_to_b64(img)
         d = {'decoded': decoded_img_data}
         return d
 
