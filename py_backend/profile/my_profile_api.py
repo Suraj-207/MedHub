@@ -3,6 +3,7 @@ from flask_restful import Resource
 from py_backend.profile.my_profile import Profile
 import config
 from py_backend.image_handler.img_to_b64 import ImageConvert
+from py_backend.jwt_token.token import Token
 
 
 class FetchProfile(Resource):
@@ -32,10 +33,13 @@ class ChangeProfile(Resource):
 class FetchImage(Resource):
 
     def post(self):
-        img = request.files['image']
-        decoded_img_data = ImageConvert().convert_to_b64(img)
-        d = {'decoded': decoded_img_data}
-        return d
+        try:
+            img = request.files['image']
+            token = request.form['token']
+            return Profile(token).change_profile_image(img)
+        except Exception as e:
+            config.logger.log("ERROR", str(e))
+            return False
 
 
 
