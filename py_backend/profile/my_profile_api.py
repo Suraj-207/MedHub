@@ -36,9 +36,10 @@ class FetchImage(Resource):
 
     def post(self):
         img = request.files['image']
+        ext = request.files['image'].mimetype.split("/")[1].upper()
         im = Image.open(img)
         data = io.BytesIO()
-        im.save(data, "JPEG")
+        im.save(data, ext, quality=20, optimize=True)
         decoded_img_data = base64.b64encode(data.getvalue()).decode('utf-8')
         d = {'decoded': decoded_img_data}
         return d
