@@ -18,7 +18,6 @@ const Imagetest = () => {
     e.preventDefault();
     let fetchData;
     try {
-      //   setLoad(true)
       fetchData = async () => {
         let data = new FormData();
         data.append("image", value.image);
@@ -26,11 +25,10 @@ const Imagetest = () => {
           method: "POST",
           body: data,
         });
-        const result = await response;
-        let str = Buffer.from(result,"base64").toString();
+        const result = await response.json();
         if (response.ok) {
           console.log("done");
-          setBackImage({data: str})
+          setBackImage({data: result.decoded})
         }
       };
     } catch (err) {
