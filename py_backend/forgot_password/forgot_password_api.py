@@ -27,7 +27,7 @@ class OTP(Resource):
                 subject = "Subject: Slot booking confirmation\n\n"
                 msg = "OTP for setting new password : " + str(otp) + ". Please do not share it with anybody."
                 message = from_ + to + subject + msg
-                SendMail(sender_email, sender_password, email, message)
+                SendMail(sender_email, sender_password, email, message).send()
                 return {'otp': otp, 'valid': True}
             else:
                 return {'otp': None, 'valid': False}
