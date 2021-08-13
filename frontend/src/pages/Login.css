@@ -70,6 +70,17 @@
   text-align: center;
 }
 
+.message{
+  color: red;
+  margin-top: .25rem;
+}
+
+.forgot_password{
+  margin-top: .25rem;
+  color:#281252;
+  font-weight: 600;
+}
+
 @media (max-width: 768px){
   .login{
     display: flex;

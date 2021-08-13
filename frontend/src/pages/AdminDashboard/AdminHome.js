@@ -61,9 +61,7 @@ const AdminHome = () => {
           );
           const result = await response.json();
           if (result === null) {
-          //   setErr(true);
           window.location.reload();
-            setLoad(false);
             console.log("unidentified token");
           } else {
             console.log("done");

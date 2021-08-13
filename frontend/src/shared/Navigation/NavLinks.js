@@ -65,7 +65,7 @@ const NavLinks = (props) => {
         {/* )} */}
         {/* {( !auth.isLoggedIn && */}
         <li>
-          <NavLink to="/patient/notification">notification</NavLink>
+          <NavLink to="/patient/notification">Notification</NavLink>
         </li>
         {/* )} */}
         {/* {auth.isLoggedIn && ( */}

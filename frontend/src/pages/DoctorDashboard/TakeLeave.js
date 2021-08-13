@@ -64,7 +64,7 @@ const TakeLeave = () => {
         setLoad(true);
         const data = {
           token: auth.token,
-          status: cancelstatus ? cancelstatus : reschedulestatus,
+          status: cancelstatus ? "cancel" : "reschedule",
           start: start,
           end: end,
         };

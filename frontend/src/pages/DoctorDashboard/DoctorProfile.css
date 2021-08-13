@@ -11,67 +11,66 @@
   flex: 2;
 }
 
-.dashboard_form-left > .dashboard_doctor_profile{
-    margin: 30px;
+.dashboard_form-left > .dashboard_doctor_profile {
+  margin: 30px;
 }
 
-.dashboard_doctor_profile .dashboard_input_elements{
-    border-radius: 2px;
-    width: 100%;
-    height: 100%;
+.dashboard_doctor_profile .dashboard_input_elements {
+  border-radius: 2px;
+  width: 100%;
+  height: 100%;
 }
 
-.dashboard_doctor_profile_button{
-    display: flex;
-    justify-content: center;
+.dashboard_doctor_profile_button {
+  display: flex;
+  justify-content: center;
 }
 
-.dashboard_details_time{
+.dashboard_details_time {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.form-details{
+.form-details {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   /* padding-right: 450px; */
 }
 
-label{
+label {
   margin-bottom: 10px;
 }
-.dashboard_details_time{
+.dashboard_details_time {
   margin-bottom: 30px;
 }
 
-.dashboard_doctor_profile{
+.dashboard_doctor_profile {
   display: flex;
   justify-content: flex-start;
 }
 
-h4{
-  width:20%;
+h4 {
+  width: 20%;
 }
 
-.dashboard_form-right{
+.dashboard_form-right {
   margin-top: 35px;
   display: flex;
   flex-direction: column;
   flex: 2;
 }
 
-.side{
+.side {
   display: flex;
 }
-
 
 /* .time_input{
   margin: 20px;
 } */
 
-.active_dot{
+.active_dot {
   height: 25px;
   width: 25px;
   background-color: green;
@@ -79,7 +78,7 @@ h4{
   display: inline-block;
 }
 
-.inactive_dot{
+.inactive_dot {
   height: 25px;
   width: 25px;
   background-color: red;
@@ -87,7 +86,7 @@ h4{
   display: inline-block;
 }
 
-.image-left{
+.image-left {
   display: flex;
   justify-content: flex-start;
 }
@@ -96,25 +95,54 @@ h4{
   margin
 } */
 
-.form-details-image{
+.form-details-image {
   margin-left: 12.5rem;
 }
 
-.time_head{
+.time_head {
   margin-left: 50px;
   margin-right: 50px;
 }
 
-p{
+p {
   font-size: medium;
   font-weight: bold;
 }
 
-@media only screen and (max-width: 768px){
-  .dashboard_form{
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: flex-start;
+@media only screen and (max-width: 768px) {
+  .dashboard_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+
+  .dashboard_details_time {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .form-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* padding-right: 450px; */
+  }
+  .image-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  /* .form-right-right {
+    display: flex;
+    flex-direction: flex-start;
+  } */
+
+  .dashboard_doctor_profile_button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }

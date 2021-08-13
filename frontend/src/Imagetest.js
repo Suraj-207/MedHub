@@ -4,8 +4,8 @@ import { useForm } from "./shared/hooks/form-hook";
 
 const Imagetest = () => {
   const [formState, inputHandler] = useForm();
-  const [value, setValue] = useState({ image: null });
-  const [image, setBackImage] = useState({data: ""});
+  const [value, setValue] = useState();
+  const [image, setBackImage] = useState(false);
   const handleImageChange = (e) => {
     setValue({
       ...value,
@@ -51,8 +51,7 @@ const Imagetest = () => {
         onChange={handleImageChange}
         required
       />
-      {image && <img src={`data:image/jpeg;base64,${image.data}`} /> }
-
+      {image && <img src={`data:image/png;base64,${image.data}`} /> }
       <button onClick={handleImageSubmit}>submit</button>
     </div>
   );

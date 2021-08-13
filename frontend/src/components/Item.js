@@ -12,7 +12,7 @@ const Item = (props) => {
         <div className="row_data_single">
           <div>
             <img
-              src="https://www.clipartmax.com/png/middle/171-1717870_stockvader-predicted-cron-for-may-user-profile-icon-png.png"
+              src={`data:image/png;base64,${props.image}`}
               alt={props.fname}
             />
           </div>
