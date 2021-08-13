@@ -10,6 +10,7 @@
   
   .row_data {
     display: flex;
+    flex-wrap: wrap;
   }
 
   .filter_geolocation{
@@ -26,12 +27,18 @@
 
   .filter_geolocation .type p{
     display: flex;
-    align-self: stretch;
   }
   @media only screen and (max-width: 768px) {
     .row {
       margin-left: 2.5rem;
       margin-top: 5rem;
       display: flex;
+    }
+
+    .filter_geolocation{
+      display: flex;
+      justify-content: flex-start;
+      max-height: 40px;
+      align-items: baseline;
     }
   }

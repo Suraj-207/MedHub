@@ -6,8 +6,9 @@ import { AuthContext } from "../shared/context/AuthContext";
 import LoadingSpinner from "../shared/UIComponent/LoadingSpinner";
 
 const Login = () => {
-  const [formData, setFormData] = useState("");
+  const [formData, setFormData] = useState({email: null, password: null});
   const [load, setLoad] = useState(false);
+  const [details, setDetails] = useState();
   const auth = useContext(AuthContext);
   let fetchData;
   const handleChange = (e) => {
@@ -19,8 +20,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-
     try {
         fetchData = async () => {
           setLoad(true)
@@ -34,8 +33,13 @@ const Login = () => {
             body: JSON.stringify(data),
           });
           const result = await response.json();
-          auth.login(result.user, result.token);
+          if(result == null){
+            console.log("token problem")
+          }else{
+            auth.login(result.user, result.token);
+          }
           console.log(result);
+          setDetails(result);
           if (response.ok) {
             setLoad(false);
             console.log("done");
@@ -57,7 +61,6 @@ const Login = () => {
         <div className="heading">
           <h1>Welcome to MedHub</h1>
         </div>
-
         <div>
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="form-group">
@@ -84,7 +87,8 @@ const Login = () => {
               <button className="form-button" type="submit">
                 Login
               </button>
-              <p>Forgot password?</p>
+              {details && <div> <center className="message">{details.message}</center>  </div>}
+              <center className="forgot_password">Forgot password?</center>
             </div>
           </form>
           <Link to="/signup">

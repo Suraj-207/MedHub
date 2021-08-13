@@ -15,21 +15,22 @@
 .row_data_item{
     display: flex;
     flex-direction: column;
-    width: 85vw;
+    margin-right: 4rem;
 }
 
 .row_data_single {
     display: flex;
     flex-direction: column;
     margin-top: 75px;
-    margin-right: 68rem;
   }
   
   .row_data_single img{
       margin-top: 2rem;
       margin-left: 3.125rem;
-      max-width: 15vw;
-      max-height: 15vw;
+      min-width: 11.25rem;
+      min-height: 11.25rem;
+      max-width: 11.25rem;
+      max-height: 11.25rem;
   }
 
   .row_data_single_desc:hover{

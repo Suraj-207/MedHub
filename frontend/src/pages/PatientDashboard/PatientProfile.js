@@ -14,57 +14,9 @@ import "./PatientProfile.css";
 const PatientProfile = () => {
   const [details, setDetails] = useState({});
   const [load, setLoad] = useState(true);
-  const [image,setImage] = useState();
   const [formState, inputHandler] = useForm();
-  const [value, setValue] = useState({title: "", content: "", image: null});
   const auth = useContext(AuthContext);
   let data, fetchData;
-
-  const handleChange= (e) => {
-    setValue({
-      ...value,
-      [e.target.id]: e.target.value
-    })
-  }
-
-  const handleImageChange = (e) => {
-    setValue({
-      ...value,
-      image: e.target.files[0]
-    })
-
-    console.log(e.target.files[0])
-  }
-
-  const handleImageSubmit = (e) => {
-    e.preventDefault();
-    try {
-      setLoad(true)
-      fetchData = async () => {
-        let data = new FormData();
-        data.append('image', value.image)
-        const response = await fetch(
-          "https://localhost:5000/api/fetch-image",
-          {
-            method: "POST",
-            body: data,
-          }
-        );
-        const result = await response;
-        console.log(result);
-        setImage(result.body);
-        if (response.ok) {
-          console.log("done");
-          setLoad(false)
-        }
-      };
-    } catch (err) {
-      console.log(err);
-    }
-    fetchData();
-  
-
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -149,40 +101,7 @@ const PatientProfile = () => {
       <div className="heading">
         <h1>doctor_profile</h1>
       </div>
-      {/* <div className="App">
-        <form onSubmit={handleImageSubmit}>
-          <p>
-            <input
-              type="text"
-              placeholder="Title"
-              id="title"
-              value="title"
-              onChange={handleChange}
-              required
-            />
-          </p>
-          <p>
-            <input
-              type="text"
-              placeholder="Content"
-              id="content"
-              value="content"
-              onChange={handleChange}
-              required
-            />
-          </p>
-          <p>
-            <input
-              type="file"
-              id="image"
-              accept="image/png, image/jpeg"
-              onChange={handleImageChange}
-              required
-            />
-          </p>
-          <input type="submit" />
-        </form>
-      </div> */}
+
       <div>{load && <LoadingSpinner asOverlay />} </div>
       {/* {load &&<img src={`data:image/png;base64,${image}`} />} */}
       {!load && details && (

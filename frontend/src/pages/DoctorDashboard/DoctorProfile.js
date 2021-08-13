@@ -6,30 +6,64 @@ import Input from "../../shared/FormElements/Input";
 import Button from "../../shared/FormElements/Button";
 import { useForm } from "../../shared/hooks/form-hook";
 import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
-import ImageUpload from "../../shared/FormElements/ImageUpload";
 
 const DoctorProfile = () => {
   const [details, setDetails] = useState({});
   const [load, setLoad] = useState(true);
+  const [value, setValue] = useState();
   const auth = useContext(AuthContext);
+  const handleImageChange = (e) => {
+    setValue({
+      ...value,
+      image: e.target.files[0],
+    });
+  };
   const [allValues, setAllValues] = useState({
     start_time: "",
     end_time: "",
     session: "",
     break_start: "",
     break_end: "",
+    image: ""
   });
 
   const [formState, inputHandler] = useForm();
-  let data, fetchData;
+  let fetchData;
 
   const handleFieldChange = (e) => {
     setAllValues({ ...allValues, [e.target.name]: e.target.value });
   };
 
+  const uploadphoto = (e) => {
+    e.preventDefault();
+    let fetchData;
+    try {
+      setLoad(true)
+      fetchData = async () => {
+        let data = new FormData();
+        data.append("token", auth.token);
+        data.append("image", value.image);
+        console.log(data);
+        const response = await fetch("https://localhost:5000/api/fetch-image", {
+          method: "POST",
+          body: data,
+        });
+        if (response.ok) {
+          window.location.reload();
+          console.log("done");
+        }
+      };
+    } catch (err) {
+      console.log(err);
+    }
+    fetchData();
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(allValues);
+    console.log(formState.inputs.city.value)
+    console.log(typeof(formState.inputs.amount.value))
     try {
       fetchData = async () => {
         setLoad(true);
@@ -41,6 +75,11 @@ const DoctorProfile = () => {
             break_start: allValues.break_start,
             break_end: allValues.break_end,
             session: allValues.session,
+            account:formState.inputs.account.value,
+            ifsc: formState.inputs.ifsc.value,
+            amount: formState.inputs.amount.value,
+            city: formState.inputs.city.value,
+            state: formState.inputs.state.value,
             speciality: formState.inputs.speciality.value,
             experience: formState.inputs.experience.value,
             pow: formState.inputs.pow.value,
@@ -60,7 +99,6 @@ const DoctorProfile = () => {
         const result = await response.json();
         console.log(result);
         if (response.ok) {
-          setLoad(false);
           console.log("done");
           window.location.reload();
         }
@@ -69,8 +107,6 @@ const DoctorProfile = () => {
       console.log(err);
     }
     fetchData();
-
-    console.log(data);
   };
 
   const setDetailsHandler = (result) => {
@@ -106,6 +142,7 @@ const DoctorProfile = () => {
             session: result.session,
             break_start: result.break_start,
             break_end: result.break_end,
+            image: result.image
           });
         }
         if (response.ok) {
@@ -335,7 +372,7 @@ const DoctorProfile = () => {
                     className="input_elements"
                     id="city"
                     validators={[VALIDATOR_REQUIRE()]}
-                    // initialValue={details.account_number}
+                    initialValue={details.city}
                     errorText="Please enter city"
                     initialValid={true}
                     onInput={inputHandler}
@@ -349,7 +386,7 @@ const DoctorProfile = () => {
                     className="input_elements"
                     id="state"
                     validators={[VALIDATOR_REQUIRE()]}
-                    // initialValue={details.account_number}
+                    initialValue={details.state}
                     errorText="Please enter state"
                     initialValid={true}
                     onInput={inputHandler}
@@ -361,9 +398,9 @@ const DoctorProfile = () => {
                     type="text"
                     label="Account Number"
                     className="input_elements"
-                    id="account_number"
+                    id="account"
                     validators={[VALIDATOR_REQUIRE()]}
-                    // initialValue={details.account_number}
+                    initialValue={details.acc_no}
                     errorText="Please enter your account number"
                     initialValid={true}
                     onInput={inputHandler}
@@ -375,7 +412,7 @@ const DoctorProfile = () => {
                     label="IFSC Code"
                     type="text"
                     className="input_elements"
-                    id="ifsc_code"
+                    id="ifsc"
                     validators={[VALIDATOR_REQUIRE()]}
                     initialValue={details.ifsc}
                     errorText="Please enter your ifsc code"
@@ -384,15 +421,15 @@ const DoctorProfile = () => {
                   />
                 </div>
                 <div className="form-details">
-                  <Input
+                <Input
                     element="input"
-                    label="Amount charged per session"
-                    type="text"
+                    label="Amount per session"
+                    type="number"
                     className="input_elements"
-                    id="ammount"
+                    id="amount"
                     validators={[VALIDATOR_REQUIRE()]}
-                    initialValue={details.account}
-                    errorText="Please enter proper ammount."
+                    initialValue={String(details.amount)}
+                    errorText="Please enter the amount"
                     initialValid={true}
                     onInput={inputHandler}
                   />
@@ -408,12 +445,29 @@ const DoctorProfile = () => {
               </div>
               <div className="form-right-right">
                 <div className="form-details-image">
-                  <ImageUpload
-                    center
-                    id="image"
-                    onInput={inputHandler}
-                    errorText="Please provide an image"
-                  />
+                  {allValues.image === "NA" ? (
+                    <React.Fragment>
+                      <input
+                        type="file"
+                        id="image"
+                        accept="image/png, image/jpeg"
+                        onChange={handleImageChange}
+                        required
+                      />
+                      {value && <Button onClick={uploadphoto}>Upload</Button>}
+                    </React.Fragment>
+                  ) : (
+                    <img
+                      className="image-upload__preview"
+                      src={`data:image/png;base64,${allValues.image}`}
+                    />
+                  )}
+                  <Button
+                    onClick={() => setAllValues({ ...allValues, image: "NA" })}
+                  >
+                    {" "}
+                    Change profile pic{" "}
+                  </Button>
                 </div>
               </div>
             </div>

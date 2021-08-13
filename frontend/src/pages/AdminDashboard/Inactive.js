@@ -70,7 +70,6 @@ const Inactive = () => {
           console.log(result);
           console.log("done");
           window.location.reload();
-          setLoad(false);
         }
         if (response.ok) {
           console.log("done");

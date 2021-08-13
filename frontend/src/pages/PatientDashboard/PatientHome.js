@@ -241,6 +241,7 @@ const PatientHome = () => {
                   lname={item.lname}
                   city={item.city}
                   speciality={item.speciality}
+                  image={item.image}
                 />
               );
             })}

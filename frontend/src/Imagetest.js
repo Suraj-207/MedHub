@@ -25,19 +25,10 @@ const Imagetest = () => {
           method: "POST",
           body: data,
         });
-<<<<<<< HEAD
-        const result = await response;
-        console.log(result);
-        if (response.ok) {
-          console.log("done");
-          setBackImage(true);
-          setValue({image: result})
-=======
         const result = await response.json();
         if (response.ok) {
           console.log("done");
           setBackImage({data: result.decoded})
->>>>>>> b0d55164cb932f2750b566aba90693e6c222b3bb
         }
       };
     } catch (err) {
@@ -60,7 +51,7 @@ const Imagetest = () => {
         onChange={handleImageChange}
         required
       />
-      {image && <img src={`data:image/png;base64,${value.image}`} /> }
+      {image && <img src={`data:image/png;base64,${image.data}`} /> }
       <button onClick={handleImageSubmit}>submit</button>
     </div>
   );

@@ -6,7 +6,7 @@ const ImageUpload = (props) => {
   const filePickerRef = useRef();
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
-  const [isValid, setIsValid] = useState();
+  // const [isValid, setIsValid] = useState();
 
   useEffect(() => {
     if (!file) {
@@ -21,18 +21,18 @@ const ImageUpload = (props) => {
 
   const pickedHandler = (event) => {
     let pickedFile;
-    let fileIsValid = isValid;
+    // let fileIsValid = isValid;
     if (event.target.files && event.target.files.length === 1) {
       pickedFile = event.target.files[0];
       setFile(pickedFile);
-      setIsValid(true);
-      fileIsValid = true;
+      // setIsValid(true);
+      // fileIsValid = true;
     } else {
-      setIsValid(false);
-      fileIsValid = false;
+      // setIsValid(false);
+      // fileIsValid = false;
     }
 
-    props.onInput(props.id, pickedFile, fileIsValid);
+    props.onInput(props.id, pickedFile);
   };
 
   const pickImageHandler = () => {
@@ -58,7 +58,7 @@ const ImageUpload = (props) => {
           PICK IMAGE
         </Button>
       </div>
-      {!isValid && <p>{props.errorText}</p>}
+      {/* {!isValid && <p>{props.errorText}</p>} */}
     </div>
   );
 };
