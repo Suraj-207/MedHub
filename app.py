@@ -1,7 +1,7 @@
 import os
 import config
 from py_backend.logger.log_db import Logger
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request, render_template
 from flask_restful import Api
 from flask_cors import CORS
 from py_backend.cassandra_db.crud import Operations
@@ -16,11 +16,12 @@ from py_backend.appointment.notify_patient_api import NotifyPatient
 from py_backend.appointment.appointment_status_api import BookSlot, CancelSlot, TakeALeave, DoctorComplete, ConfirmPayment
 from py_backend.admin.permissions_api import AdminFetchInactive, AdminChangeInactive, AdminChangeActive, AdminFetchActive
 from py_backend.appointment.appointment_status import BookCancelReschedule
+from py_backend.forgot_password.forgot_password_api import OTP, SetPassword
 import multiexit
 import datetime
 
 
-app = Flask(__name__, static_url_path='', static_folder='/frontend/build')
+app = Flask(__name__, static_url_path='', static_folder='/frontend/build', template_folder='./py_backend/')
 CORS(app)
 config.logger = Logger()
 config.cassandra = Operations(config.logger)
@@ -74,6 +75,14 @@ api.add_resource(AdminFetchInactive, '/api/admin-fetch-inactive')
 api.add_resource(AdminChangeInactive, '/api/admin-change-inactive')
 api.add_resource(AdminFetchActive, '/api/admin-fetch-active')
 api.add_resource(AdminChangeActive, '/api/admin-change-active')
+api.add_resource(OTP, '/api/otp')
+api.add_resource(SetPassword, '/api/set-password')
+
+
+@app.route('/api/confirm')
+def confirm():
+    string = request.args['messages']
+    return render_template("index.html", message=string)
 
 
 if __name__ == '__main__':

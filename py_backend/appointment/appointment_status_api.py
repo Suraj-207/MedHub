@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, redirect, url_for
 from flask_restful import Resource
 import config
 from py_backend.jwt_token.token import Token
@@ -14,7 +14,8 @@ class ConfirmPayment(Resource):
             pay_id = request.args.get("razorpay_payment_id")
             payment = Payment()
             notes = payment.get_notes_from_pay_id(pay_id)
-            return BookCancelReschedule().patient_book_confirm(notes['patient_email'], notes['date'], notes['doctor_email'], pay_id)
+            string = BookCancelReschedule().patient_book_confirm(notes['patient_email'], notes['date'], notes['doctor_email'], pay_id)
+            return redirect(url_for("confirm", messages=string))
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
