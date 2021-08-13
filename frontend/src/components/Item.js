@@ -6,6 +6,7 @@ const Item = (props) => {
   const handleClick = () => {
     console.log(props.email);
   };
+
   return (
     <div>
       <div className="row_data_item" key={props.email}>
@@ -21,7 +22,9 @@ const Item = (props) => {
             name="href"
             onClick={handleClick}
           >
-            <p>{`Name: Dr.${props.fname} `} {` | City: ${props.city}`}</p>
+            <p>
+              {`Name: Dr.${props.fname} `} {` | City: ${props.city}`}
+            </p>
             <p>Speciality: {props.speciality}</p>
             <Link
               to={{

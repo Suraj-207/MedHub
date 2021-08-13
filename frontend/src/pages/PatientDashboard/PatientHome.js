@@ -217,7 +217,6 @@ const PatientHome = () => {
         </Modal>
         <div>{load && <LoadingSpinner asOverlay />} </div>
         <div>{err && <div>No doctor found</div>} </div>
-
         <div className="filter_geolocation">
           <div className="type">
             <p>Filter by</p>

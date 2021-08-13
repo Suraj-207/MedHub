@@ -30,11 +30,13 @@
     padding: 5px;
     border-radius: 10px;
     background-color:white;
+    border-color: none;
     color: blue;
   }
   
   .inactive_button:hover{
     background-color:blue;
+    border-color: none;
     color: white;
     cursor: pointer;
   }
@@ -45,6 +47,7 @@
 
   .action_button{
     background-color:blue;
+    border-color: none;
     color: white;
     cursor: pointer;
   }

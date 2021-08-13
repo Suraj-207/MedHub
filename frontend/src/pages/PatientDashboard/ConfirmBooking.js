@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router";
 import LoadingSpinner from "../../shared/UIComponent/LoadingSpinner";
 import { AuthContext } from "../../shared/context/AuthContext";
@@ -14,12 +14,14 @@ const ConfirmBooking = () => {
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState();
   const [fullDate, setFullDate] = useState();
-  const [slotStatus, setSlotStatus] = useState(false);
   const [slot, setSlot] = useState("");
   const [status, setStatus] = useState(false);
+  const [state, setState] = useState(false);
   const [value, onChange] = useState(new Date());
   const [formState, inputHandler] = useForm();
   const auth = useContext(AuthContext);
+  console.log(props);
+
   const theDate = new Date();
   const myNewDate = new Date(theDate);
   myNewDate.setDate(myNewDate.getDate() + 15);
@@ -34,8 +36,15 @@ const ConfirmBooking = () => {
     console.log(e.target.value);
   };
 
-  const confirmBookingHandler = () => {
+  useEffect(() => {
+    if (props !== undefined) {
+      setState(true);
+    } else {
+      setState(false);
+    }
+  }, [props]);
 
+  const confirmBookingHandler = () => {
     let fetchData;
     try {
       setLoad(true);
@@ -47,24 +56,21 @@ const ConfirmBooking = () => {
           issue: formState.inputs.issue.value,
           time: slot,
         };
-        const response = await fetch(
-          "https://localhost:5000/api/book-slot",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
+        const response = await fetch("https://localhost:5000/api/book-slot", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
         const result = await response.json();
-        if (result === null || result === false ) {
+        if (result === null || result === false) {
           setLoad(false);
           console.log("unidentified token");
         } else {
           console.log(result);
           console.log("done");
-          window.open(`${result}`,"target_blank");
+          window.open(`${result}`, "target_blank");
         }
         if (response.ok) {
           setLoad(false);
@@ -88,7 +94,7 @@ const ConfirmBooking = () => {
     console.log(formState.inputs.issue.value);
     let fetchData;
     try {
-      setLoad(true)
+      setLoad(true);
       fetchData = async () => {
         const data = { token: auth.token, email: props.email, date: newDate };
         const response = await fetch(
@@ -104,16 +110,16 @@ const ConfirmBooking = () => {
         const result = await response.json();
         if (result === null) {
           setLoad(false);
-          setDetails(result)
+          setDetails(result);
           console.log("unidentified token");
         } else {
           console.log(result);
           setDetails(result);
           console.log("done");
-          setLoad(false)
+          setLoad(false);
         }
         if (response.ok) {
-          setLoad(false)
+          setLoad(false);
           console.log("done");
         }
       };
@@ -123,67 +129,85 @@ const ConfirmBooking = () => {
     fetchData();
   };
 
-  return (
-    <div className="confirm">
-      <div>{load && <LoadingSpinner asOverlay />} </div>
-      <React.Fragment>
-        <div className="card">
-          <div className="confirm_form">
-            <p>Confirm your booking with Dr. {props.fname}</p>
-          </div>
-          <div className="confirm_form">
-            <Input
-              placeholder="Please mention your issue here"
-              label="Medical issue"
-              onInput={inputHandler}
-              id="issue"
-              validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please fill the above field"
-              initialValid={true}
-            />
-          </div>
-          <div className="confirm_form">
-            <p>Please confirm your slot.</p>
-            <DatePicker
-              onChange={onChange}
-              value={value}
-              minDate={new Date()}
-              maxDate={myNewDate}
-              format="y-MM-dd"
-            />
-          </div>
-          <div>
-            <Button onClick={handleSubmit} disabled={!formState.isValid}>
-              Check for slot
-            </Button>
-          </div>
-          {details && details.length>0 && <p>Each appointment is of {details[0].session}</p>}
-          <div className="slot_time" onClick={fieldHandler}>
-            {details && details.length>0 &&
-              details.map((item, index) => {
-                return (
-                  <button
-                    className="slot_time_button"
-                    key={index}
-                    onChange={inputChangeHandler}
-                    value={item.start}
-                  >
-                    {item.start}
-                  </button>
-                );
-              })}
-          </div>
-          <div>{details && details.length === 0 && <p>Sorry, no slots available</p>}</div>
-          <div>{status && <p>You selected {slot} slot. </p>}</div>
-          {status && slot && (
-            <div className="confirm_handle">
-              <Button onClick={confirmBookingHandler}> Cofirm booking</Button>
+  if (state) {
+    return (
+      <div className="confirm">
+        <div>{load && <LoadingSpinner asOverlay />} </div>
+        <React.Fragment>
+          <div className="card">
+            <div className="confirm_form">
+              <p>Confirm your booking with Dr. {props.fname}</p>
             </div>
-          )}
+            <div className="confirm_form">
+              <Input
+                placeholder="Please mention your issue here"
+                label="Medical issue"
+                onInput={inputHandler}
+                id="issue"
+                validators={[VALIDATOR_REQUIRE()]}
+                errorText="Please fill the above field"
+                initialValid={true}
+              />
+            </div>
+            <div className="confirm_form">
+              <p>Please confirm your slot.</p>
+              <DatePicker
+                onChange={onChange}
+                value={value}
+                minDate={new Date()}
+                maxDate={myNewDate}
+                format="y-MM-dd"
+              />
+            </div>
+            <div>
+              <Button onClick={handleSubmit} disabled={!formState.isValid}>
+                Check for slot
+              </Button>
+            </div>
+            {details && details.length > 0 && (
+              <p>Each appointment is of {details[0].session}</p>
+            )}
+            <div className="slot_time" onClick={fieldHandler}>
+              {details &&
+                details.length > 0 &&
+                details.map((item, index) => {
+                  return (
+                    <button
+                      className="slot_time_button"
+                      key={index}
+                      onChange={inputChangeHandler}
+                      value={item.start}
+                    >
+                      {item.start}
+                    </button>
+                  );
+                })}
+            </div>
+            <div>
+              {details && details.length === 0 && (
+                <p>Sorry, no slots available</p>
+              )}
+            </div>
+            <div>{status && <p>You selected {slot} slot. </p>}</div>
+            {status && slot && (
+              <div className="confirm_handle">
+                <Button onClick={confirmBookingHandler}> Cofirm booking</Button>
+              </div>
+            )}
+          </div>
+        </React.Fragment>
+      </div>
+    );
+  } else {
+    return (
+      <div className="session">
+        <div>Session timed out</div>
+        <div>
+          <center>Click on Home to go to home page</center>
         </div>
-      </React.Fragment>
-    </div>
-  );
+      </div>
+    );
+  }
 };
 
 export default ConfirmBooking;

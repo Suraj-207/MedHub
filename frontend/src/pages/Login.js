@@ -24,7 +24,6 @@ const Login = () => {
         fetchData = async () => {
           setLoad(true)
           const data = { formData };
-          console.log(formData.email);
           const response = await fetch("https://localhost:5000/api/login", {
             method: "POST",
             headers: {
@@ -38,7 +37,6 @@ const Login = () => {
           }else{
             auth.login(result.user, result.token);
           }
-          console.log(result);
           setDetails(result);
           if (response.ok) {
             setLoad(false);
@@ -88,7 +86,7 @@ const Login = () => {
                 Login
               </button>
               {details && <div> <center className="message">{details.message}</center>  </div>}
-              <center className="forgot_password">Forgot password?</center>
+              <Link to="/forgot"><center className="forgot_password">Forgot password?</center></Link>
             </div>
           </form>
           <Link to="/signup">

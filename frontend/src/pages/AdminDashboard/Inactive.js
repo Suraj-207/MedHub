@@ -33,7 +33,7 @@ const Inactive = () => {
   }
 
   function afterOpenModal() {
-    subtitle.style.color = "#f00";
+    subtitle.style.color = "#04032b";
   }
 
   function closeModal() {
@@ -48,8 +48,8 @@ const Inactive = () => {
       fetchData = async () => {
         const data = {
           token: auth.token,
-          email: details[0].email,
-          acc_id: details[0].acc_id
+          email: details[index].email,
+          acc_id: details[index].acc_id
         };
         const response = await fetch(
           "https://localhost:5000/api/admin-change-inactive",
@@ -63,12 +63,9 @@ const Inactive = () => {
         );
         const result = await response.json();
         if (result === null) {
-          //   setErr(true);
           setLoad(false);
           console.log("unidentified token");
-        } else {
-          console.log(result);
-          console.log("done");
+        } else {         
           window.location.reload();
         }
         if (response.ok) {
@@ -105,7 +102,6 @@ const Inactive = () => {
           console.log("unidentified token");
         } else {
           setDetails(result);
-          console.log(result);
           setLoad(false);
         }
         if (response.ok) {
@@ -132,8 +128,8 @@ const Inactive = () => {
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
           Activate?
         </h2>
-        <button onClick={closeModal}>close</button>
-        <button onClick={handleSubmit}>Confirm</button>
+        <Button onClick={closeModal}>close</Button>
+        <Button onClick={handleSubmit}>Confirm</Button>
       </Modal>
       <div className="appointment_details">
         {details && details.length>0 && (

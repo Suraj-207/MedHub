@@ -10,7 +10,6 @@ const Appointment = () => {
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState();
   const [itemIndex, setIndex] = useState("");
-  const [status, setcancelStatus] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   let subtitle;
 
@@ -40,10 +39,10 @@ const Appointment = () => {
   const cancelStatus = (index) => {
     setIndex(index);
     openModal();
-    setcancelStatus((prev) => !prev);
   };
 
   const confirmHandler = () => {
+    closeModal()
     let fetchData;
     try {
       fetchData = async () => {
@@ -62,9 +61,10 @@ const Appointment = () => {
           body: JSON.stringify(data),
         });
         const result = await response.json();
-        console.log(result);
+        if(result === null){
+          console.log(result);
+        }
         if (response.ok) {
-          setLoad(false);
           console.log("done");
           window.location.reload();
         }
@@ -96,9 +96,7 @@ const Appointment = () => {
           setLoad(false);
           console.log("unidentified token");
         } else {
-          console.log(result);
           setDetails(result);
-          console.log("done");
           setLoad(false);
         }
         if (response.ok) {
@@ -110,9 +108,17 @@ const Appointment = () => {
     }
     fetchData();
   }, [auth.token]);
+
+
+  if(load){
+    return(
+      <div><LoadingSpinner asOverlay /></div>
+    )
+  }
+
   return (
     <React.Fragment>
-      <div>{load && <LoadingSpinner asOverlay />} </div>
+      
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -123,8 +129,8 @@ const Appointment = () => {
       >
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
         <div>Confirm cancellation?</div>
-        <button onClick={closeModal}>close</button>
-        <button onClick={confirmHandler}>Confirm</button>
+        <Button onClick={closeModal}>close</Button>
+        <Button onClick={confirmHandler}>Confirm</Button>
       </Modal>
       <div className="appointment_details">
         {details && (

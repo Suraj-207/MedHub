@@ -17,11 +17,11 @@ import TakeLeave from "./pages/DoctorDashboard/TakeLeave";
 import Patient from "./pages/DoctorDashboard/Patient";
 import ConfirmPayment from "./pages/PatientDashboard/ConfirmPayment";
 import AdminHome from "./pages/AdminDashboard/AdminHome";
-import Inactive from "./pages/AdminDashboard/Inactive"
-import Imagetest from "./Imagetest";
+import Inactive from "./pages/AdminDashboard/Inactive";
+import Forgot from "./pages/Forgot";
 
 function App() {
-  const { token, login, logout, payment, load, isToken, userId } = useAuth();
+  const { token, login, logout, load, isToken, userId } = useAuth();
   let routes;
 
   if (token && userId === "doctor") {
@@ -101,8 +101,8 @@ function App() {
         <Route path="/signup" exact>
           <SignUp />
         </Route>
-        <Route path="/image" exact>
-          <Imagetest />
+        <Route path="/forgot" exact>
+          <Forgot />
         </Route>
       </Switch>
     );

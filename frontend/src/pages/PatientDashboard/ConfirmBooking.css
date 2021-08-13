@@ -9,6 +9,14 @@
   align-items: center;
 }
 
+.session{
+  margin-top: 100px;  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .confirm_form {
   margin: 20px;
 }

@@ -27,9 +27,7 @@ const Patient = () => {
           const result = await response.json();
           if (result === null) {
             setLoad(false);
-            console.log("unidentified token");
           } else {
-            console.log(result);
             setDetails(result);
             console.log("done");
             setLoad(false);

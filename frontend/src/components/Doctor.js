@@ -29,7 +29,6 @@ const Doctor = () => {
           id="experience"
           type="number"
           className="input_elements"
-          name="experience"
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter your experience"
           placeholder="experience"
@@ -54,7 +53,6 @@ const Doctor = () => {
           id="proof"
           type="link"
           className="input_elements"
-          name="proof"
           placeholder="Acting medical professional proof"
           errorText="Please enter link of your professional proof"
           validators={[VALIDATOR_REQUIRE()]}

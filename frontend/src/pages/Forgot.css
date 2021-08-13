@@ -1,0 +1,17 @@
+.center{
+    display: flex;
+    flex-direction: column;
+}
+
+.details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.details p{
+    margin-top: 40px;
+    color: rgb(206, 129, 221);
+    font-size: large;
+}

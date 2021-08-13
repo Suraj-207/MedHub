@@ -59,7 +59,7 @@ export const useAuth = () => {
       console.log(err);
     }
     fetchData();
-  }, [login]);
+  }, [login, setIsToken, setLoad]);
 
   return { token, login, logout, userId, load, isToken };
 };

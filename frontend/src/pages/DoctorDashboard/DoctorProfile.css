@@ -36,7 +36,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* padding-right: 450px; */
 }
 
 label {
@@ -66,10 +65,6 @@ h4 {
   display: flex;
 }
 
-/* .time_input{
-  margin: 20px;
-} */
-
 .active_dot {
   height: 25px;
   width: 25px;
@@ -90,11 +85,6 @@ h4 {
   display: flex;
   justify-content: flex-start;
 }
-
-/* .form-right-right{
-  margin
-} */
-
 .form-details-image {
   margin-left: 12.5rem;
 }
@@ -127,18 +117,12 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /* padding-right: 450px; */
   }
   .image-left {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
   }
-
-  /* .form-right-right {
-    display: flex;
-    flex-direction: flex-start;
-  } */
 
   .dashboard_doctor_profile_button {
     display: flex;

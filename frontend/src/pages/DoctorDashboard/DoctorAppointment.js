@@ -16,6 +16,7 @@ const DoctorAppointment = () => {
   const [formState, inputHandler] = useForm();
   const [modalIsOpen, setIsOpen] = useState(false);
   let subtitle;
+
   const tdate = new Date();
   tdate.toLocaleDateString();
   const month = parseInt(tdate.toLocaleDateString().split("/")[0]);
@@ -24,7 +25,6 @@ const DoctorAppointment = () => {
   const newDate = `${year}-${month < 10 ? 0 : ""}${month}-${
     date < 10 ? 0 : ""
   }${date}`;
-  console.log(newDate);
 
   const customStyles = {
     content: {
@@ -47,7 +47,7 @@ const DoctorAppointment = () => {
   }
 
   function afterOpenModal() {
-    subtitle.style.color = "#f00";
+    subtitle.style.color = "#04032b";
   }
 
   function closeModal() {
@@ -79,8 +79,6 @@ const DoctorAppointment = () => {
         const result = await response.json();
         console.log(result);
         if (response.ok) {
-          setLoad(false);
-          console.log("done");
           window.location.reload();
         }
       };
@@ -111,9 +109,7 @@ const DoctorAppointment = () => {
           setLoad(false);
           console.log("unidentified token");
         } else {
-          console.log(result);
           setDetails(result);
-          console.log("done");
           setLoad(false);
         }
         if (response.ok) {
@@ -138,8 +134,8 @@ const DoctorAppointment = () => {
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
           Confirm appointment completion?
         </h2>
-        <button onClick={closeModal}>close</button>
-        <button onClick={confirmHandler}>Confirm</button>
+        <Button onClick={closeModal}>close</Button>
+        <Button onClick={confirmHandler}>Confirm</Button>
       </Modal>
       <div>{load && <LoadingSpinner asOverlay />} </div>
       <div className="appointment_details">

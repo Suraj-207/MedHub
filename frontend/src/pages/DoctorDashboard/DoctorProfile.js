@@ -61,9 +61,6 @@ const DoctorProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(allValues);
-    console.log(formState.inputs.city.value)
-    console.log(typeof(formState.inputs.amount.value))
     try {
       fetchData = async () => {
         setLoad(true);
@@ -97,7 +94,9 @@ const DoctorProfile = () => {
           }
         );
         const result = await response.json();
-        console.log(result);
+        if(result === null){
+          console.log("error occured")
+        }
         if (response.ok) {
           console.log("done");
           window.location.reload();
@@ -460,13 +459,13 @@ const DoctorProfile = () => {
                     <img
                       className="image-upload__preview"
                       src={`data:image/png;base64,${allValues.image}`}
+                      alt="Profile"
                     />
                   )}
                   <Button
                     onClick={() => setAllValues({ ...allValues, image: "NA" })}
                   >
-                    {" "}
-                    Change profile pic{" "}
+                    Change profile pic
                   </Button>
                 </div>
               </div>

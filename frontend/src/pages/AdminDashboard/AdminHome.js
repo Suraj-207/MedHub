@@ -10,11 +10,11 @@ const AdminHome = () => {
   const auth = useContext(AuthContext);
   const [index, setIndex] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
-  let subtitle
+  let subtitle;
   const cancelStatus = (index) => {
     setIndex(index);
     openModal();
-  }
+  };
 
   const customStyles = {
     content: {
@@ -32,50 +32,48 @@ const AdminHome = () => {
   }
 
   function afterOpenModal() {
-    subtitle.style.color = "#f00";
+    subtitle.style.color = "#04032b";
   }
 
   function closeModal() {
     setIsOpen(false);
   }
 
-    const handleSubmit = () => {
-      setLoad(true);
-      closeModal();
-      let fetchData;
-      try {
-        fetchData = async () => {
-          const data = {
-            token: auth.token,
-            email: details[0].email
-          };
-          const response = await fetch(
-            "https://localhost:5000/api/admin-change-active",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            }
-          );
-          const result = await response.json();
-          if (result === null) {
-          window.location.reload();
-            console.log("unidentified token");
-          } else {
-            console.log("done");
-            setLoad(false);
-          }
-          if (response.ok) {
-            console.log("done");
-          }
+  const handleSubmit = () => {
+    closeModal();
+    setLoad(true);
+    let fetchData;
+    try {
+      fetchData = async () => {
+        const data = {
+          token: auth.token,
+          email: details[index].email,
         };
-      } catch (err) {
-        console.log(err);
-      }
-      fetchData();
-    };
+        const response = await fetch(
+          "https://localhost:5000/api/admin-change-active",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const result = await response.json();
+        if (result === null) {
+          window.location.reload();
+        } else {
+          window.location.reload();
+        }
+        if (response.ok) {
+          console.log("done");
+        }
+      };
+    } catch (err) {
+      console.log(err);
+    }
+    fetchData();
+  };
 
   useEffect(() => {
     setLoad(true);
@@ -98,10 +96,8 @@ const AdminHome = () => {
         const result = await response.json();
         if (result === null) {
           setLoad(false);
-          console.log("unidentified token");
         } else {
           setDetails(result);
-          console.log(result);
           setLoad(false);
         }
         if (response.ok) {
@@ -125,14 +121,12 @@ const AdminHome = () => {
         contentLabel="Example Modal"
         ariaHideApp={false}
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
-         Deactivate?
-        </h2>
-        <button onClick={closeModal}>close</button>
-        <button onClick={handleSubmit}>Confirm</button>
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Deactivate?</h2>
+        <Button onClick={closeModal}>close</Button>
+        <Button onClick={handleSubmit}>Confirm</Button>
       </Modal>
       <div className="appointment_details">
-        {details && details.length>0 && (
+        {details && details.length > 0 && (
           <table className="dstable dstable-striped dstable-light">
             <tbody>
               <tr>
@@ -153,24 +147,23 @@ const AdminHome = () => {
                   return (
                     <tr key={index}>
                       <td>{index + 1}</td>
-                      <td>{item.acc_id}</td>
+                      <td><input defaultValue={item.acc_id} /></td>
                       <td>{item.fname}</td>
                       <td>{item.lname}</td>
                       <td>{item.email}</td>
                       <td>{item.account}</td>
                       <td>{item.ifsc}</td>
                       <td>{item.proof}</td>
-                      <td>{item.active ? "true" : "false"}</td>
-                      {/* <td>
-                        {item.status}
-                      </td> */}
+                      <td>{item.active ? "True" : "False"}</td>
                       <td>
                         <Button
                           onClick={() => {
                             cancelStatus(index);
                           }}
                         >
-                          {item.active ? "Click to deactivate" : "Click to activate"}
+                          {item.active
+                            ? "Click to deactivate"
+                            : "Click to activate"}
                         </Button>
                       </td>
                     </tr>
