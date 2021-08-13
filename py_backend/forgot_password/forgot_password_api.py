@@ -24,7 +24,7 @@ class OTP(Resource):
                 otp = random.randint(100000, 999999)
                 from_ = "From: MedHub <{}>\n".format(sender_email)
                 to = "To: {} <{}>\n".format(name.fname + " " + name.lname, email)
-                subject = "Subject: Slot booking confirmation\n\n"
+                subject = "Subject: OTP\n\n"
                 msg = "OTP for setting new password : " + str(otp) + ". Please do not share it with anybody."
                 message = from_ + to + subject + msg
                 SendMail(sender_email, sender_password, email, message).send()
