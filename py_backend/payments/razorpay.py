@@ -131,3 +131,21 @@ class Payment:
         except Exception as e:
             config.logger.log("ERROR", str(e))
 
+    def refund_convenience_fee(self, pay_id):
+        """
+        refunds back the patient on cancellation.
+        :param pay_id: payment id generated
+        :return: None
+        """
+        try:
+            client = razorpay.Client(auth=(self.key, self.secret))
+            response = requests.post(
+                url="https://api.razorpay.com/v1/payments/{}/refund/".format(pay_id),
+                json={
+                  "amount": 5000,
+                  "reverse_all": 0
+                },
+                auth=requests.auth.HTTPBasicAuth(self.key, self.secret)
+            )
+        except Exception as e:
+            config.logger.log("ERROR", str(e))

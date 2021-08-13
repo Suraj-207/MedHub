@@ -147,7 +147,9 @@ class BookCancelReschedule:
                     pay_id_fetch = config.cassandra.session.execute(pay_id_fetch_query).one()
                     res = config.cassandra.update("medhub.appointment", new_val, condition)
                     if res:
-                        Payment().refund(pay_id_fetch.pay_id)
+                        payment = Payment()
+                        payment.refund(pay_id_fetch.pay_id)
+                        payment.refund_convenience_fee(pay_id_fetch.pay_id)
                         threading.Thread(target=Notification().notify_cancelled_slots, args=(doctor_email, patient)).start()
                         return True
                     else:
@@ -190,7 +192,9 @@ class BookCancelReschedule:
                         res_2 = config.cassandra.update("medhub.appointment", new_val, condition)
                         if res_2:
                             threading.Thread(target=Notification().notify_cancelled_slots, args=(doctor_email, patient)).start()
-                            Payment().refund(pay_id_fetch.pay_id)
+                            payment = Payment()
+                            payment.refund(pay_id_fetch.pay_id)
+                            payment.refund_convenience_fee(pay_id_fetch.pay_id)
                 return True
         except Exception as e:
             config.logger.log("ERROR", str(e))
