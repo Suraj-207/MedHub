@@ -15,12 +15,12 @@ import Appointment from "./pages/PatientDashboard/Appointment";
 import DoctorAppointment from "./pages/DoctorDashboard/DoctorAppointment";
 import TakeLeave from "./pages/DoctorDashboard/TakeLeave";
 import Patient from "./pages/DoctorDashboard/Patient";
-import ConfirmPayment from "./pages/PatientDashboard/ConfirmPayment";
 import AdminHome from "./pages/AdminDashboard/AdminHome";
 import Inactive from "./pages/AdminDashboard/Inactive";
 import Forgot from "./pages/Forgot";
 
 function App() {
+  console.log("1")
   const { token, login, logout, load, isToken, userId } = useAuth();
   let routes;
 
@@ -73,9 +73,6 @@ function App() {
         </Route>
         <Route path="/patient/signout" exact>
           <MainNavigation />
-        </Route>
-        <Route path="/confirmpayment/:payment" exact>
-          <ConfirmPayment />
         </Route>
       </Switch>
     );

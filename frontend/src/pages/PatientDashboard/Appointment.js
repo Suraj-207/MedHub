@@ -53,7 +53,7 @@ const Appointment = () => {
           date: details[itemIndex].start,
         };
         console.log(data);
-        const response = await fetch("https://localhost:5000/api/cancel-slot", {
+        const response = await fetch("/api/cancel-slot", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const Appointment = () => {
       fetchData = async () => {
         const data = { token: auth.token };
         const response = await fetch(
-          "https://localhost:5000/api/patient-fetch",
+          "/api/patient-fetch",
           {
             method: "POST",
             headers: {

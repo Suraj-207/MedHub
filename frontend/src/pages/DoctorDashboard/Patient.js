@@ -15,7 +15,7 @@ const Patient = () => {
         fetchData = async () => {
           const data = { token: auth.token };
           const response = await fetch(
-            "https://localhost:5000/api/doctor-fetch-past",
+            "/api/doctor-fetch-past",
             {
               method: "POST",
               headers: {

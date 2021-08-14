@@ -44,7 +44,7 @@ const DoctorProfile = () => {
         data.append("token", auth.token);
         data.append("image", value.image);
         console.log(data);
-        const response = await fetch("https://localhost:5000/api/fetch-image", {
+        const response = await fetch("/api/fetch-image", {
           method: "POST",
           body: data,
         });
@@ -84,7 +84,7 @@ const DoctorProfile = () => {
         };
         console.log(data);
         const response = await fetch(
-          "https://localhost:5000/api/change-profile",
+          "/api/change-profile",
           {
             method: "POST",
             headers: {
@@ -120,7 +120,7 @@ const DoctorProfile = () => {
       fetchData = async () => {
         const data = { token: auth.token };
         const response = await fetch(
-          "https://localhost:5000/api/fetch-profile",
+          "/api/fetch-profile",
           {
             method: "POST",
             headers: {

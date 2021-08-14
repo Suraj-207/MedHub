@@ -56,7 +56,7 @@ const ConfirmBooking = () => {
           issue: formState.inputs.issue.value,
           time: slot,
         };
-        const response = await fetch("https://localhost:5000/api/book-slot", {
+        const response = await fetch("/api/book-slot", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -98,7 +98,7 @@ const ConfirmBooking = () => {
       fetchData = async () => {
         const data = { token: auth.token, email: props.email, date: newDate };
         const response = await fetch(
-          "https://localhost:5000/api/fetch-na-appointments",
+          "/api/fetch-na-appointments",
           {
             method: "POST",
             headers: {

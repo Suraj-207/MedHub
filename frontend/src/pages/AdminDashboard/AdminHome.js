@@ -50,7 +50,7 @@ const AdminHome = () => {
           email: details[index].email,
         };
         const response = await fetch(
-          "https://localhost:5000/api/admin-change-active",
+          "/api/admin-change-active",
           {
             method: "POST",
             headers: {
@@ -84,7 +84,7 @@ const AdminHome = () => {
           token: auth.token,
         };
         const response = await fetch(
-          "https://localhost:5000/api/admin-fetch-active",
+          "/api/admin-fetch-active",
           {
             method: "POST",
             headers: {

@@ -52,7 +52,7 @@ const Inactive = () => {
           acc_id: details[index].acc_id
         };
         const response = await fetch(
-          "https://localhost:5000/api/admin-change-inactive",
+          "/api/admin-change-inactive",
           {
             method: "POST",
             headers: {
@@ -87,7 +87,7 @@ const Inactive = () => {
           token: auth.token,
         };
         const response = await fetch(
-          "https://localhost:5000/api/admin-fetch-inactive",
+          "/api/admin-fetch-inactive",
           {
             method: "POST",
             headers: {

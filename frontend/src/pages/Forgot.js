@@ -41,7 +41,7 @@ const Forgot = () => {
           password: formState.inputs.setpassword.value,
         };
         const response = await fetch(
-          "https://localhost:5000/api/set-password",
+          "/api/set-password",
           {
             method: "POST",
             headers: {
@@ -75,7 +75,7 @@ const Forgot = () => {
       fetchData = async () => {
         setLoad(true);
         const data = { email: formState.inputs.email.value };
-        const response = await fetch("https://localhost:5000/api/otp", {
+        const response = await fetch(":5000/api/otp", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

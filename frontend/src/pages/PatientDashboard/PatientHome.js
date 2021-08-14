@@ -47,7 +47,7 @@ const PatientHome = () => {
           latitude: latitude,
         };
         const response = await fetch(
-          "http://localhost:5000/api/fetch-doctors",
+          "/api/fetch-doctors",
           {
             method: "POST",
             headers: {
@@ -110,7 +110,7 @@ const PatientHome = () => {
           state: country,
         };
         const response = await fetch(
-          "https://localhost:5000/api/filter-doctors",
+          "/api/filter-doctors",
           {
             method: "POST",
             headers: {
@@ -152,7 +152,7 @@ const PatientHome = () => {
           latitude: "",
         };
         const response = await fetch(
-          "https://localhost:5000/api/fetch-doctors",
+          "/api/fetch-doctors",
           {
             method: "POST",
             headers: {
