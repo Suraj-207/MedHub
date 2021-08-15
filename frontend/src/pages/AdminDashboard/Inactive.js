@@ -7,6 +7,7 @@ import Button from "../../shared/FormElements/Button";
 const Inactive = () => {
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState([]);
+  const [formData, setFormData] = useState({account_id: ""});
   const auth = useContext(AuthContext);
   const [index, setIndex] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -16,6 +17,13 @@ const Inactive = () => {
     setIndex(index);
     openModal();
   }
+
+  const handleAccountChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const customStyles = {
     content: {
@@ -49,7 +57,7 @@ const Inactive = () => {
         const data = {
           token: auth.token,
           email: details[index].email,
-          acc_id: details[index].acc_id
+          acc_id: formData.acc_id
         };
         const response = await fetch(
           "/api/admin-change-inactive",
@@ -153,7 +161,7 @@ const Inactive = () => {
                   return (
                     <tr key={index}>
                       <td>{index + 1}</td>
-                      <td>{item.acc_id}</td>
+                      <td><input onChange={handleAccountChange} name="acc_id" defaultValue={item.acc_id} /></td>
                       <td>{item.fname}</td>
                       <td>{item.lname}</td>
                       <td>{item.email}</td>

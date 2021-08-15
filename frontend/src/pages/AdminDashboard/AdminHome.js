@@ -47,7 +47,7 @@ const AdminHome = () => {
       fetchData = async () => {
         const data = {
           token: auth.token,
-          email: details[index].email,
+          email: details[index].email
         };
         const response = await fetch(
           "/api/admin-change-active",
@@ -147,7 +147,7 @@ const AdminHome = () => {
                   return (
                     <tr key={index}>
                       <td>{index + 1}</td>
-                      <td><input defaultValue={item.acc_id} /></td>
+                      <td>{item.acc_id}</td>
                       <td>{item.fname}</td>
                       <td>{item.lname}</td>
                       <td>{item.email}</td>
