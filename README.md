@@ -7,7 +7,7 @@ Doctors on signup provides a proof of his/her medical license as an attachment. 
 Admin can activate and deactivate doctors accounts in case of a dispute or unfair use of our application.
 
 # Steps to run the application on your local machine-
-Step 1 - Install docker desktop 
+Step 1 - Install docker desktop \n
 Step 2 - git clone 
 Step 3 - Go to the project directory. 
 Step 4 - Run the following commands - -> docker-compose build -> docker-compose up -d 
