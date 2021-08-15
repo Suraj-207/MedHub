@@ -21,7 +21,7 @@ import multiexit
 import datetime
 
 
-app = Flask(__name__, static_url_path='', static_folder='/frontend/build', template_folder='./py_backend/')
+app = Flask(__name__, template_folder='./py_backend/')
 CORS(app)
 config.logger = Logger()
 config.cassandra = Operations(config.logger)
