@@ -9,7 +9,7 @@ import Modal from "react-modal";
 import Input from "../../shared/FormElements/Input";
 import Button from "../../shared/FormElements/Button";
 import { VALIDATOR_REQUIRE } from "../../shared/util/validators";
-import useGeolocation from "react-hook-geolocation";
+// import useGeolocation from "react-hook-geolocation";
 
 const PatientHome = () => {
   const [load, setLoad] = useState(false);
@@ -19,7 +19,7 @@ const PatientHome = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [details, setDetails] = useState([]);
   const [formState, inputHandler] = useForm();
-  const geolocation = useGeolocation();
+  // const geolocation = useGeolocation();
   let subtitle;
 
   const customStyles = {
@@ -33,49 +33,50 @@ const PatientHome = () => {
     },
   };
 
-  const getGeolocation = () => {
-    const latitude = geolocation.latitude;
-    const longitude = geolocation.longitude;
+  // const getGeolocation = () => {
+  //   const latitude = geolocation.latitude;
+  //   const longitude = geolocation.longitude;
 
-    setLoad(true);
-    let fetchData;
-    try {
-      fetchData = async () => {
-        const data = {
-          token: auth.token,
-          longitude: longitude,
-          latitude: latitude,
-        };
-        const response = await fetch(
-          "/api/fetch-doctors",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          }
-        );
-        const result = await response.json();
-        if (result === null) {
-          setErr(true);
-          setLoad(false);
-          console.log("unidentified token");
-        } else {
-          console.log(result);
-          setDetails(result.doctors);
-          console.log("done");
-          setLoad(false);
-        }
-        if (response.ok) {
-          console.log("done");
-        }
-      };
-    } catch (err) {
-      console.log(err);
-    }
-    fetchData();
-  };
+  //   setLoad(true);
+  //   let fetchData;
+  //   try {
+  //     fetchData = async () => {
+  //       const data = {
+  //         token: auth.token,
+  //         longitude: longitude,
+  //         latitude: latitude,
+  //       };
+  //       const response = await fetch(
+  //         "/api/fetch-doctors",
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify(data),
+  //         }
+  //       );
+  //       const result = await response.json();
+  //       if (result === null) {
+  //         setErr(true);
+  //         setLoad(false);
+  //         console.log("unidentified token");
+  //       } else {
+  //         console.log(result);
+  //         setDetails(result.doctors);
+  //         console.log("done");
+  //         setLoad(false);
+  //       }
+  //       if (response.ok) {
+  //         console.log("done");
+  //       }
+  //     };
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //   fetchData();
+  // };
+
   const filterHandler = () => {
     openModal();
   };
@@ -85,7 +86,7 @@ const PatientHome = () => {
   }
 
   function afterOpenModal() {
-    subtitle.style.color = "#f00";
+    subtitle.style.color = "#04032b";
   }
 
   function closeModal() {
@@ -94,8 +95,6 @@ const PatientHome = () => {
 
   const fetchfilter = () => {
     console.log(country);
-    console.log(formState.inputs.city);
-    console.log(formState.inputs.speciality);
 
     setLoad(true);
     let fetchData;
@@ -224,9 +223,9 @@ const PatientHome = () => {
           <div className="type">
             <Button onClick={filterHandler}>Criteria </Button>
           </div>
-          <div className="type">
+          {/* <div className="type">
             <Button onClick={getGeolocation}>Geolocation</Button>
-          </div>
+          </div> */}
         </div>
         <div className="row_data">
           {details &&

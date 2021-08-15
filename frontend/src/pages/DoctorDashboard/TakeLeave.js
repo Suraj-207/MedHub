@@ -46,7 +46,7 @@ const TakeLeave = () => {
   }
 
   function afterOpenModal() {
-    subtitle.style.color = "#f00";
+    subtitle.style.color = "#04032b";
   }
 
   function closeModal() {
