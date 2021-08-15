@@ -49,7 +49,6 @@ export const useAuth = () => {
             login(result.user, result.token);
             setLoad(false);
           }
-          console.log(result);
           if (response.ok) {
             console.log("done");
           }

@@ -7,7 +7,7 @@ import Button from "../../shared/FormElements/Button";
 const Inactive = () => {
   const [load, setLoad] = useState(false);
   const [details, setDetails] = useState([]);
-  const [formData, setFormData] = useState({account_id: ""});
+  const [formData, setFormData] = useState({account_id: "", valid: false});
   const auth = useContext(AuthContext);
   const [index, setIndex] = useState();
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -22,6 +22,7 @@ const Inactive = () => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+      valid: true
     });
   };
 
@@ -57,8 +58,9 @@ const Inactive = () => {
         const data = {
           token: auth.token,
           email: details[index].email,
-          acc_id: formData.acc_id
+          acc_id: formData.valid ? formData.acc_id : details[index].acc_id
         };
+        console.log(data);
         const response = await fetch(
           "/api/admin-change-inactive",
           {
