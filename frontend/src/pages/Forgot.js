@@ -75,7 +75,7 @@ const Forgot = () => {
       fetchData = async () => {
         setLoad(true);
         const data = { email: formState.inputs.email.value };
-        const response = await fetch(":5000/api/otp", {
+        const response = await fetch("/api/otp", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

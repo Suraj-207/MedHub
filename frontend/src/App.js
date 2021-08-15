@@ -20,7 +20,6 @@ import Inactive from "./pages/AdminDashboard/Inactive";
 import Forgot from "./pages/Forgot";
 
 function App() {
-  console.log("1")
   const { token, login, logout, load, isToken, userId } = useAuth();
   let routes;
 

@@ -53,7 +53,7 @@ class Payment:
                         "doctor_email": doctor_email,
                         "date": date
                     },
-                    "callback_url": "https://localhost:5000/api/confirm-payment/",
+                    "callback_url": "http://localhost:5000/api/confirm-payment/",
                     "callback_method": "get"
                 },
                 auth=requests.auth.HTTPBasicAuth(self.key, self.secret)

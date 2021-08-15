@@ -28,12 +28,7 @@ const ConfirmBooking = () => {
 
   const fieldHandler = (e) => {
     setStatus(true);
-    console.log(e.target.value);
     setSlot(e.target.value);
-  };
-
-  const inputChangeHandler = (e) => {
-    console.log(e.target.value);
   };
 
   useEffect(() => {
@@ -91,7 +86,6 @@ const ConfirmBooking = () => {
       date < 10 ? 0 : ""
     }${date}`;
     setFullDate(newDate);
-    console.log(formState.inputs.issue.value);
     let fetchData;
     try {
       setLoad(true);
@@ -175,7 +169,6 @@ const ConfirmBooking = () => {
                     <button
                       className="slot_time_button"
                       key={index}
-                      onChange={inputChangeHandler}
                       value={item.start}
                     >
                       {item.start}

@@ -21,10 +21,11 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
+      console.log(formData);
         fetchData = async () => {
           setLoad(true)
           const data = { formData };
-          const response = await fetch(":5000/api/login", {
+          const response = await fetch("/api/login", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

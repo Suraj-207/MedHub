@@ -1,7 +1,7 @@
 import os
 import config
 from py_backend.logger.log_db import Logger
-from flask import Flask, send_from_directory, request, render_template
+from flask import Flask, send_from_directory, render_template, request
 from flask_restful import Api
 from flask_cors import CORS
 from py_backend.cassandra_db.crud import Operations
@@ -88,4 +88,5 @@ def confirm():
 if __name__ == '__main__':
     config.logger.log("INFO", "App starting...")
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='127.0.0.1', port=port, debug=True,ssl_context=('frontend/certificate.crt','frontend/certificate.key'))
+    app.run(host='0.0.0.0', port=port, debug=True)
+    # app.run(host='127.0.0.1', port=port, debug=True,ssl_context=('frontend/certificate.crt','frontend/certificate.key'))
