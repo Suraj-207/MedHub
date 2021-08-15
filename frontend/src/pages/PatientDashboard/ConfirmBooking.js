@@ -20,7 +20,6 @@ const ConfirmBooking = () => {
   const [value, onChange] = useState(new Date());
   const [formState, inputHandler] = useForm();
   const auth = useContext(AuthContext);
-  console.log(props);
 
   const theDate = new Date();
   const myNewDate = new Date(theDate);
