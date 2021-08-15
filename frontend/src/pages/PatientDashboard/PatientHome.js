@@ -76,6 +76,7 @@ const PatientHome = () => {
     }
     fetchData();
   };
+
   const filterHandler = () => {
     openModal();
   };
@@ -85,7 +86,7 @@ const PatientHome = () => {
   }
 
   function afterOpenModal() {
-    subtitle.style.color = "#f00";
+    subtitle.style.color = "#04032b";
   }
 
   function closeModal() {
@@ -94,8 +95,6 @@ const PatientHome = () => {
 
   const fetchfilter = () => {
     console.log(country);
-    console.log(formState.inputs.city);
-    console.log(formState.inputs.speciality);
 
     setLoad(true);
     let fetchData;
