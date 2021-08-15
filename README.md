@@ -6,8 +6,20 @@ This application allows patients to effortlessly book an appointment with their 
 Doctors on signup provides a proof of his/her medical license as an attachment. Unless the proof is verified the doctor is not allowed to take appointments. The doctor also must add his account details so that transfers can take place. Doctors must set their working time along with how much time they want to give per patient. A break time is also added which is optional. A doctor can only take up to 30 appointments a day.
 Admin can activate and deactivate doctors accounts in case of a dispute or unfair use of our application.
 
+# Technology Used - 
+•	Python Flask as backend.
+•	React as frontend.
+•	Apache Cassandra to retrieve, insert, create and update databases.
+•	Razorpay as payment portal.
+•	GitHub is used as version control system.
+•	AWS is used for deployment.
+•	NGINX is used for connecting flask to react using reverse web proxy.
+•	Docker used to containerize our application.
+•	Docker-compose is used to link the docker containers.
+
+
 # Steps to run the application on your local machine-
-Step 1 - Install docker desktop \n
+Step 1 - Install docker desktop
 Step 2 - git clone 
 Step 3 - Go to the project directory. 
 Step 4 - Run the following commands - -> docker-compose build -> docker-compose up -d 
@@ -25,10 +37,10 @@ Wireframe - https://github.com/shubhamgantayat/MedHub/blob/main/Documents/wirefr
 Detailed Project Report - https://github.com/shubhamgantayat/MedHub/blob/main/Documents/Detailed%20Report.pptx
 
 # For feedback - 
-Shubham Gantayat - sgantayat9@gmail.com
+Shubham Gantayat - sgantayat9@gmail.com , 
 Suraj Kumar - Suraj_207@outlook.com
 
 # Visit our LinkedIn profiles at -
-Suraj Kumar - https://www.linkedin.com/in/suraj-kumar-49b942182/
+Suraj Kumar - https://www.linkedin.com/in/suraj-kumar-49b942182/ , 
 Shubham Gantayat - https://www.linkedin.com/in/shubham-gantayat-4617521b7/
 
