@@ -53,7 +53,7 @@ class Payment:
                         "doctor_email": doctor_email,
                         "date": date
                     },
-                    "callback_url": "http://15.206.168.13/api/confirm-payment/",
+                    "callback_url": "https://medhub.rechnegen.com/api/confirm-payment/",
                     "callback_method": "get"
                 },
                 auth=requests.auth.HTTPBasicAuth(self.key, self.secret)
