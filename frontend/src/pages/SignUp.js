@@ -356,7 +356,7 @@ const SignUp = () => {
           onClick={handleSubmit}
           type="submit"
           // disabled={state && formState.isValid ? false : true}
-          disabled = "false"
+          disabled = {true?false:true}
         >
           {"Confirm"}
         </Button>
