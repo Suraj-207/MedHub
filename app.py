@@ -32,7 +32,7 @@ scheduler.add_job(
     trigger="interval",
     seconds=86400,
     next_run_time=datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1),
-                                            datetime.time(hour=00, minute=1))
+                                            datetime.time(hour=8, minute=50))
 )
 scheduler.add_job(
     func=BookCancelReschedule().routine_check_for_failed_appointments,
