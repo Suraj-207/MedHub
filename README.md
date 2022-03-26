@@ -25,8 +25,6 @@ Step 3 - Go to the project directory.
 Step 4 - Run the following commands - -> docker-compose build -> docker-compose up -d 
 Step 5 - Open browser and visit "localhost:80".
 
-# Visit our site at - http://15.206.168.13/
-
 # Watch our video to know more about the site - https://drive.google.com/file/d/1cgYe5lKUT10sQWEDFl1Yud9-rlR1NyCc/view?usp=sharing
 
 # Important Documents
