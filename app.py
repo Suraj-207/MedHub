@@ -31,8 +31,8 @@ scheduler.add_job(
     func=SlotMaker().assign_slots_scheduling,
     trigger="interval",
     seconds=86400,
-    next_run_time=datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1),
-                                            datetime.time(hour=8, minute=50))
+    next_run_time=datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=0),
+                                            datetime.time(hour=9, minute=2))
 )
 scheduler.add_job(
     func=BookCancelReschedule().routine_check_for_failed_appointments,
