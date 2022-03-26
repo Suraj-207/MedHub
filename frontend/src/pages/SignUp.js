@@ -355,7 +355,8 @@ const SignUp = () => {
         <Button
           onClick={handleSubmit}
           type="submit"
-          disabled={state && formState.isValid ? false : true}
+          // disabled={state && formState.isValid ? false : true}
+          disabled = "false"
         >
           {"Confirm"}
         </Button>
